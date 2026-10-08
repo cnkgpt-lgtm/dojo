@@ -31,7 +31,7 @@ export default async function UbahPengeluaranPage({ params }: { params: Promise<
       <Link href="/dashboard/keuangan/pengeluaran" className="mb-4 inline-flex min-h-[44px] items-center text-sm font-semibold text-slate-600">
         Kembali ke daftar pengeluaran
       </Link>
-      <h1 className="text-xl font-extrabold tracking-tight sm:text-2xl">Ubah Pengeluaran</h1>
+      <h1 className="brutal-title text-2xl">UBAH PENGELUARAN</h1>
       <p className="mt-1 mb-6 text-sm text-slate-500">{data.deskripsi}</p>
       <TransaksiForm
         jenis="pengeluaran"

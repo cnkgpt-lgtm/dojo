@@ -17,7 +17,7 @@ export default async function NotifikasiPage() {
 
   return (
     <div className="anim-fade-up mx-auto max-w-3xl">
-      <h1 className="text-xl font-extrabold tracking-tight sm:text-2xl">Notifikasi</h1>
+      <h1 className="brutal-title text-2xl">NOTIFIKASI</h1>
       <p className="mt-1 mb-6 text-sm text-slate-500">
         Pengingat iuran, kabar pembayaran, dan pengumuman untuk Anda.
       </p>

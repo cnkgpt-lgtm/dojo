@@ -67,14 +67,14 @@ async function PembayaranAdmin({ searchParams }: { searchParams: Record<string, 
     <div className="space-y-8">
       {/* Antrean verifikasi */}
       <section>
-        <h2 className="mb-3 text-base font-bold">
-          Menunggu Verifikasi{" "}
-          <span className="ml-1 rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-bold text-amber-800">
+        <h2 className="brutal-title mb-3 text-lg">
+          MENUNGGU VERIFIKASI{" "}
+          <span className="brutal-badge ml-1 bg-amber-100 text-amber-800">
             {antrean.length}
           </span>
         </h2>
         {antrean.length === 0 ? (
-          <p className="rounded-2xl bg-slate-50 p-6 text-center text-sm text-slate-500 ring-1 ring-slate-200">
+          <p className="brutal-card p-6 text-center text-sm text-slate-500">
             Tidak ada pembayaran yang menunggu verifikasi.
           </p>
         ) : (
@@ -91,29 +91,29 @@ async function PembayaranAdmin({ searchParams }: { searchParams: Record<string, 
 
       {/* Riwayat */}
       <section>
-        <h2 className="mb-3 text-base font-bold">Riwayat Pembayaran</h2>
+        <h2 className="brutal-title mb-3 text-lg">RIWAYAT PEMBAYARAN</h2>
         <form method="get" className="mb-3 flex flex-wrap gap-3">
-          <select name="status" defaultValue={status} className="rounded-xl border border-slate-300 px-4 py-2.5 text-sm">
+          <select name="status" defaultValue={status} className="brutal-input sm:w-auto">
             <option value="">Semua status</option>
             <option value="MENUNGGU_VERIFIKASI">Menunggu Verifikasi</option>
             <option value="LUNAS">Lunas</option>
             <option value="DITOLAK">Ditolak</option>
           </select>
-          <select name="metode" defaultValue={metode} className="rounded-xl border border-slate-300 px-4 py-2.5 text-sm">
+          <select name="metode" defaultValue={metode} className="brutal-input sm:w-auto">
             <option value="">Semua metode</option>
             <option value="TUNAI">Tunai</option>
             <option value="TRANSFER">Transfer</option>
           </select>
-          <button className="min-h-[44px] rounded-xl bg-slate-900 px-5 text-sm font-bold text-white">Filter</button>
+          <button className="brutal-btn brutal-btn-dark">Filter</button>
         </form>
         <div className="space-y-2">
           {riwayat.length === 0 && (
-            <p className="rounded-2xl bg-slate-50 p-6 text-center text-sm text-slate-500 ring-1 ring-slate-200">
+            <p className="brutal-card p-6 text-center text-sm text-slate-500">
               Belum ada pembayaran.
             </p>
           )}
           {riwayat.map((p) => (
-            <div key={p.id} className="rounded-2xl bg-white p-4 ring-1 ring-slate-200 sm:flex sm:items-center sm:justify-between">
+            <div key={p.id} className="brutal-card p-4 sm:flex sm:items-center sm:justify-between">
               <div>
                 <p className="font-bold">
                   {p.student.nama} <span className="font-normal text-slate-500">({p.student.memberId})</span>
@@ -124,7 +124,7 @@ async function PembayaranAdmin({ searchParams }: { searchParams: Record<string, 
                 </p>
               </div>
               <div className="mt-2 flex items-center gap-2 sm:mt-0">
-                <span className="text-sm font-extrabold">{rupiah(p.nominal)}</span>
+                <span className="brutal-angka text-sm">{rupiah(p.nominal)}</span>
                 <BadgeMetode metode={p.metode} />
                 <BadgeIuran status={p.status} />
               </div>
@@ -145,7 +145,7 @@ async function PembayaranSiswa() {
   const u = await wajibLogin();
   if (!u.studentId) {
     return (
-      <p className="rounded-2xl bg-slate-50 p-6 text-center text-sm text-slate-500 ring-1 ring-slate-200">
+      <p className="brutal-card p-6 text-center text-sm text-slate-500">
         Akun ini tidak terhubung ke data siswa.
       </p>
     );
@@ -162,24 +162,24 @@ async function PembayaranSiswa() {
   return (
     <div className="space-y-2">
       {riwayat.length === 0 && (
-        <p className="rounded-2xl bg-slate-50 p-6 text-center text-sm text-slate-500 ring-1 ring-slate-200">
+        <p className="brutal-card p-6 text-center text-sm text-slate-500">
           Belum ada riwayat pembayaran.
         </p>
       )}
       {riwayat.map((p) => (
-        <div key={p.id} className="rounded-2xl bg-white p-4 ring-1 ring-slate-200">
+        <div key={p.id} className="brutal-card p-4">
           <div className="flex items-start justify-between gap-3">
             <div>
               <p className="font-bold">Iuran {labelPeriode(p.invoice.periode)}</p>
               <p className="mt-0.5 text-sm text-slate-500">{formatTanggal(p.tanggal)}</p>
               {p.status === "DITOLAK" && p.alasanPenolakan && (
-                <p className="mt-2 rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700 ring-1 ring-red-200">
+                <p className="brutal-card mt-2 bg-red-50 px-3 py-2 text-sm text-red-700">
                   Alasan: {p.alasanPenolakan}
                 </p>
               )}
             </div>
             <div className="text-right">
-              <p className="text-sm font-extrabold">{rupiah(p.nominal)}</p>
+              <p className="brutal-angka text-sm">{rupiah(p.nominal)}</p>
               <div className="mt-1 flex justify-end gap-1">
                 <BadgeMetode metode={p.metode} />
                 <BadgeIuran status={p.status} />
@@ -212,7 +212,7 @@ export default async function PembayaranPage({
 
   return (
     <div className="anim-fade-up mx-auto max-w-6xl">
-      <h1 className="text-xl font-extrabold tracking-tight sm:text-2xl">Pembayaran</h1>
+      <h1 className="brutal-title text-2xl">PEMBAYARAN</h1>
       <p className="mt-1 mb-3 text-sm text-slate-500">
         {u.role === "ADMIN"
           ? "Verifikasi pembayaran transfer, catat pembayaran tunai, dan pantau riwayat."

@@ -8,6 +8,12 @@ const LABEL_ROLE = { ADMIN: "Admin", SENSEI: "Sensei", SISWA: "Siswa" } as const
 
 type SearchParams = { q?: string; role?: string };
 
+const GAYA_ROLE: Record<Role, string> = {
+  ADMIN: "brutal-badge bg-dojo-600 text-white",
+  SENSEI: "brutal-badge bg-amber-300 text-black",
+  SISWA: "brutal-badge bg-sky-200 text-black",
+};
+
 /** Kelola akun login: tambah pengguna + pilih role, nonaktifkan, reset sandi (§57). Khusus admin. */
 export default async function PenggunaPage({ searchParams }: { searchParams: Promise<SearchParams> }) {
   const u = await wajibRole("ADMIN");
@@ -53,7 +59,7 @@ export default async function PenggunaPage({ searchParams }: { searchParams: Pro
     <div className="anim-fade-up">
       <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-extrabold tracking-tight">Pengguna</h1>
+          <h1 className="brutal-title text-2xl uppercase">Pengguna</h1>
           <p className="mt-1 text-sm text-slate-500">
             {pengguna.length} akun terdaftar · kelola login tiap role
           </p>
@@ -68,12 +74,12 @@ export default async function PenggunaPage({ searchParams }: { searchParams: Pro
           name="q"
           defaultValue={q}
           placeholder="Cari nama / HP / email"
-          className="min-h-[44px] flex-1 rounded-xl border border-slate-300 px-4 text-sm focus:border-dojo-600 focus:outline-none focus:ring-2 focus:ring-dojo-100 sm:max-w-xs"
+          className="brutal-input flex-1 sm:max-w-xs"
         />
         <select
           name="role"
           defaultValue={roleParam ?? ""}
-          className="min-h-[44px] rounded-xl border border-slate-300 bg-white px-3 text-sm"
+          className="brutal-input sm:w-auto"
         >
           <option value="">Semua role</option>
           <option value="ADMIN">Admin</option>
@@ -82,30 +88,30 @@ export default async function PenggunaPage({ searchParams }: { searchParams: Pro
         </select>
         <button
           type="submit"
-          className="min-h-[44px] rounded-xl bg-slate-900 px-5 text-sm font-bold text-white"
+          className="brutal-btn brutal-btn-dark"
         >
           Cari
         </button>
       </form>
 
       {/* Daftar */}
-      <div className="overflow-hidden rounded-2xl ring-1 ring-slate-200">
+      <div className="brutal-card overflow-hidden">
         <table className="w-full text-left text-sm">
           <thead>
-            <tr className="bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
-              <th className="px-4 py-3 font-semibold">Nama</th>
-              <th className="px-4 py-3 font-semibold">Login</th>
-              <th className="px-4 py-3 font-semibold">Role</th>
-              <th className="px-4 py-3 font-semibold">Status</th>
-              <th className="px-4 py-3 font-semibold"><span className="sr-only">Aksi</span></th>
+            <tr className="border-b-2 border-black text-xs uppercase">
+              <th className="px-4 py-3 font-black">Nama</th>
+              <th className="px-4 py-3 font-black">Login</th>
+              <th className="px-4 py-3 font-black">Role</th>
+              <th className="px-4 py-3 font-black">Status</th>
+              <th className="px-4 py-3 font-black"><span className="sr-only">Aksi</span></th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100">
+          <tbody className="divide-y divide-black/10">
             {pengguna.map((p) => (
-              <tr key={p.id} className={!p.isActive ? "bg-slate-50" : undefined}>
+              <tr key={p.id} className={!p.isActive ? "bg-black/[0.03]" : undefined}>
                 <td className="px-4 py-3">
                   <p className="font-semibold">{p.name}</p>
-                  {p.student && <p className="text-xs text-slate-500">{p.student.memberId}</p>}
+                  {p.student && <p className="brutal-angka text-xs text-slate-500">{p.student.memberId}</p>}
                   {p.scopeDojo && <p className="text-xs text-slate-500">Scope: {p.scopeDojo.nama}</p>}
                 </td>
                 <td className="px-4 py-3">
@@ -113,23 +119,13 @@ export default async function PenggunaPage({ searchParams }: { searchParams: Pro
                   {p.email && <p className="text-xs text-slate-500">{p.email}</p>}
                 </td>
                 <td className="px-4 py-3">
-                  <span
-                    className={`inline-block rounded-full px-2.5 py-1 text-xs font-bold ${
-                      p.role === "ADMIN"
-                        ? "bg-dojo-100 text-dojo-800"
-                        : p.role === "SENSEI"
-                          ? "bg-amber-100 text-amber-800"
-                          : "bg-sky-100 text-sky-800"
-                    }`}
-                  >
+                  <span className={GAYA_ROLE[p.role]}>
                     {LABEL_ROLE[p.role]}
                   </span>
                 </td>
                 <td className="px-4 py-3">
                   <span
-                    className={`inline-block rounded-full px-2.5 py-1 text-xs font-bold ${
-                      p.isActive ? "bg-emerald-100 text-emerald-800" : "bg-slate-200 text-slate-600"
-                    }`}
+                    className={`brutal-badge ${p.isActive ? "bg-emerald-300 text-black" : "bg-neutral-200 text-neutral-700"}`}
                   >
                     {p.isActive ? "Aktif" : "Nonaktif"}
                   </span>

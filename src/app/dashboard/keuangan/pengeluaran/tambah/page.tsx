@@ -23,7 +23,7 @@ export default async function TambahPengeluaranPage() {
       <Link href="/dashboard/keuangan/pengeluaran" className="mb-4 inline-flex min-h-[44px] items-center text-sm font-semibold text-slate-600">
         Kembali ke daftar pengeluaran
       </Link>
-      <h1 className="text-xl font-extrabold tracking-tight sm:text-2xl">Catat Pengeluaran</h1>
+      <h1 className="brutal-title text-2xl">CATAT PENGELUARAN</h1>
       <p className="mt-1 mb-6 text-sm text-slate-500">
         Setiap pengeluaran tercatat dengan petugas dan masuk audit log.
       </p>

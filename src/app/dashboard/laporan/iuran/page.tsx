@@ -4,8 +4,7 @@ import { laporanIuran } from "@/lib/laporan";
 import { CetakButton } from "@/components/CetakButton";
 import { LABEL_STATUS_IURAN } from "@/lib/format";
 
-const inputCls =
-  "block w-full rounded-xl bg-white px-3 py-2.5 text-sm ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:ring-dojo-700";
+const inputCls = "brutal-input";
 
 const WARNA_SEL: Record<string, string> = {
   LUNAS: "bg-emerald-50 text-emerald-700",
@@ -51,7 +50,7 @@ export default async function LaporanIuranPage({
     <div className="anim-fade-up space-y-6">
       <div className="no-print flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-xl font-extrabold tracking-tight sm:text-2xl">Laporan Iuran</h1>
+          <h1 className="brutal-title text-2xl">LAPORAN IURAN</h1>
           <p className="mt-1 text-sm text-slate-500">
             Status pembayaran per siswa per bulan ({hasil.jumlahSiswa} siswa).
           </p>
@@ -64,7 +63,7 @@ export default async function LaporanIuranPage({
       </div>
 
       {/* Filter */}
-      <form method="get" className="no-print grid grid-cols-2 gap-3 rounded-2xl bg-slate-50 p-4 ring-1 ring-slate-200 sm:grid-cols-3 lg:grid-cols-6">
+      <form method="get" className="no-print brutal-card grid grid-cols-2 gap-3 bg-slate-50 p-4 sm:grid-cols-3 lg:grid-cols-6">
         <label className="block text-xs font-semibold">Dari bulan
           <input type="month" name="periodeAwal" defaultValue={periodeAwal} className={inputCls} />
         </label>
@@ -93,7 +92,7 @@ export default async function LaporanIuranPage({
           <input type="search" name="q" defaultValue={q} placeholder="Nama / Member ID" className={inputCls} />
         </label>
         <div className="col-span-2 flex items-end gap-2 sm:col-span-3 lg:col-span-1">
-          <button type="submit" className="inline-flex min-h-[44px] w-full items-center justify-center rounded-xl bg-slate-900 px-5 text-sm font-bold text-white">
+          <button type="submit" className="brutal-btn brutal-btn-dark w-full">
             Tampilkan
           </button>
         </div>
@@ -102,36 +101,36 @@ export default async function LaporanIuranPage({
       {/* Legenda */}
       <div className="no-print flex flex-wrap gap-2 text-xs">
         {Object.entries(WARNA_SEL).filter(([k]) => k !== "-").map(([k, cls]) => (
-          <span key={k} className={`rounded-full px-2.5 py-1 font-semibold ${cls}`}>{labelSel(k)}</span>
+          <span key={k} className={`brutal-badge ${cls}`}>{labelSel(k)}</span>
         ))}
       </div>
 
       {/* Matriks */}
       {hasil.baris.length === 0 ? (
-        <p className="rounded-2xl bg-slate-50 p-6 text-center text-sm text-slate-500 ring-1 ring-slate-200">
+        <p className="brutal-card p-6 text-center text-sm text-slate-500">
           Tidak ada siswa pada filter ini.
         </p>
       ) : (
-        <div className="overflow-x-auto rounded-2xl ring-1 ring-slate-200">
+        <div className="brutal-card overflow-x-auto">
           <table className="w-full min-w-[640px] border-collapse text-sm">
             <thead>
-              <tr className="bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500">
-                <th className="px-4 py-3 font-semibold">Siswa</th>
+              <tr className="text-left text-xs uppercase tracking-wide text-slate-500">
+                <th className="px-4 py-3 font-black">Siswa</th>
                 {hasil.periodes.map((p) => (
-                  <th key={p} className="px-3 py-3 text-center font-semibold">{p}</th>
+                  <th key={p} className="px-3 py-3 text-center font-black">{p}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {hasil.baris.map((b) => (
-                <tr key={b.id} className="border-t border-slate-100">
+                <tr key={b.id} className="border-t-2 border-black/10">
                   <td className="px-4 py-3">
                     <p className="font-semibold">{b.nama}</p>
                     <p className="text-xs text-slate-500">{b.memberId} · {b.dojo}</p>
                   </td>
                   {b.sel.map((s, i) => (
                     <td key={i} className="px-3 py-3 text-center">
-                      <span className={`inline-block min-w-16 rounded-lg px-2 py-1 text-xs font-bold ${WARNA_SEL[s] ?? ""}`}>
+                      <span className={`brutal-badge ${WARNA_SEL[s] ?? ""}`}>
                         {labelSel(s)}
                       </span>
                     </td>

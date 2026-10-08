@@ -24,7 +24,7 @@ export default async function LokasiPage() {
   return (
     <div className="anim-fade-up">
       <div className="mb-5">
-        <h1 className="text-2xl font-extrabold tracking-tight">Lokasi Absensi</h1>
+        <h1 className="brutal-title text-2xl">LOKASI ABSENSI</h1>
         <p className="mt-1 max-w-xl text-sm text-slate-500">
           Tandai titik latihan tiap dojo dan atur radiusnya. Siswa hanya bisa melakukan absensi
           mandiri bila berada di dalam radius tersebut — di luar itu aplikasi menolak dengan pesan
@@ -33,7 +33,7 @@ export default async function LokasiPage() {
       </div>
 
       {dojos.length === 0 ? (
-        <p className="rounded-2xl bg-slate-50 p-6 text-sm text-slate-500 ring-1 ring-slate-200">
+        <p className="brutal-card p-6 text-sm text-slate-500">
           Belum ada dojo terdaftar.
         </p>
       ) : (

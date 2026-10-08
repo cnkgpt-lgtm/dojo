@@ -12,10 +12,10 @@ function rupiah(n: number): string {
 
 function StatCard({ label, nilai, catatan }: { label: string; nilai: string; catatan?: string }) {
   return (
-    <div className="rounded-2xl bg-slate-50 p-5 ring-1 ring-slate-200">
-      <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">{label}</p>
-      <p className="mt-2 text-2xl font-extrabold tracking-tight">{nilai}</p>
-      {catatan && <p className="mt-1 text-xs text-slate-500">{catatan}</p>}
+    <div className="brutal-card p-4 sm:p-5">
+      <p className="text-[11px] font-black uppercase tracking-widest text-slate-500">{label}</p>
+      <p className="brutal-angka mt-2 text-xl tracking-tight text-black sm:text-2xl">{nilai}</p>
+      {catatan && <p className="mt-1 text-xs font-bold text-slate-500">{catatan}</p>}
     </div>
   );
 }
@@ -73,11 +73,11 @@ async function DashboardAdmin({ scopeDojoId }: { scopeDojoId: string | null }) {
           catatan={`${r.totalTunggakan.jumlah} tagihan belum bayar`}
         />
       </section>
-      <div className="flex flex-wrap gap-2">
-        <Link href="/dashboard/keuangan" className="inline-flex min-h-[48px] items-center rounded-xl bg-dojo-700 px-5 text-sm font-bold text-white">
+      <div className="flex flex-wrap gap-3">
+        <Link href="/dashboard/keuangan" className="brutal-btn brutal-btn-primary">
           Kelola Keuangan
         </Link>
-        <Link href="/dashboard/laporan" className="inline-flex min-h-[48px] items-center rounded-xl px-5 text-sm font-bold text-dojo-700 ring-1 ring-slate-200">
+        <Link href="/dashboard/laporan" className="brutal-btn brutal-btn-light">
           Lihat Laporan
         </Link>
       </div>
@@ -122,22 +122,22 @@ async function DashboardSensei({ coachId }: { coachId: string | null }) {
         <StatCard label="Siswa Tidak Hadir" nilai={String(Math.max(0, jumlahSiswa - totalHadir))} catatan="Aktif dikurangi hadir" />
       </section>
       <section aria-label="Jadwal hari ini">
-        <h2 className="mb-3 text-base font-bold">Jadwal Hari Ini</h2>
+        <h2 className="brutal-title mb-3 text-lg">JADWAL HARI INI</h2>
         {jadwalHariIni.length === 0 ? (
-          <p className="rounded-2xl bg-slate-50 p-5 text-sm text-slate-500 ring-1 ring-slate-200">
+          <p className="brutal-card p-5 text-sm font-bold text-slate-500">
             Tidak ada jadwal latihan hari ini.
           </p>
         ) : (
-          <ul className="space-y-2">
+          <ul className="space-y-3">
             {jadwalHariIni.map((j) => (
-              <li key={j.id} className="rounded-2xl bg-slate-50 p-4 ring-1 ring-slate-200">
-                <p className="font-semibold">{j.namaLatihan}</p>
-                <p className="mt-0.5 text-sm text-slate-500">
+              <li key={j.id} className="brutal-card p-4">
+                <p className="font-extrabold text-black">{j.namaLatihan}</p>
+                <p className="mt-0.5 text-sm font-bold text-slate-500">
                   {j.jamMulai}–{j.jamSelesai} · {j.dojo.nama}
                 </p>
                 <p className="mt-1 text-sm">
-                  <span className="font-semibold text-emerald-700">{hadirPerJadwal.get(j.id) ?? 0} hadir</span>
-                  <span className="text-slate-400"> dari {jumlahSiswa} siswa aktif</span>
+                  <span className="font-extrabold text-dojo-700">{hadirPerJadwal.get(j.id) ?? 0} hadir</span>
+                  <span className="font-bold text-slate-400"> dari {jumlahSiswa} siswa aktif</span>
                 </p>
               </li>
             ))}
@@ -203,71 +203,73 @@ async function DashboardSiswa({ studentId }: { studentId: string | null }) {
     <div className="space-y-6">
       <section
         aria-label="Profil siswa"
-        className="flex items-center gap-4 rounded-2xl bg-slate-50 p-5 ring-1 ring-slate-200"
+        className="brutal-card flex items-center gap-4 p-5"
       >
         <div
           aria-hidden="true"
-          className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-dojo-700 text-lg font-extrabold text-white"
+          className="brutal-title flex h-14 w-14 shrink-0 items-center justify-center rounded-full border-2 border-black bg-dojo-600 text-lg text-white shadow-[2px_2px_0px_0px_#000]"
         >
           {siswa ? siswa.nama.charAt(0).toUpperCase() : "?"}
         </div>
         <div className="min-w-0">
-          <p className="truncate text-lg font-bold">{siswa?.nama ?? "Profil belum terhubung"}</p>
-          <p className="text-sm text-slate-500">
+          <p className="truncate text-lg font-extrabold text-black">{siswa?.nama ?? "Profil belum terhubung"}</p>
+          <p className="text-sm font-bold text-slate-500">
             {siswa ? `${siswa.memberId} · ${siswa.dojo.nama}` : "Hubungi admin dojo Anda"}
           </p>
-          <p className="mt-1 text-sm">
-            <span className="font-semibold">Sabuk:</span>{" "}
+          <p className="mt-1 text-sm font-bold">
+            Sabuk:{" "}
             <span className="text-slate-600">{siswa?.sabuk?.nama ?? "Belum ada"}</span>
           </p>
         </div>
       </section>
 
       <section aria-label="Jadwal berikutnya">
-        <h2 className="mb-3 text-base font-bold">Jadwal Berikutnya</h2>
+        <h2 className="brutal-title mb-3 text-lg">JADWAL BERIKUTNYA</h2>
         {jadwalBerikutnya ? (
-          <div className="rounded-2xl bg-dojo-700 p-5 text-white">
-            <p className="text-xs font-semibold uppercase tracking-wide text-red-100">
-              {jadwalBerikutnya.offsetHari === 0
-                ? "Hari ini"
-                : `${NAMA_HARI[jadwalBerikutnya.jadwal.hari]}`}
+          <div className="rounded-xl border-2 border-black bg-black p-5 text-white shadow-[3px_3px_0px_0px_#000] sm:shadow-[5px_5px_0px_0px_#000]">
+            <p>
+              <span className="brutal-badge bg-dojo-600 text-white">
+                {jadwalBerikutnya.offsetHari === 0
+                  ? "Hari ini"
+                  : `${NAMA_HARI[jadwalBerikutnya.jadwal.hari]}`}
+              </span>
             </p>
-            <p className="mt-1 text-lg font-extrabold">
+            <p className="brutal-title mt-3 text-xl text-white">
               {jadwalBerikutnya.jadwal.jamMulai} · {jadwalBerikutnya.jadwal.namaLatihan}
             </p>
             {jadwalBerikutnya.jadwal.coach && (
-              <p className="mt-0.5 text-sm text-red-100">
+              <p className="mt-0.5 text-sm font-bold text-slate-300">
                 Sensei {jadwalBerikutnya.jadwal.coach.nama}
               </p>
             )}
             <Link
               href="/dashboard/absensi"
-              className="mt-4 inline-flex min-h-[52px] w-full items-center justify-center rounded-xl bg-white text-base font-extrabold text-dojo-700"
+              className="brutal-btn brutal-btn-primary mt-4 w-full !text-base"
             >
               ABSEN SEKARANG
             </Link>
           </div>
         ) : (
-          <p className="rounded-2xl bg-slate-50 p-5 text-sm text-slate-500 ring-1 ring-slate-200">
+          <p className="brutal-card p-5 text-sm font-bold text-slate-500">
             Belum ada jadwal latihan berikutnya.
           </p>
         )}
       </section>
 
       <section aria-label="Jadwal latihan">
-        <h2 className="mb-3 text-base font-bold">Jadwal Latihan</h2>
+        <h2 className="brutal-title mb-3 text-lg">JADWAL LATIHAN</h2>
         {daftarJadwal.length === 0 ? (
-          <p className="rounded-2xl bg-slate-50 p-5 text-sm text-slate-500 ring-1 ring-slate-200">
+          <p className="brutal-card p-5 text-sm font-bold text-slate-500">
             Belum ada jadwal latihan.
           </p>
         ) : (
-          <ul className="space-y-2">
+          <ul className="space-y-3">
             {daftarJadwal.map((j) => (
-              <li key={j.id} className="rounded-2xl bg-slate-50 p-4 ring-1 ring-slate-200">
-                <p className="font-semibold">
+              <li key={j.id} className="brutal-card p-4">
+                <p className="font-extrabold text-black">
                   {NAMA_HARI[j.hari]} · {j.jamMulai}–{j.jamSelesai}
                 </p>
-                <p className="mt-0.5 text-sm text-slate-500">
+                <p className="mt-0.5 text-sm font-bold text-slate-500">
                   {j.namaLatihan}
                   {j.coach ? ` · Sensei ${j.coach.nama}` : ""}
                 </p>
@@ -291,7 +293,7 @@ async function DashboardSiswa({ studentId }: { studentId: string | null }) {
       </section>
       <Link
         href="/dashboard/iuran"
-        className="inline-flex min-h-[48px] items-center justify-center rounded-xl bg-dojo-700 px-6 text-sm font-bold text-white"
+        className="brutal-btn brutal-btn-primary"
       >
         Lihat & Bayar Iuran
       </Link>
@@ -301,15 +303,15 @@ async function DashboardSiswa({ studentId }: { studentId: string | null }) {
 
 const JUDUL: Record<string, { sapaan: string; deskripsi: string }> = {
   ADMIN: {
-    sapaan: "Ringkasan Operasional",
+    sapaan: "RINGKASAN OPERASIONAL",
     deskripsi: "Pantau seluruh dojo, siswa, dan keuangan organisasi dalam satu layar.",
   },
   SENSEI: {
-    sapaan: "Ringkasan Latihan",
+    sapaan: "RINGKASAN LATIHAN",
     deskripsi: "Jadwal hari ini, daftar siswa, dan kehadiran dojo Anda.",
   },
   SISWA: {
-    sapaan: "Ringkasan Saya",
+    sapaan: "RINGKASAN SAYA",
     deskripsi: "Jadwal latihan, profil, dan status iuran Anda.",
   },
 };
@@ -321,8 +323,8 @@ export default async function DashboardPage() {
   return (
     <div className="anim-fade-up">
       <div className="mb-6">
-        <h1 className="text-xl font-extrabold tracking-tight sm:text-2xl">{judul.sapaan}</h1>
-        <p className="mt-1 text-sm text-slate-500">{judul.deskripsi}</p>
+        <h1 className="brutal-title text-2xl sm:text-3xl">{judul.sapaan}</h1>
+        <p className="mt-1 text-sm font-bold text-slate-500">{judul.deskripsi}</p>
       </div>
 
       {u.role === "ADMIN" && <DashboardAdmin scopeDojoId={u.scopeDojoId} />}

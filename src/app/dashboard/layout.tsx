@@ -80,19 +80,19 @@ export default async function DashboardLayout({ children }: { children: React.Re
   const menuLainnya = semuaMenu.filter((m) => !hrefUtama.includes(m.href));
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[#fafaf7]">
       {/* Header */}
-      <header className="sticky top-0 z-10 border-b border-slate-200 bg-white">
+      <header className="sticky top-0 z-10 border-b-2 border-black bg-white">
         <div className="mx-auto flex h-16 max-w-6xl items-center gap-3 px-4">
           <div
             aria-hidden="true"
-            className="flex h-9 w-9 items-center justify-center rounded-lg bg-dojo-700 text-sm font-extrabold text-white"
+            className="brutal-title flex h-10 w-10 items-center justify-center rounded-lg border-2 border-black bg-dojo-600 text-sm text-white shadow-[2px_2px_0px_0px_#000]"
           >
             DK
           </div>
           <div className="min-w-0 flex-1">
-            <p className="truncate text-sm font-bold leading-tight">DojoKu</p>
-            <p className="truncate text-xs text-slate-500">
+            <p className="brutal-title truncate text-base leading-tight">DOJOKU</p>
+            <p className="truncate text-xs font-bold text-slate-500">
               {u.name} · {LABEL_ROLE[u.role]}
             </p>
           </div>
@@ -100,13 +100,13 @@ export default async function DashboardLayout({ children }: { children: React.Re
           <Link
             href="/dashboard/notifikasi"
             aria-label={`Notifikasi${belumDibaca > 0 ? `, ${belumDibaca} belum dibaca` : ""}`}
-            className="relative flex h-11 w-11 items-center justify-center rounded-xl text-slate-600 ring-1 ring-transparent focus-visible:ring-2 focus-visible:ring-dojo-600"
+            className="relative flex h-11 w-11 items-center justify-center rounded-lg border-2 border-black bg-white text-black shadow-[2px_2px_0px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none"
           >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="h-6 w-6" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} className="h-6 w-6" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M15 17h5l-1.4-1.4A2 2 0 0118 14.6V11a6 6 0 10-12 0v3.6a2 2 0 01-.6 1.4L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
             </svg>
             {belumDibaca > 0 && (
-              <span className="absolute right-1 top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-red-600 px-1 text-[11px] font-bold text-white">
+              <span className="brutal-angka absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-md border-2 border-black bg-red-600 px-1 text-[11px] text-white">
                 {belumDibaca > 99 ? "99+" : belumDibaca}
               </span>
             )}
@@ -119,35 +119,33 @@ export default async function DashboardLayout({ children }: { children: React.Re
 
       <div className="mx-auto flex max-w-6xl">
         {/* Sidebar desktop */}
-        <aside className="hidden w-60 shrink-0 border-r border-slate-200 px-4 py-6 lg:block">
-          <nav aria-label="Navigasi utama" className="space-y-1">
+        <aside className="hidden w-60 shrink-0 border-r-2 border-black bg-white px-4 py-6 lg:block">
+          <nav aria-label="Navigasi utama" className="space-y-2">
             {MENU_UTAMA[u.role].map((m) => (
               <Link
                 key={m.href}
                 href={m.href}
-                className="block rounded-xl bg-dojo-50 px-4 py-3 text-sm font-semibold text-dojo-800"
+                className="block rounded-lg border-2 border-black bg-white px-4 py-2.5 text-sm font-extrabold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:-translate-y-0.5 hover:shadow-[3px_3px_0px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none"
               >
                 {m.label}
               </Link>
             ))}
           </nav>
-          <p className="mt-8 mb-2 px-4 text-xs font-semibold uppercase tracking-wide text-slate-400">
+          <p className="mb-2 mt-8 px-1 text-xs font-black uppercase tracking-widest text-slate-400">
             Segera hadir
           </p>
-          <ul aria-label="Fitur yang akan datang" className="space-y-1">
+          <ul aria-label="Fitur yang akan datang" className="space-y-2">
             {MENU_SEGERA[u.role].map((label) => (
               <li
                 key={label}
-                className="flex items-center justify-between rounded-xl px-4 py-2.5 text-sm text-slate-400"
+                className="flex items-center justify-between rounded-lg border-2 border-dashed border-slate-300 px-4 py-2.5 text-sm font-bold text-slate-400"
               >
                 <span>{label}</span>
-                <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-medium">
-                  Segera
-                </span>
+                <span className="brutal-badge bg-slate-100 text-slate-500">Segera</span>
               </li>
             ))}
           </ul>
-          <div className="mt-8 px-1">
+          <div className="mt-8">
             <LogoutButton />
           </div>
         </aside>
