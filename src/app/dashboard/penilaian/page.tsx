@@ -46,7 +46,7 @@ export default async function PenilaianPage({
     <div className="anim-fade-up mx-auto max-w-5xl">
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-xl font-extrabold tracking-tight sm:text-2xl">Penilaian Perkembangan</h1>
+          <h1 className="brutal-title text-2xl">PENILAIAN PERKEMBANGAN</h1>
           <p className="mt-1 text-sm text-slate-500">
             {u.role === "SENSEI"
               ? "Nilai perkembangan siswa dojo Anda per periode."
@@ -56,7 +56,7 @@ export default async function PenilaianPage({
         {u.role === "ADMIN" && (
           <Link
             href="/dashboard/pengaturan/penilaian"
-            className="rounded-xl px-5 py-2.5 font-bold text-dojo-700 ring-1 ring-dojo-700/30"
+            className="brutal-btn brutal-btn-light"
           >
             Pengaturan Skala
           </Link>
@@ -73,7 +73,7 @@ export default async function PenilaianPage({
         <select
           name="siswa"
           defaultValue={q.siswa ?? ""}
-          className="rounded-xl border border-slate-300 px-3 py-2 text-sm"
+          className="brutal-input"
         >
           <option value="">Semua siswa</option>
           {siswaList.map((s) => (
@@ -82,7 +82,7 @@ export default async function PenilaianPage({
             </option>
           ))}
         </select>
-        <button className="rounded-xl bg-slate-900 px-4 py-2 text-sm font-bold text-white">
+        <button className="brutal-btn brutal-btn-dark">
           Filter
         </button>
       </form>
@@ -95,7 +95,7 @@ export default async function PenilaianPage({
           return (
             <details
               key={p.id}
-              className="rounded-2xl bg-white ring-1 ring-slate-200"
+              className="brutal-card"
             >
               <summary className="flex cursor-pointer list-none flex-wrap items-center justify-between gap-2 px-5 py-4">
                 <div>
@@ -110,7 +110,7 @@ export default async function PenilaianPage({
                 </div>
                 <div className="flex items-center gap-3">
                   {rata != null && (
-                    <span className="rounded-full bg-dojo-700/10 px-3 py-1 text-sm font-extrabold text-dojo-700">
+                    <span className="brutal-badge bg-dojo-100 text-dojo-800">
                       {skala === "LABEL" ? tampilNilai(Math.round(rata), skala) : rata}
                     </span>
                   )}
@@ -120,7 +120,7 @@ export default async function PenilaianPage({
               <div className="border-t border-slate-100 px-5 py-4">
                 <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
                   {ASPEK_PENILAIAN.map((a) => (
-                    <div key={a.key} className="rounded-xl bg-slate-50 px-3 py-2 ring-1 ring-slate-100">
+                    <div key={a.key} className="brutal-card px-3 py-2">
                       <p className="text-xs text-slate-500">{a.label}</p>
                       <p className="font-bold">{tampilNilai(nilai[a.key], skala)}</p>
                     </div>
@@ -139,7 +139,7 @@ export default async function PenilaianPage({
           );
         })}
         {riwayat.length === 0 && (
-          <p className="rounded-2xl bg-white px-5 py-8 text-center text-sm text-slate-500 ring-1 ring-slate-200">
+          <p className="brutal-card px-5 py-8 text-center text-sm text-slate-500">
             Belum ada penilaian.
           </p>
         )}

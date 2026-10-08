@@ -22,7 +22,7 @@ export default async function UbahPenilaianPage({
 
   return (
     <div className="anim-fade-up mx-auto max-w-3xl">
-      <h1 className="text-xl font-extrabold tracking-tight sm:text-2xl">Ubah Penilaian</h1>
+      <h1 className="brutal-title text-2xl">UBAH PENILAIAN</h1>
       <p className="mt-1 mb-6 text-sm text-slate-500">
         {data.student.nama} ({data.student.memberId}) · Periode {data.periode}
       </p>

@@ -48,13 +48,13 @@ export default async function PerkembanganPage() {
 
   return (
     <div className="anim-fade-up mx-auto max-w-3xl space-y-6">
-      <h1 className="text-xl font-extrabold tracking-tight sm:text-2xl">Perkembanganku</h1>
+      <h1 className="brutal-title text-2xl">PERKEMBANGANKU</h1>
 
-      <section className="rounded-2xl bg-white p-5 ring-1 ring-slate-200">
-        <h2 className="font-bold">Sabuk Saat Ini</h2>
+      <section className="brutal-card p-5">
+        <h2 className="brutal-title text-lg">SABUK SAAT INI</h2>
         <div className="mt-3 flex items-center gap-3">
           <span
-            className="rounded-full px-4 py-1.5 text-sm font-extrabold text-white"
+            className="brutal-badge px-4 py-1.5 text-sm text-white"
             style={gayaBadgeSabuk(siswa.sabuk?.warnaHex)}
           >
             {siswa.sabuk?.nama ?? "Belum ada"}
@@ -77,8 +77,8 @@ export default async function PerkembanganPage() {
         )}
       </section>
 
-      <section className="rounded-2xl bg-white p-5 ring-1 ring-slate-200">
-        <h2 className="font-bold">Penilaian Terakhir</h2>
+      <section className="brutal-card p-5">
+        <h2 className="brutal-title text-lg">PENILAIAN TERAKHIR</h2>
         {!terakhir && (
           <p className="mt-2 text-sm text-slate-500">
             Belum ada penilaian dari sensei.
@@ -89,7 +89,7 @@ export default async function PerkembanganPage() {
             <p className="mt-1 text-xs text-slate-500">
               Periode {terakhir.periode} · oleh {terakhir.coach.nama}
               {rata != null && (
-                <span className="ml-2 rounded-full bg-dojo-700/10 px-2.5 py-0.5 font-extrabold text-dojo-700">
+                <span className="brutal-badge ml-2 bg-dojo-100 text-dojo-800">
                   Rata-rata: {skala === "LABEL" ? tampilNilai(Math.round(rata), skala) : rata}
                 </span>
               )}
@@ -114,7 +114,7 @@ export default async function PerkembanganPage() {
               })}
             </div>
             {terakhir.catatan && (
-              <p className="mt-4 rounded-xl bg-slate-50 p-3 text-sm text-slate-600 ring-1 ring-slate-100">
+              <p className="brutal-card mt-4 p-3 text-sm text-slate-600">
                 <span className="font-semibold">Catatan sensei:</span> {terakhir.catatan}
               </p>
             )}
@@ -123,8 +123,8 @@ export default async function PerkembanganPage() {
       </section>
 
       {penilaian.length > 1 && (
-        <section className="rounded-2xl bg-white p-5 ring-1 ring-slate-200">
-          <h2 className="font-bold">Riwayat Penilaian</h2>
+        <section className="brutal-card p-5">
+          <h2 className="brutal-title text-lg">RIWAYAT PENILAIAN</h2>
           <ul className="mt-2 divide-y divide-slate-100 text-sm">
             {penilaian.slice(1).map((p) => (
               <li key={p.id} className="py-2.5">
@@ -138,7 +138,7 @@ export default async function PerkembanganPage() {
 
       <Link
         href="/dashboard/profil"
-        className="inline-block rounded-xl px-5 py-2.5 font-bold text-dojo-700 ring-1 ring-dojo-700/30"
+        className="brutal-btn brutal-btn-light"
       >
         Lihat Profil Lengkap
       </Link>

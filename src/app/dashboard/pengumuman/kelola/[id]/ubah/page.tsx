@@ -30,7 +30,7 @@ export default async function UbahPengumumanPage({
       >
         Kembali ke kelola pengumuman
       </Link>
-      <h1 className="text-xl font-extrabold tracking-tight sm:text-2xl">Ubah Pengumuman</h1>
+      <h1 className="brutal-title text-2xl">UBAH PENGUMUMAN</h1>
       <p className="mt-1 mb-6 text-sm text-slate-500">Perbarui isi atau masa tayang pengumuman.</p>
       <PengumumanForm
         mode="ubah"

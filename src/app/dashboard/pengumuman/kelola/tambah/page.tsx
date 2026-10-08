@@ -20,7 +20,7 @@ export default async function TambahPengumumanPage() {
       >
         Kembali ke kelola pengumuman
       </Link>
-      <h1 className="text-xl font-extrabold tracking-tight sm:text-2xl">Buat Pengumuman</h1>
+      <h1 className="brutal-title text-2xl">BUAT PENGUMUMAN</h1>
       <p className="mt-1 mb-6 text-sm text-slate-500">
         Tulis kabar yang ingin disampaikan kepada siswa, sensei, atau dojo tertentu.
       </p>

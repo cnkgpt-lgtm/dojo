@@ -61,25 +61,25 @@ export default async function RiwayatSabukPage({
     <div className="anim-fade-up mx-auto max-w-5xl">
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-xl font-extrabold tracking-tight sm:text-2xl">Riwayat Kenaikan Sabuk</h1>
+          <h1 className="brutal-title text-2xl">RIWAYAT KENAIKAN SABUK</h1>
           <p className="mt-1 text-sm text-slate-500">{total} catatan kenaikan.</p>
         </div>
         <Link
           href="/dashboard/sabuk/kenaikan"
-          className="rounded-xl bg-dojo-700 px-5 py-2.5 font-bold text-white"
+          className="brutal-btn brutal-btn-primary"
         >
           Catat Kenaikan
         </Link>
       </div>
 
-      <form className="mb-6 grid gap-3 rounded-2xl bg-white p-4 ring-1 ring-slate-200 sm:grid-cols-4">
+      <form className="brutal-card mb-6 grid gap-3 p-4 sm:grid-cols-4">
         {u.role === "ADMIN" && (
           <label className="block">
             <span className="text-xs font-semibold uppercase tracking-wide text-slate-400">Dojo</span>
             <select
               name="dojo"
               defaultValue={q.dojo ?? ""}
-              className="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 text-sm"
+              className="brutal-input mt-1"
             >
               <option value="">Semua dojo</option>
               {dojoList.map((d) => (
@@ -96,7 +96,7 @@ export default async function RiwayatSabukPage({
             type="date"
             name="dari"
             defaultValue={q.dari ?? ""}
-            className="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 text-sm"
+            className="brutal-input mt-1"
           />
         </label>
         <label className="block">
@@ -105,17 +105,17 @@ export default async function RiwayatSabukPage({
             type="date"
             name="sampai"
             defaultValue={q.sampai ?? ""}
-            className="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 text-sm"
+            className="brutal-input mt-1"
           />
         </label>
         <div className="flex items-end">
-          <button className="w-full rounded-xl bg-slate-900 px-4 py-2 font-bold text-white">
+          <button className="brutal-btn brutal-btn-dark w-full">
             Filter
           </button>
         </div>
       </form>
 
-      <div className="overflow-hidden rounded-2xl bg-white ring-1 ring-slate-200">
+      <div className="brutal-card overflow-hidden">
         <table className="w-full text-sm">
           <thead>
             <tr className="bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500">

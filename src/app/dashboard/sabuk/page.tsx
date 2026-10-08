@@ -9,7 +9,7 @@ export default async function SabukPage() {
 
   return (
     <div className="anim-fade-up mx-auto max-w-4xl">
-      <h1 className="text-xl font-extrabold tracking-tight sm:text-2xl">Tingkatan Sabuk</h1>
+      <h1 className="brutal-title text-2xl">TINGKATAN SABUK</h1>
       <p className="mt-1 mb-6 text-sm text-slate-500">
         Urutan sabuk dapat dikonfigurasi. Urutan menentukan validasi kenaikan (§33).
       </p>

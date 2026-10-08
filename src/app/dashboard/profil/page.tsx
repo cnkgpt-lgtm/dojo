@@ -13,7 +13,7 @@ const LABEL_ROLE: Record<string, string> = {
 function Baris({ label, nilai }: { label: string; nilai: string }) {
   return (
     <div className="py-3">
-      <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">{label}</p>
+      <p className="text-xs font-black uppercase tracking-wide">{label}</p>
       <p className="mt-1 text-sm font-medium text-slate-900">{nilai}</p>
     </div>
   );
@@ -88,18 +88,18 @@ export default async function ProfilPage() {
 
   return (
     <div className="anim-fade-up mx-auto max-w-3xl">
-      <h1 className="text-xl font-extrabold tracking-tight sm:text-2xl">Profil Saya</h1>
+      <h1 className="brutal-title text-2xl uppercase">Profil Saya</h1>
       <p className="mt-1 mb-6 text-sm text-slate-500">
         {LABEL_ROLE[u.role] ?? u.role}
         {u.role === "ADMIN" && u.scopeDojoId ? ` · ${user?.scopeDojo?.nama ?? "Dojo"}` : ""}
         {u.role === "ADMIN" && !u.scopeDojoId ? " · Pusat" : ""}
       </p>
 
-      <section aria-label="Identitas" className="rounded-2xl bg-slate-50 p-6 ring-1 ring-slate-200">
+      <section aria-label="Identitas" className="brutal-card p-6">
         <div className="flex flex-wrap items-center gap-4">
           <div
             aria-hidden="true"
-            className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-white text-2xl font-extrabold text-slate-400 ring-1 ring-slate-200"
+            className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-2xl border-2 border-black bg-white text-2xl font-extrabold text-slate-400"
           >
             {foto ? (
               // eslint-disable-next-line @next/next/no-img-element
@@ -109,10 +109,10 @@ export default async function ProfilPage() {
             )}
           </div>
           <div className="min-w-0">
-            <p className="text-lg font-bold">{user?.name}</p>
+            <p className="brutal-title text-lg uppercase">{user?.name}</p>
             {siswa && (
               <div className="mt-1 flex flex-wrap items-center gap-2">
-                <span className="font-mono text-xs text-slate-500">{siswa.memberId}</span>
+                <span className="brutal-angka text-xs text-slate-500">{siswa.memberId}</span>
                 <StatusBadge status={siswa.status} label={LABEL_STATUS_SISWA[siswa.status] ?? siswa.status} />
               </div>
             )}
@@ -125,13 +125,13 @@ export default async function ProfilPage() {
       </section>
 
       {siswa && (
-        <section aria-label="Data keanggotaan" className="mt-6 rounded-2xl bg-white ring-1 ring-slate-200">
+        <section aria-label="Data keanggotaan" className="brutal-card mt-6">
           <div className="grid grid-cols-1 gap-x-8 px-6 sm:grid-cols-2">
-            <div className="divide-y divide-slate-100">
+            <div className="divide-y divide-black/10">
               <Baris label="Tanggal bergabung" nilai={formatTanggal(siswa.tanggalBergabung)} />
               <Baris label="Dojo" nilai={siswa.dojo.nama} />
             </div>
-            <div className="divide-y divide-slate-100">
+            <div className="divide-y divide-black/10">
               <Baris label="Sabuk saat ini" nilai={siswa.sabuk?.nama ?? "Belum ada"} />
               <Baris label="Nama orang tua / wali" nilai={siswa.namaOrangTua ?? "-"} />
             </div>
@@ -144,26 +144,26 @@ export default async function ProfilPage() {
           aria-label="Ringkasan saya"
           className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3"
         >
-          <div className="rounded-2xl bg-white p-5 ring-1 ring-slate-200">
-            <p className="font-semibold">Kehadiran</p>
+          <div className="brutal-card p-5">
+            <p className="brutal-title text-base uppercase">Kehadiran</p>
             <p className="mt-2 text-sm text-slate-600">
-              <span className="font-extrabold text-dojo-700">{ringkasan.hadir}</span> hadir ·{" "}
-              <span className="font-extrabold text-amber-600">{ringkasan.terlambat}</span> terlambat
+              <span className="brutal-angka text-dojo-700">{ringkasan.hadir}</span> hadir ·{" "}
+              <span className="brutal-angka text-amber-600">{ringkasan.terlambat}</span> terlambat
             </p>
           </div>
-          <div className="rounded-2xl bg-white p-5 ring-1 ring-slate-200">
-            <p className="font-semibold">Status Iuran</p>
+          <div className="brutal-card p-5">
+            <p className="brutal-title text-base uppercase">Status Iuran</p>
             {ringkasan.tunggakanJml > 0 ? (
               <p className="mt-2 text-sm text-slate-600">
-                <span className="font-extrabold text-red-700">{ringkasan.tunggakanJml} tagihan</span>{" "}
+                <span className="brutal-angka text-red-700">{ringkasan.tunggakanJml} tagihan</span>{" "}
                 belum dibayar
               </p>
             ) : (
               <p className="mt-2 text-sm font-semibold text-emerald-700">Tidak ada tunggakan.</p>
             )}
           </div>
-          <div className="rounded-2xl bg-white p-5 ring-1 ring-slate-200">
-            <p className="font-semibold">Perkembangan</p>
+          <div className="brutal-card p-5">
+            <p className="brutal-title text-base uppercase">Perkembangan</p>
             {ringkasan.penilaianTerakhir ? (
               <p className="mt-2 text-sm text-slate-600">
                 Penilaian terakhir periode{" "}
@@ -176,8 +176,8 @@ export default async function ProfilPage() {
         </section>
       )}
 
-      <section aria-label="Ubah profil" className="mt-6 rounded-2xl bg-white p-6 ring-1 ring-slate-200">
-        <h2 className="mb-1 text-base font-bold">Ubah Profil</h2>
+      <section aria-label="Ubah profil" className="brutal-card mt-6 p-6">
+        <h2 className="brutal-title mb-1 text-lg uppercase">Ubah Profil</h2>
         <p className="mb-5 text-sm text-slate-500">
           {u.role === "ADMIN"
             ? "Anda dapat mengubah nama, nomor HP, dan email akun ini."

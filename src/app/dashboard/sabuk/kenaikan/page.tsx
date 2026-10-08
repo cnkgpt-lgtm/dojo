@@ -29,7 +29,7 @@ export default async function KenaikanSabukPage() {
 
   return (
     <div className="anim-fade-up mx-auto max-w-3xl">
-      <h1 className="text-xl font-extrabold tracking-tight sm:text-2xl">Catat Kenaikan Sabuk</h1>
+      <h1 className="brutal-title text-2xl">CATAT KENAIKAN SABUK</h1>
       <p className="mt-1 mb-6 text-sm text-slate-500">
         Sabuk baru harus lebih tinggi dari sabuk saat ini. Kenaikan lebih dari satu tingkat hanya
         dapat dicatat admin dan wajib disertai keterangan.
