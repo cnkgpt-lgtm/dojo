@@ -121,19 +121,18 @@ export function TarifManager({
     await muatUlang();
   }
 
-  const inputCls =
-    "w-full rounded-xl border border-slate-300 px-4 py-3 text-sm focus:border-dojo-600 focus:outline-none focus:ring-2 focus:ring-dojo-100";
+  const inputCls = "brutal-input";
 
   return (
     <div className="space-y-6">
       {/* Form */}
-      <form onSubmit={simpan} className="rounded-2xl bg-slate-50 p-5 ring-1 ring-slate-200">
-        <h2 className="text-base font-bold">{editId ? "Ubah Tarif" : "Tambah Tarif"}</h2>
+      <form onSubmit={simpan} className="brutal-card bg-slate-50 p-5">
+        <h2 className="brutal-title text-lg">{editId ? "UBAH TARIF" : "TAMBAH TARIF"}</h2>
         <p className="mt-1 text-xs text-slate-500">
           Pilih cakupan: siswa spesifik, atau satu dojo, atau kosongkan keduanya untuk tarif default organisasi.
         </p>
         {galat && (
-          <p className="mt-3 rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-700 ring-1 ring-red-200">
+          <p className="brutal-card mt-3 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
             {galat}
           </p>
         )}
@@ -208,7 +207,7 @@ export function TarifManager({
           <button
             type="submit"
             disabled={sibuk}
-            className="min-h-[48px] rounded-xl bg-dojo-700 px-6 text-sm font-bold text-white disabled:opacity-50"
+            className="brutal-btn brutal-btn-primary"
           >
             {sibuk ? "Menyimpan..." : editId ? "Simpan Perubahan" : "Tambah Tarif"}
           </button>
@@ -216,7 +215,7 @@ export function TarifManager({
             <button
               type="button"
               onClick={batal}
-              className="min-h-[48px] rounded-xl bg-slate-200 px-6 text-sm font-bold text-slate-700"
+              className="brutal-btn brutal-btn-light"
             >
               Batal
             </button>
@@ -227,51 +226,47 @@ export function TarifManager({
       {/* Daftar */}
       <div className="space-y-3">
         {daftar.length === 0 && (
-          <p className="rounded-2xl bg-slate-50 p-6 text-center text-sm text-slate-500 ring-1 ring-slate-200">
+          <p className="brutal-card p-6 text-center text-sm text-slate-500">
             Belum ada tarif. Tambahkan tarif default organisasi terlebih dahulu.
           </p>
         )}
         {daftar.map((t) => (
           <div
             key={t.id}
-            className={`rounded-2xl p-4 ring-1 sm:flex sm:items-center sm:justify-between ${
-              t.isActive ? "bg-white ring-slate-200" : "bg-slate-50 ring-slate-200 opacity-70"
+            className={`brutal-card p-4 sm:flex sm:items-center sm:justify-between ${
+              t.isActive ? "" : "bg-slate-50 opacity-70"
             }`}
           >
             <div>
               <p className="font-bold">
                 {t.nama}{" "}
                 {!t.isActive && (
-                  <span className="ml-2 rounded-full bg-slate-200 px-2 py-0.5 text-xs font-semibold text-slate-500">
+                  <span className="brutal-badge ml-2 bg-slate-200 text-slate-600">
                     Nonaktif
                   </span>
                 )}
               </p>
               <p className="mt-0.5 text-sm text-slate-500">
-                {rupiah(t.nominal)}/bulan · jatuh tempo tgl {t.hariJatuhTempo} · {cakupanLabel(t)}
+                <span className="brutal-angka">{rupiah(t.nominal)}</span>/bulan · jatuh tempo tgl {t.hariJatuhTempo} · {cakupanLabel(t)}
               </p>
             </div>
             <div className="mt-3 flex gap-2 sm:mt-0">
               <button
                 onClick={() => isiFormEdit(t)}
-                className="min-h-[44px] rounded-xl bg-slate-100 px-4 text-sm font-semibold text-slate-700"
+                className="brutal-btn brutal-btn-light"
               >
                 Ubah
               </button>
               <button
                 onClick={() => toggleAktif(t)}
                 disabled={sibuk}
-                className="min-h-[44px] rounded-xl bg-slate-100 px-4 text-sm font-semibold text-slate-700"
+                className="brutal-btn brutal-btn-light"
               >
                 {t.isActive ? "Nonaktifkan" : "Aktifkan"}
               </button>
               <button
                 onClick={() => hapus(t)}
-                className={`min-h-[44px] rounded-xl px-4 text-sm font-semibold ${
-                  konfirmasiId === t.id
-                    ? "bg-amber-600 text-white"
-                    : "bg-red-50 text-red-700"
-                }`}
+                className={`brutal-btn ${konfirmasiId === t.id ? "brutal-btn-warn" : "brutal-btn-danger"}`}
               >
                 {konfirmasiId === t.id ? "Yakin hapus?" : "Hapus"}
               </button>

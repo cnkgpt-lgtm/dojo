@@ -16,8 +16,7 @@ export type SenseiAwal = {
   isActive?: boolean;
 };
 
-const inputCls =
-  "mt-1 block w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 placeholder:text-slate-400";
+const inputCls = "brutal-input mt-1 block";
 const labelCls = "block text-sm font-semibold text-slate-700";
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
@@ -131,7 +130,7 @@ export function SenseiForm({
               type="checkbox"
               name="isActive"
               defaultChecked={awal?.isActive ?? true}
-              className="h-5 w-5 rounded accent-red-700"
+              className="h-5 w-5 rounded accent-dojo-700"
             />
             Sensei aktif
           </label>
@@ -142,14 +141,14 @@ export function SenseiForm({
         <button
           type="button"
           onClick={() => router.back()}
-          className="inline-flex min-h-[44px] items-center justify-center rounded-xl px-5 text-sm font-semibold text-slate-700 ring-1 ring-slate-200"
+          className="brutal-btn brutal-btn-light"
         >
           Batal
         </button>
         <button
           type="submit"
           disabled={menyimpan}
-          className="inline-flex min-h-[44px] items-center justify-center rounded-xl bg-dojo-700 px-6 text-sm font-semibold text-white disabled:opacity-50"
+          className="brutal-btn brutal-btn-primary"
         >
           {menyimpan ? "Menyimpan..." : mode === "tambah" ? "Tambah Sensei" : "Simpan Perubahan"}
         </button>

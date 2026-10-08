@@ -63,22 +63,21 @@ export function TunaiForm({ tagihanList }: { tagihanList: TagihanOpt[] }) {
     router.refresh();
   }
 
-  const inputCls =
-    "w-full rounded-xl border border-slate-300 px-4 py-3 text-sm focus:border-dojo-600 focus:outline-none focus:ring-2 focus:ring-dojo-100";
+  const inputCls = "brutal-input";
 
   return (
-    <form onSubmit={simpan} className="rounded-2xl bg-slate-50 p-5 ring-1 ring-slate-200">
-      <h2 className="text-base font-bold">Catat Pembayaran Tunai</h2>
+    <form onSubmit={simpan} className="brutal-card bg-slate-50 p-5">
+      <h2 className="brutal-title text-lg">CATAT PEMBAYARAN TUNAI</h2>
       <p className="mt-1 text-xs text-slate-500">
         Status tagihan langsung menjadi LUNAS dan tercatat sebagai pemasukan.
       </p>
       {galat && (
-        <p className="mt-3 rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-700 ring-1 ring-red-200">
+        <p className="brutal-card mt-3 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
           {galat}
         </p>
       )}
       {sukses && (
-        <p className="mt-3 rounded-xl bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700 ring-1 ring-emerald-200">
+        <p className="brutal-card mt-3 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700">
           {sukses}
         </p>
       )}
@@ -121,15 +120,14 @@ export function TunaiForm({ tagihanList }: { tagihanList: TagihanOpt[] }) {
       </div>
       {dipilih && (
         <p className="mt-3 text-sm font-semibold">
-          Nominal: {rupiah(dipilih.nominal)} <span className="font-normal text-slate-500">(harus pas)</span>
+          Nominal: <span className="brutal-angka">{rupiah(dipilih.nominal)}</span>{" "}
+          <span className="font-normal text-slate-500">(harus pas)</span>
         </p>
       )}
       <button
         type="submit"
         disabled={sibuk || !dipilih}
-        className={`mt-4 min-h-[48px] rounded-xl px-6 text-sm font-bold text-white disabled:opacity-50 ${
-          konfirmasi ? "bg-amber-600" : "bg-dojo-700"
-        }`}
+        className={`brutal-btn mt-4 ${konfirmasi ? "brutal-btn-warn" : "brutal-btn-primary"}`}
       >
         {sibuk ? "Menyimpan..." : konfirmasi ? "Yakin, Catat Tunai" : "Catat Tunai"}
       </button>

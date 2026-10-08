@@ -23,8 +23,7 @@ export type SiswaAwal = {
   catatan?: string | null;
 };
 
-const inputCls =
-  "mt-1 block w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 placeholder:text-slate-400";
+const inputCls = "brutal-input mt-1 block";
 const labelCls = "block text-sm font-semibold text-slate-700";
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
@@ -108,7 +107,7 @@ export function SiswaForm({
       )}
 
       <section aria-label="Data pribadi">
-        <h2 className="mb-4 text-base font-bold">Data Pribadi</h2>
+        <h2 className="brutal-title mb-4 text-lg uppercase">Data Pribadi</h2>
         <div className="mb-5">
           <span className={`${labelCls} mb-2 block`}>Foto</span>
           <FotoUpload tipe="siswa" nilaiAwal={foto} onBerhasil={setFoto} />
@@ -146,7 +145,7 @@ export function SiswaForm({
       </section>
 
       <section aria-label="Data orang tua atau wali">
-        <h2 className="mb-4 text-base font-bold">Orang Tua / Wali</h2>
+        <h2 className="brutal-title mb-4 text-lg uppercase">Orang Tua / Wali</h2>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <Field label="Nama orang tua / wali">
             <input name="namaOrangTua" defaultValue={awal?.namaOrangTua ?? ""} className={inputCls} />
@@ -158,7 +157,7 @@ export function SiswaForm({
       </section>
 
       <section aria-label="Data keanggotaan">
-        <h2 className="mb-4 text-base font-bold">Keanggotaan</h2>
+        <h2 className="brutal-title mb-4 text-lg uppercase">Keanggotaan</h2>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <Field label="Dojo *">
             <select name="dojoId" required defaultValue={awal?.dojoId ?? ""} className={inputCls}>
@@ -198,14 +197,14 @@ export function SiswaForm({
         <button
           type="button"
           onClick={() => router.back()}
-          className="inline-flex min-h-[44px] items-center justify-center rounded-xl px-5 text-sm font-semibold text-slate-700 ring-1 ring-slate-200"
+          className="brutal-btn brutal-btn-light"
         >
           Batal
         </button>
         <button
           type="submit"
           disabled={menyimpan}
-          className="inline-flex min-h-[44px] items-center justify-center rounded-xl bg-dojo-700 px-6 text-sm font-semibold text-white disabled:opacity-50"
+          className="brutal-btn brutal-btn-primary"
         >
           {menyimpan ? "Menyimpan..." : mode === "tambah" ? "Tambah Siswa" : "Simpan Perubahan"}
         </button>

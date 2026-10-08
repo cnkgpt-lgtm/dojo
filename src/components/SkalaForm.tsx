@@ -30,14 +30,14 @@ export function SkalaForm({ skalaAwal }: { skalaAwal: "ANGKA" | "LABEL" }) {
   }
 
   return (
-    <div className="rounded-2xl bg-white p-5 ring-1 ring-slate-200">
+    <div className="brutal-card p-5">
       {pesan && (
-        <p className="mb-4 rounded-xl bg-slate-100 px-4 py-3 text-sm font-medium text-slate-700">
+        <p className="brutal-card mb-4 px-4 py-3 text-sm font-medium text-slate-700">
           {pesan}
         </p>
       )}
       <div className="space-y-3">
-        <label className="flex cursor-pointer items-start gap-3 rounded-xl bg-slate-50 p-4 ring-1 ring-slate-200">
+        <label className="brutal-card flex cursor-pointer items-start gap-3 p-4">
           <input
             type="radio"
             name="skala"
@@ -52,7 +52,7 @@ export function SkalaForm({ skalaAwal }: { skalaAwal: "ANGKA" | "LABEL" }) {
             </span>
           </span>
         </label>
-        <label className="flex cursor-pointer items-start gap-3 rounded-xl bg-slate-50 p-4 ring-1 ring-slate-200">
+        <label className="brutal-card flex cursor-pointer items-start gap-3 p-4">
           <input
             type="radio"
             name="skala"
@@ -71,7 +71,7 @@ export function SkalaForm({ skalaAwal }: { skalaAwal: "ANGKA" | "LABEL" }) {
       <button
         onClick={simpan}
         disabled={sibuk || skala === skalaAwal}
-        className="mt-4 rounded-xl bg-dojo-700 px-6 py-2.5 font-bold text-white disabled:opacity-50"
+        className="brutal-btn brutal-btn-primary mt-4"
       >
         {sibuk ? "Menyimpan…" : "Simpan Pengaturan"}
       </button>

@@ -54,7 +54,7 @@ export function VerifikasiCard({ p }: { p: Pending }) {
   }
 
   return (
-    <div className="rounded-2xl bg-white p-4 ring-1 ring-slate-200">
+    <div className="brutal-card p-4">
       <div className="sm:flex sm:gap-4">
         {p.proof?.url ? (
           <a href={`/api/pembayaran/${p.id}/bukti`} target="_blank" rel="noreferrer" className="block shrink-0">
@@ -63,11 +63,11 @@ export function VerifikasiCard({ p }: { p: Pending }) {
               alt={`Bukti transfer ${p.student.nama}`}
               width={160}
               height={120}
-              className="h-32 w-full rounded-xl object-cover ring-1 ring-slate-200 sm:w-40"
+              className="h-32 w-full rounded-lg border-2 border-black object-cover sm:w-40"
             />
           </a>
         ) : (
-          <p className="rounded-xl bg-slate-100 p-4 text-sm text-slate-500">Bukti tidak tersedia.</p>
+          <p className="brutal-card bg-slate-100 p-4 text-sm text-slate-500">Bukti tidak tersedia.</p>
         )}
         <div className="mt-3 flex-1 sm:mt-0">
           <p className="font-bold">
@@ -77,7 +77,7 @@ export function VerifikasiCard({ p }: { p: Pending }) {
             Iuran {labelPeriode(p.invoice.periode)} · transfer {formatTanggal(p.tanggal)}
           </p>
           <div className="mt-2 flex items-center gap-2">
-            <span className="text-lg font-extrabold">{rupiah(p.nominal)}</span>
+            <span className="brutal-angka text-lg">{rupiah(p.nominal)}</span>
             <BadgeMetode metode="TRANSFER" />
           </div>
           {p.nominal !== p.invoice.nominal && (
@@ -89,7 +89,7 @@ export function VerifikasiCard({ p }: { p: Pending }) {
       </div>
 
       {galat && (
-        <p className="mt-3 rounded-xl bg-red-50 px-4 py-2.5 text-sm font-medium text-red-700 ring-1 ring-red-200">
+        <p className="brutal-card mt-3 bg-red-50 px-4 py-2.5 text-sm font-medium text-red-700">
           {galat}
         </p>
       )}
@@ -99,9 +99,7 @@ export function VerifikasiCard({ p }: { p: Pending }) {
           <button
             onClick={() => kirim("APPROVE")}
             disabled={sibuk}
-            className={`min-h-[48px] flex-1 rounded-xl px-4 text-sm font-bold text-white disabled:opacity-50 ${
-              konfirmasi ? "bg-amber-600" : "bg-emerald-700"
-            }`}
+            className={`brutal-btn flex-1 ${konfirmasi ? "brutal-btn-warn" : "brutal-btn-primary"}`}
           >
             {sibuk ? "Memproses..." : konfirmasi ? "Yakin, Setujui" : "Setujui"}
           </button>
@@ -111,7 +109,7 @@ export function VerifikasiCard({ p }: { p: Pending }) {
               setKonfirmasi(false);
             }}
             disabled={sibuk}
-            className="min-h-[48px] flex-1 rounded-xl bg-red-50 px-4 text-sm font-bold text-red-700 ring-1 ring-red-200 disabled:opacity-50"
+            className="brutal-btn brutal-btn-danger flex-1"
           >
             Tolak
           </button>
@@ -125,14 +123,14 @@ export function VerifikasiCard({ p }: { p: Pending }) {
               onChange={(e) => setAlasan(e.target.value)}
               rows={2}
               placeholder="mis. nominal tidak sesuai / bukti tidak jelas"
-              className="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm focus:border-red-400 focus:outline-none focus:ring-2 focus:ring-red-100"
+              className="brutal-input"
             />
           </label>
           <div className="flex gap-2">
             <button
               onClick={() => kirim("REJECT")}
               disabled={sibuk}
-              className="min-h-[48px] flex-1 rounded-xl bg-red-600 px-4 text-sm font-bold text-white disabled:opacity-50"
+              className="brutal-btn brutal-btn-danger flex-1"
             >
               {sibuk ? "Memproses..." : "Tolak Pembayaran"}
             </button>
@@ -142,7 +140,7 @@ export function VerifikasiCard({ p }: { p: Pending }) {
                 setAlasan("");
                 setGalat("");
               }}
-              className="min-h-[48px] rounded-xl bg-slate-100 px-4 text-sm font-semibold text-slate-700"
+              className="brutal-btn brutal-btn-light"
             >
               Batal
             </button>
