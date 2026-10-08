@@ -39,7 +39,7 @@ export function LoginForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-4" noValidate={false}>
       <div>
-        <label htmlFor="identitas" className="mb-1.5 block text-sm font-medium text-slate-700">
+        <label htmlFor="identitas" className="mb-1.5 block text-sm font-extrabold text-black">
           Nomor HP / Email
         </label>
         <input
@@ -51,11 +51,11 @@ export function LoginForm() {
           value={identitas}
           onChange={(e) => setIdentitas(e.target.value)}
           placeholder="08xxxxxxxxxx atau nama@email.com"
-          className="block w-full rounded-xl border border-slate-300 px-4 py-3 text-base placeholder:text-slate-400 focus:border-dojo-700"
+          className="brutal-input !text-base placeholder:text-slate-400"
         />
       </div>
       <div>
-        <label htmlFor="password" className="mb-1.5 block text-sm font-medium text-slate-700">
+        <label htmlFor="password" className="mb-1.5 block text-sm font-extrabold text-black">
           Kata Sandi
         </label>
         <input
@@ -67,12 +67,12 @@ export function LoginForm() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Masukkan kata sandi"
-          className="block w-full rounded-xl border border-slate-300 px-4 py-3 text-base placeholder:text-slate-400 focus:border-dojo-700"
+          className="brutal-input !text-base placeholder:text-slate-400"
         />
       </div>
 
       {error && (
-        <p role="alert" className="rounded-xl bg-dojo-50 px-4 py-3 text-sm font-medium text-dojo-800">
+        <p role="alert" className="rounded-lg border-2 border-black bg-red-50 px-4 py-3 text-sm font-bold text-red-700 shadow-[2px_2px_0px_0px_#000]">
           {error}
         </p>
       )}
@@ -80,7 +80,7 @@ export function LoginForm() {
       <button
         type="submit"
         disabled={loading}
-        className="min-h-[52px] w-full rounded-xl bg-dojo-700 text-base font-bold text-white transition-colors hover:bg-dojo-800 disabled:cursor-not-allowed disabled:opacity-60"
+        className="brutal-btn brutal-btn-primary !min-h-[52px] w-full !text-base"
       >
         {loading ? "Memeriksa..." : "MASUK"}
       </button>

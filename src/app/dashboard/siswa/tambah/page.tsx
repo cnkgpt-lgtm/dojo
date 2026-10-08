@@ -23,11 +23,11 @@ export default async function TambahSiswaPage() {
     <div className="anim-fade-up mx-auto max-w-3xl">
       <Link
         href="/dashboard/siswa"
-        className="mb-4 inline-flex min-h-[44px] items-center text-sm font-semibold text-slate-600"
+        className="brutal-btn brutal-btn-light mb-4"
       >
         Kembali ke daftar siswa
       </Link>
-      <h1 className="text-xl font-extrabold tracking-tight sm:text-2xl">Tambah Siswa</h1>
+      <h1 className="brutal-title text-2xl uppercase">Tambah Siswa</h1>
       <p className="mt-1 mb-6 text-sm text-slate-500">
         Member ID dibuat otomatis oleh sistem dengan format KRT-XXXXXX.
       </p>

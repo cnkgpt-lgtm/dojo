@@ -10,7 +10,7 @@ import { LABEL_STATUS_SISWA, LABEL_GENDER, formatTanggal, rupiah } from "@/lib/f
 function Baris({ label, nilai }: { label: string; nilai: string }) {
   return (
     <div className="py-3">
-      <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">{label}</p>
+      <p className="text-xs font-black uppercase tracking-wide">{label}</p>
       <p className="mt-1 text-sm font-medium text-slate-900">{nilai}</p>
     </div>
   );
@@ -78,16 +78,16 @@ export default async function DetailSiswaPage({
     <div className="anim-fade-up mx-auto max-w-3xl">
       <Link
         href={u.role === "SISWA" ? "/dashboard" : "/dashboard/siswa"}
-        className="mb-4 inline-flex min-h-[44px] items-center text-sm font-semibold text-slate-600"
+        className="brutal-btn brutal-btn-light mb-4"
       >
         Kembali
       </Link>
 
-      <section aria-label="Identitas siswa" className="rounded-2xl bg-slate-50 p-6 ring-1 ring-slate-200">
+      <section aria-label="Identitas siswa" className="brutal-card p-6">
         <div className="flex flex-wrap items-start gap-4">
           <div
             aria-hidden="true"
-            className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-white text-2xl font-extrabold text-slate-400 ring-1 ring-slate-200"
+            className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-2xl border-2 border-black bg-white text-2xl font-extrabold text-slate-400"
           >
             {s.foto ? (
               // eslint-disable-next-line @next/next/no-img-element
@@ -98,10 +98,10 @@ export default async function DetailSiswaPage({
           </div>
           <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-center gap-2">
-              <h1 className="text-xl font-extrabold tracking-tight">{s.nama}</h1>
+              <h1 className="brutal-title text-2xl uppercase">{s.nama}</h1>
               <StatusBadge status={s.status} label={LABEL_STATUS_SISWA[s.status] ?? s.status} />
             </div>
-            <p className="mt-1 font-mono text-xs text-slate-500">{s.memberId}</p>
+            <p className="brutal-angka mt-1 text-xs text-slate-500">{s.memberId}</p>
             <p className="mt-1 text-sm text-slate-600">
               {s.dojo.nama} · Sabuk {s.sabuk?.nama ?? "belum ada"}
             </p>
@@ -111,7 +111,7 @@ export default async function DetailSiswaPage({
           <div className="mt-5 flex flex-wrap gap-3">
             <Link
               href={`/dashboard/siswa/${s.id}/ubah`}
-              className="inline-flex min-h-[44px] items-center rounded-xl bg-dojo-700 px-5 text-sm font-semibold text-white"
+              className="brutal-btn brutal-btn-primary"
             >
               Ubah Data
             </Link>
@@ -120,16 +120,16 @@ export default async function DetailSiswaPage({
         )}
       </section>
 
-      <section aria-label="Data lengkap" className="mt-6 rounded-2xl bg-white ring-1 ring-slate-200">
+      <section aria-label="Data lengkap" className="brutal-card mt-6">
         <div className="grid grid-cols-1 gap-x-8 px-6 sm:grid-cols-2">
-          <div className="divide-y divide-slate-100">
+          <div className="divide-y divide-black/10">
             <Baris label="Nomor HP" nilai={s.phone ?? "-"} />
             <Baris label="Email" nilai={s.email ?? "-"} />
             <Baris label="Alamat" nilai={s.alamat ?? "-"} />
             <Baris label="Tempat, tanggal lahir" nilai={`${s.tempatLahir ?? "-"}, ${formatTanggal(s.tanggalLahir)}`} />
             <Baris label="Jenis kelamin" nilai={s.jenisKelamin ? (LABEL_GENDER[s.jenisKelamin] ?? "-") : "-"} />
           </div>
-          <div className="divide-y divide-slate-100">
+          <div className="divide-y divide-black/10">
             <Baris label="Nama orang tua / wali" nilai={s.namaOrangTua ?? "-"} />
             <Baris label="HP orang tua / wali" nilai={s.phoneOrangTua ?? "-"} />
             <Baris label="Tanggal bergabung" nilai={formatTanggal(s.tanggalBergabung)} />
@@ -140,35 +140,35 @@ export default async function DetailSiswaPage({
       </section>
 
       <section aria-label="Ringkasan lain" className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
-        <div className="rounded-2xl bg-white p-5 ring-1 ring-slate-200">
-          <p className="font-semibold">Kehadiran</p>
+        <div className="brutal-card p-5">
+          <p className="brutal-title text-base uppercase">Kehadiran</p>
           <p className="mt-2 text-sm text-slate-600">
-            <span className="font-extrabold text-dojo-700">{hadir}</span> hadir ·{" "}
-            <span className="font-extrabold text-amber-600">{terlambat}</span> terlambat
+            <span className="brutal-angka text-dojo-700">{hadir}</span> hadir ·{" "}
+            <span className="brutal-angka text-amber-600">{terlambat}</span> terlambat
           </p>
           <Link
             href="/dashboard/absensi/riwayat"
-            className="mt-2 inline-block text-xs font-bold text-dojo-700"
+            className="mt-2 inline-block text-xs font-black uppercase text-dojo-700"
           >
             Lihat riwayat →
           </Link>
         </div>
-        <div className="rounded-2xl bg-white p-5 ring-1 ring-slate-200">
-          <p className="font-semibold">Iuran</p>
+        <div className="brutal-card p-5">
+          <p className="brutal-title text-base uppercase">Iuran</p>
           {tunggakan._count.id > 0 ? (
             <p className="mt-2 text-sm text-slate-600">
-              <span className="font-extrabold text-red-700">{tunggakan._count.id} tagihan</span>{" "}
-              belum dibayar · {rupiah(tunggakan._sum.nominal ?? 0)}
+              <span className="brutal-angka text-red-700">{tunggakan._count.id} tagihan</span>{" "}
+              belum dibayar · <span className="brutal-angka">{rupiah(tunggakan._sum.nominal ?? 0)}</span>
             </p>
           ) : (
             <p className="mt-2 text-sm font-semibold text-emerald-700">Tidak ada tunggakan.</p>
           )}
-          <Link href="/dashboard/iuran" className="mt-2 inline-block text-xs font-bold text-dojo-700">
+          <Link href="/dashboard/iuran" className="mt-2 inline-block text-xs font-black uppercase text-dojo-700">
             Lihat iuran →
           </Link>
         </div>
-        <div className="rounded-2xl bg-white p-5 ring-1 ring-slate-200">
-          <p className="font-semibold">Perkembangan</p>
+        <div className="brutal-card p-5">
+          <p className="brutal-title text-base uppercase">Perkembangan</p>
           {penilaianTerakhir ? (
             <p className="mt-2 text-sm text-slate-600">
               Penilaian terakhir periode{" "}
@@ -189,9 +189,9 @@ export default async function DetailSiswaPage({
       </section>
 
       {riwayatSabuk.length > 0 && (
-        <section aria-label="Riwayat sabuk" className="mt-6 rounded-2xl bg-white p-5 ring-1 ring-slate-200">
-          <h2 className="font-bold">Riwayat Kenaikan Sabuk</h2>
-          <ol className="mt-3 space-y-2 border-l-2 border-slate-200 pl-4">
+        <section aria-label="Riwayat sabuk" className="brutal-card mt-6 p-5">
+          <h2 className="brutal-title text-lg uppercase">Riwayat Kenaikan Sabuk</h2>
+          <ol className="mt-3 space-y-2 border-l-2 border-black pl-4">
             {riwayatSabuk.map((r) => (
               <li key={r.id} className="text-sm">
                 <p>

@@ -33,11 +33,11 @@ export default async function UbahSiswaPage({
     <div className="anim-fade-up mx-auto max-w-3xl">
       <Link
         href={`/dashboard/siswa/${s.id}`}
-        className="mb-4 inline-flex min-h-[44px] items-center text-sm font-semibold text-slate-600"
+        className="brutal-btn brutal-btn-light mb-4"
       >
         Kembali ke detail siswa
       </Link>
-      <h1 className="text-xl font-extrabold tracking-tight sm:text-2xl">Ubah Data Siswa</h1>
+      <h1 className="brutal-title text-2xl uppercase">Ubah Data Siswa</h1>
       <p className="mt-1 mb-6 font-mono text-xs text-slate-500">{s.memberId} (tidak dapat diubah)</p>
       <SiswaForm
         mode="ubah"

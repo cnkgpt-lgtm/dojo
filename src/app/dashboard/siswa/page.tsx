@@ -50,7 +50,7 @@ function FotoKecil({ foto, nama }: { foto: string | null; nama: string }) {
   return (
     <div
       aria-hidden="true"
-      className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-slate-100 text-sm font-extrabold text-slate-500 ring-1 ring-slate-200"
+      className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-black bg-slate-100 text-sm font-extrabold text-slate-500"
     >
       {foto ? (
         // eslint-disable-next-line @next/next/no-img-element
@@ -96,7 +96,7 @@ export default async function SiswaListPage({
     <div className="anim-fade-up">
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-xl font-extrabold tracking-tight sm:text-2xl">Data Siswa</h1>
+          <h1 className="brutal-title text-2xl uppercase">Data Siswa</h1>
           <p className="mt-1 text-sm text-slate-500">
             {total} siswa terdaftar
           </p>
@@ -104,27 +104,27 @@ export default async function SiswaListPage({
         {u.role === "ADMIN" && (
           <Link
             href="/dashboard/siswa/tambah"
-            className="inline-flex min-h-[44px] items-center rounded-xl bg-dojo-700 px-5 text-sm font-semibold text-white"
+            className="brutal-btn brutal-btn-primary"
           >
             Tambah Siswa
           </Link>
         )}
       </div>
 
-      <form method="get" className="mb-5 grid grid-cols-1 gap-3 rounded-2xl bg-slate-50 p-4 ring-1 ring-slate-200 sm:grid-cols-2 lg:grid-cols-4">
+      <form method="get" className="brutal-card mb-5 grid grid-cols-1 gap-3 p-4 sm:grid-cols-2 lg:grid-cols-4">
         <label className="block text-sm font-semibold text-slate-700">
           Cari
           <input
             name="q"
             defaultValue={sp.q ?? ""}
             placeholder="Nama atau Member ID"
-            className="mt-1 block w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm font-normal"
+            className="brutal-input mt-1 block font-normal"
           />
         </label>
         {tampilFilterDojo && (
           <label className="block text-sm font-semibold text-slate-700">
             Dojo
-            <select name="dojo" defaultValue={sp.dojo ?? ""} className="mt-1 block w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm font-normal">
+            <select name="dojo" defaultValue={sp.dojo ?? ""} className="brutal-input mt-1 block font-normal">
               <option value="">Semua dojo</option>
               {daftarDojo.map((d) => (
                 <option key={d.id} value={d.id}>{d.nama}</option>
@@ -134,7 +134,7 @@ export default async function SiswaListPage({
         )}
         <label className="block text-sm font-semibold text-slate-700">
           Status
-          <select name="status" defaultValue={sp.status ?? ""} className="mt-1 block w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm font-normal">
+          <select name="status" defaultValue={sp.status ?? ""} className="brutal-input mt-1 block font-normal">
             <option value="">Semua status</option>
             {Object.entries(LABEL_STATUS_SISWA).map(([v, l]) => (
               <option key={v} value={v}>{l}</option>
@@ -144,14 +144,14 @@ export default async function SiswaListPage({
         <div className="flex items-end gap-2">
           <button
             type="submit"
-            className="inline-flex min-h-[44px] flex-1 items-center justify-center rounded-xl bg-slate-900 px-4 text-sm font-semibold text-white sm:flex-none"
+            className="brutal-btn brutal-btn-dark flex-1 sm:flex-none"
           >
             Cari
           </button>
           {(sp.q || sp.dojo || sp.status) && (
             <Link
               href="/dashboard/siswa"
-              className="inline-flex min-h-[44px] items-center justify-center rounded-xl px-4 text-sm font-semibold text-slate-600 ring-1 ring-slate-200"
+              className="brutal-btn brutal-btn-light"
             >
               Atur ulang
             </Link>
@@ -160,8 +160,8 @@ export default async function SiswaListPage({
       </form>
 
       {data.length === 0 ? (
-        <div className="rounded-2xl bg-slate-50 p-10 text-center ring-1 ring-slate-200">
-          <p className="font-semibold">Belum ada data siswa</p>
+        <div className="brutal-card p-10 text-center">
+          <p className="brutal-title text-lg uppercase">Belum ada data siswa</p>
           <p className="mt-1 text-sm text-slate-500">
             {sp.q || sp.dojo || sp.status
               ? "Tidak ada hasil yang cocok dengan filter. Coba ubah kata kunci."
@@ -170,7 +170,7 @@ export default async function SiswaListPage({
           {u.role === "ADMIN" && !sp.q && (
             <Link
               href="/dashboard/siswa/tambah"
-              className="mt-4 inline-flex min-h-[44px] items-center rounded-xl bg-dojo-700 px-5 text-sm font-semibold text-white"
+              className="brutal-btn brutal-btn-primary mt-4"
             >
               Tambah Siswa
             </Link>
@@ -184,7 +184,7 @@ export default async function SiswaListPage({
               <li key={s.id}>
                 <Link
                   href={`/dashboard/siswa/${s.id}`}
-                  className="flex items-center gap-3 rounded-2xl bg-white p-4 ring-1 ring-slate-200"
+                  className="brutal-card flex items-center gap-3 p-4"
                 >
                   <FotoKecil foto={s.foto} nama={s.nama} />
                   <div className="min-w-0 flex-1">
@@ -200,28 +200,28 @@ export default async function SiswaListPage({
           </ul>
 
           {/* Tabel untuk layar besar */}
-          <div className="hidden overflow-x-auto rounded-2xl ring-1 ring-slate-200 sm:block">
+          <div className="brutal-card hidden overflow-x-auto sm:block">
             <table className="w-full min-w-[720px] text-left text-sm">
               <thead>
-                <tr className="border-b border-slate-200 bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
-                  <th scope="col" className="px-4 py-3 font-semibold">Siswa</th>
-                  <th scope="col" className="px-4 py-3 font-semibold">Member ID</th>
-                  <th scope="col" className="px-4 py-3 font-semibold">Dojo</th>
-                  <th scope="col" className="px-4 py-3 font-semibold">Sabuk</th>
-                  <th scope="col" className="px-4 py-3 font-semibold">Status</th>
-                  <th scope="col" className="px-4 py-3 font-semibold"><span className="sr-only">Aksi</span></th>
+                <tr className="border-b-2 border-black text-xs uppercase">
+                  <th scope="col" className="px-4 py-3 font-black">Siswa</th>
+                  <th scope="col" className="px-4 py-3 font-black">Member ID</th>
+                  <th scope="col" className="px-4 py-3 font-black">Dojo</th>
+                  <th scope="col" className="px-4 py-3 font-black">Sabuk</th>
+                  <th scope="col" className="px-4 py-3 font-black">Status</th>
+                  <th scope="col" className="px-4 py-3 font-black"><span className="sr-only">Aksi</span></th>
                 </tr>
               </thead>
               <tbody>
                 {data.map((s) => (
-                  <tr key={s.id} className="border-b border-slate-100 last:border-0">
+                  <tr key={s.id} className="border-b border-black/10 last:border-0">
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3">
                         <FotoKecil foto={s.foto} nama={s.nama} />
                         <span className="font-semibold">{s.nama}</span>
                       </div>
                     </td>
-                    <td className="px-4 py-3 font-mono text-xs text-slate-600">{s.memberId}</td>
+                    <td className="brutal-angka px-4 py-3 text-xs text-slate-600">{s.memberId}</td>
                     <td className="px-4 py-3 text-slate-600">{s.dojo.nama}</td>
                     <td className="px-4 py-3 text-slate-600">{s.sabuk?.nama ?? "-"}</td>
                     <td className="px-4 py-3">
@@ -230,7 +230,7 @@ export default async function SiswaListPage({
                     <td className="px-4 py-3 text-right">
                       <Link
                         href={`/dashboard/siswa/${s.id}`}
-                        className="inline-flex min-h-[44px] items-center rounded-xl px-3 text-sm font-semibold text-dojo-700 ring-1 ring-slate-200"
+                        className="brutal-btn brutal-btn-light"
                       >
                         Detail
                       </Link>

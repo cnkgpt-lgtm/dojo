@@ -73,14 +73,15 @@ export default async function TunggakanPage({
 
   return (
     <div className="anim-fade-up mx-auto max-w-6xl">
-      <h1 className="text-xl font-extrabold tracking-tight sm:text-2xl">Tunggakan</h1>
+      <h1 className="brutal-title text-2xl">TUNGGAKAN</h1>
       <p className="mt-1 mb-6 text-sm text-slate-500">
-        {data.length} siswa menunggak · total {rupiah(grandTotal)}
+        {data.length} siswa menunggak · total{" "}
+        <span className="brutal-angka font-extrabold text-slate-900">{rupiah(grandTotal)}</span>
       </p>
 
       {dojoList.length > 1 && (
         <form method="get" className="mb-4 flex gap-3">
-          <select name="dojo" defaultValue={dojoFilter} className="rounded-xl border border-slate-300 px-4 py-2.5 text-sm">
+          <select name="dojo" defaultValue={dojoFilter} className="brutal-input sm:w-auto">
             <option value="">Semua dojo</option>
             {dojoList.map((d) => (
               <option key={d.id} value={d.id}>
@@ -88,18 +89,18 @@ export default async function TunggakanPage({
               </option>
             ))}
           </select>
-          <button className="min-h-[44px] rounded-xl bg-slate-900 px-5 text-sm font-bold text-white">Filter</button>
+          <button className="brutal-btn brutal-btn-dark">Filter</button>
         </form>
       )}
 
       <div className="space-y-3">
         {data.length === 0 && (
-          <p className="rounded-2xl bg-emerald-50 p-6 text-center text-sm font-medium text-emerald-700 ring-1 ring-emerald-200">
+          <p className="brutal-card bg-emerald-50 p-6 text-center text-sm font-medium text-emerald-700">
             Tidak ada tunggakan. Semua iuran lunas.
           </p>
         )}
         {data.map((g) => (
-          <div key={g.memberId} className="rounded-2xl bg-white p-4 ring-1 ring-slate-200">
+          <div key={g.memberId} className="brutal-card p-4">
             <div className="flex items-start justify-between gap-3">
               <div>
                 <p className="font-bold">
@@ -109,19 +110,19 @@ export default async function TunggakanPage({
                   {g.dojo} · {g.items.length} bulan menunggak
                 </p>
               </div>
-              <p className="text-base font-extrabold text-orange-700">{rupiah(g.total)}</p>
+              <p className="brutal-angka text-base text-orange-700">{rupiah(g.total)}</p>
             </div>
             <ul className="mt-3 space-y-1.5">
               {g.items.map((t) => (
                 <li
                   key={t.id}
-                  className="flex items-center justify-between rounded-xl bg-slate-50 px-3 py-2 text-sm ring-1 ring-slate-100"
+                  className="brutal-card flex items-center justify-between bg-slate-50 px-3 py-2 text-sm"
                 >
                   <span>
                     {labelPeriode(t.periode)} · jatuh tempo {formatTanggal(t.jatuhTempo)}
                   </span>
                   <span className="flex items-center gap-2">
-                    <span className="font-semibold">{rupiah(t.nominal)}</span>
+                    <span className="brutal-angka">{rupiah(t.nominal)}</span>
                     <BadgeIuran status={t.tampil} />
                   </span>
                 </li>

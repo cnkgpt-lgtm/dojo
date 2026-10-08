@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Archivo+Black&family=JetBrains+Mono:wght@500;700;800&display=swap");
 @import "tailwindcss";
 
 @theme {
@@ -8,6 +9,9 @@
   --color-dojo-600: #16a34a;
   --color-dojo-700: #15803d;
   --color-dojo-800: #166534;
+  /* Neo-Brutalism: display + mono */
+  --font-display: "Archivo Black", "Arial Black", ui-sans-serif, sans-serif;
+  --font-angka: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
 }
 
 html {
@@ -55,6 +59,110 @@ body {
 :focus-visible {
   outline: 2px solid var(--color-dojo-700);
   outline-offset: 2px;
+}
+
+/* ============ NEO-BRUTALISM (style-neo-brutalism) ============
+   Aturan: border hitam tebal 2px, bayangan keras offset (tanpa blur),
+   tanpa rotasi, tipografi font-black. Identitas hijau dipertahankan. */
+@layer components {
+  .brutal-card {
+    border: 2px solid #000;
+    border-radius: 0.75rem;
+    background: #fff;
+    box-shadow: 3px 3px 0 0 #000;
+  }
+  @media (min-width: 640px) {
+    .brutal-card {
+      box-shadow: 5px 5px 0 0 #000;
+    }
+  }
+
+  .brutal-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 44px;
+    padding: 0.625rem 1.25rem;
+    border: 2px solid #000;
+    border-radius: 0.625rem;
+    font-weight: 800;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    box-shadow: 3px 3px 0 0 #000;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+    cursor: pointer;
+  }
+  .brutal-btn:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px 0 0 #000;
+  }
+  .brutal-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 0 0 0 0 #000;
+  }
+  .brutal-btn:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+  .brutal-btn-primary {
+    background: var(--color-dojo-600);
+    color: #fff;
+  }
+  .brutal-btn-dark {
+    background: #000;
+    color: #fff;
+  }
+  .brutal-btn-light {
+    background: #fff;
+    color: #000;
+  }
+  .brutal-btn-warn {
+    background: #ffe600;
+    color: #000;
+  }
+  .brutal-btn-danger {
+    background: #dc2626;
+    color: #fff;
+  }
+
+  .brutal-badge {
+    display: inline-block;
+    border: 2px solid #000;
+    border-radius: 0.375rem;
+    padding: 0.125rem 0.625rem;
+    font-weight: 800;
+    font-size: 0.6875rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    box-shadow: 1px 1px 0 0 #000;
+    white-space: nowrap;
+  }
+
+  .brutal-input {
+    width: 100%;
+    border: 2px solid #000;
+    border-radius: 0.625rem;
+    background: #fff;
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    box-shadow: 2px 2px 0 0 #000;
+  }
+  .brutal-input:focus {
+    outline: none;
+    box-shadow: 2px 2px 0 0 var(--color-dojo-600);
+    border-color: #000;
+  }
+
+  .brutal-title {
+    font-family: var(--font-display);
+    letter-spacing: -0.01em;
+    color: #000;
+  }
+  .brutal-angka {
+    font-family: var(--font-angka);
+    font-weight: 800;
+  }
 }
 
 /* Cetak laporan (§32 MVP): sembunyikan navigasi & kontrol, tampilkan isi penuh. */

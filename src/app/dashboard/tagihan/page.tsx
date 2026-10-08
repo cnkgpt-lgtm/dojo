@@ -58,7 +58,7 @@ export default async function TagihanPage({
 
   return (
     <div className="anim-fade-up mx-auto max-w-6xl">
-      <h1 className="text-xl font-extrabold tracking-tight sm:text-2xl">Tagihan Iuran</h1>
+      <h1 className="brutal-title text-2xl">TAGIHAN IURAN</h1>
       <p className="mt-1 mb-6 text-sm text-slate-500">
         Buat tagihan bulanan otomatis, lalu pantau status pembayaran tiap siswa.
       </p>
@@ -71,9 +71,9 @@ export default async function TagihanPage({
           name="periode"
           defaultValue={periode}
           placeholder="Periode: 2026-11"
-          className="rounded-xl border border-slate-300 px-4 py-2.5 text-sm"
+          className="brutal-input sm:w-auto"
         />
-        <select name="status" defaultValue={status} className="rounded-xl border border-slate-300 px-4 py-2.5 text-sm">
+        <select name="status" defaultValue={status} className="brutal-input sm:w-auto">
           <option value="">Semua status</option>
           <option value="BELUM_BAYAR">Belum Bayar</option>
           <option value="TERLAMBAT">Terlambat</option>
@@ -82,7 +82,7 @@ export default async function TagihanPage({
           <option value="DITOLAK">Ditolak</option>
         </select>
         {dojoList.length > 1 && (
-          <select name="dojo" defaultValue={dojoFilter} className="rounded-xl border border-slate-300 px-4 py-2.5 text-sm">
+          <select name="dojo" defaultValue={dojoFilter} className="brutal-input sm:w-auto">
             <option value="">Semua dojo</option>
             {dojoList.map((d) => (
               <option key={d.id} value={d.id}>
@@ -91,7 +91,7 @@ export default async function TagihanPage({
             ))}
           </select>
         )}
-        <button className="min-h-[44px] rounded-xl bg-slate-900 px-5 text-sm font-bold text-white">
+        <button className="brutal-btn brutal-btn-dark">
           Filter
         </button>
       </form>
@@ -99,14 +99,14 @@ export default async function TagihanPage({
       {/* Daftar */}
       <div className="mt-4 space-y-2">
         {data.length === 0 && (
-          <p className="rounded-2xl bg-slate-50 p-6 text-center text-sm text-slate-500 ring-1 ring-slate-200">
+          <p className="brutal-card p-6 text-center text-sm text-slate-500">
             Belum ada tagihan. Buat tagihan periode berjalan lewat formulir di atas.
           </p>
         )}
         {data.map((t) => (
           <div
             key={t.id}
-            className="rounded-2xl bg-white p-4 ring-1 ring-slate-200 sm:flex sm:items-center sm:justify-between"
+            className="brutal-card p-4 sm:flex sm:items-center sm:justify-between"
           >
             <div>
               <p className="font-bold">
@@ -117,7 +117,7 @@ export default async function TagihanPage({
               </p>
             </div>
             <div className="mt-2 flex items-center gap-3 sm:mt-0">
-              <span className="text-sm font-extrabold">{rupiah(t.nominal)}</span>
+              <span className="brutal-angka text-sm">{rupiah(t.nominal)}</span>
               <BadgeIuran status={t.tampil} />
             </div>
           </div>
@@ -131,12 +131,12 @@ export default async function TagihanPage({
           </span>
           <div className="flex gap-2">
             {halaman > 1 && (
-              <Link href={q({ page: String(halaman - 1) })} className="rounded-xl bg-slate-100 px-4 py-2 font-semibold">
+              <Link href={q({ page: String(halaman - 1) })} className="brutal-btn brutal-btn-light">
                 Sebelumnya
               </Link>
             )}
             {halaman < totalHalaman && (
-              <Link href={q({ page: String(halaman + 1) })} className="rounded-xl bg-slate-100 px-4 py-2 font-semibold">
+              <Link href={q({ page: String(halaman + 1) })} className="brutal-btn brutal-btn-light">
                 Berikutnya
               </Link>
             )}
