@@ -1,0 +1,1 @@
+{"buildCommand":"prisma generate && next build","crons":[{"path":"/api/cron/tagihan","schedule":"5 16 * * *"},{"path":"/api/cron/pengingat-iuran","schedule":"0 23 * * *"}]}
