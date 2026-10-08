@@ -8,9 +8,11 @@ Panduan ini membawa aplikasi **DojoKu — Aplikasi Manajemen Member Karate & Doj
 3. Database PostgreSQL gratis — [Neon](https://neon.tech) (disarankan)
 4. Aplikasi `psql` di komputer (untuk menjalankan 3 file migrasi manual — ikut paket PostgreSQL)
 
-> Catatan: foto (profil, selfie absensi, bukti transfer) saat ini tersimpan lokal di server. Filesystem Vercel bersifat ephemeral (hilang saat redeploy) — untuk produksi serius, pindahkan ke object storage (mis. Cloudflare R2/S3) setelah deploy pertama.
-
----
+> Catatan: bukti transfer & selfie absensi otomatis tersimpan permanen via bot
+> Telegram bila `TELEGRAM_BOT_TOKEN` + `TELEGRAM_STORAGE_CHAT_ID` diisi
+> (Langkah 9); bila tidak, fallback ke penyimpanan lokal yang bersifat
+> sementara di Vercel (filesystem ephemeral, hilang saat redeploy). Foto profil
+> member tetap lokal.
 
 ## Langkah 1 — Buat repository GitHub (dilakukan Bapak)
 
@@ -54,6 +56,8 @@ git push -u origin main
 | `NEXTAUTH_SECRET` | String acak. Generate: `openssl rand -base64 32` |
 | `NEXTAUTH_URL` | Kosongkan dulu — diisi setelah deploy pertama (Langkah 7) |
 | `CRON_SECRET` | String acak lain, mis. hasil `openssl rand -base64 32` |
+| `TELEGRAM_BOT_TOKEN` | Token bot dari @BotFather (Langkah 9). Kosongkan bila belum ada — aplikasi fallback ke penyimpanan lokal |
+| `TELEGRAM_STORAGE_CHAT_ID` | Chat ID channel/group penyimpanan (Langkah 9). Kosongkan bila belum ada |
 
 4. Klik **Deploy**. Tunggu sampai status **Ready** — deploy pertama ini hanya untuk mendapatkan URL produksi.
 
@@ -119,6 +123,33 @@ Ini membuat: 1 organisasi demo, 2 dojo (Makassar), tarif default Rp100.000, ting
    - `/api/cron/pengingat-iuran` tiap `0 23 * * *` (= 07:00 WITA)
 
 > ⚠️ Vercel Cron hanya tersedia di plan yang mendukung. Bila plan Bapak tidak mendukung, alternatif: penjadwal eksternal gratis (mis. cron-job.org) yang memanggil `POST https://DOMAIN_ANDA/api/cron/tagihan` dan `/api/cron/pengingat-iuran` dengan header `Authorization: Bearer ISI_CR0N_SECRET_ANDA` pada jam yang sama.
+
+---
+
+## Langkah 9 — Sambungkan Telegram untuk penyimpanan file (opsional tapi disarankan)
+
+Bukti transfer & selfie absensi tersimpan permanen & gratis via bot Telegram.
+Tanpa ini, file tersimpan sementara di server (badge kuning "Sementara") dan
+bisa hilang saat redeploy.
+
+1. Buka Telegram, chat **@BotFather** → kirim `/newbot` → ikuti langkahnya
+   (nama & username bot) → **salin token** yang diberikan, contoh:
+   `123456789:AAH...` (token dipakai sekali untuk env di bawah, jangan disebar).
+2. Buat **channel pribadi** baru (atau group pribadi) → tambahkan bot sebagai
+   **admin** channel/group tersebut.
+3. Kirim satu pesan apa saja di channel/group itu.
+4. Dapatkan **chat ID**: buka di browser
+   `https://api.telegram.org/bot<TOKEN_ANDA>/getUpdates`
+   → cari `"chat":{"id":-1001234567890,...}` → salin angka itu (diawali `-100`
+   untuk channel).
+   Alternatif: teruskan pesan dari channel ke **@userinfobot** / **@getmyid_bot**.
+5. Di Vercel → **Settings → Environment Variables** → tambah (Production):
+   - `TELEGRAM_BOT_TOKEN` = token dari langkah 1
+   - `TELEGRAM_STORAGE_CHAT_ID` = chat ID dari langkah 4
+6. **Redeploy** dari tab Deployments.
+
+Cek berhasil: badge di halaman Pembayaran/Monitor Absensi berubah hijau
+"● Penyimpanan: Terhubung". Upload bukti baru → file masuk ke channel Telegram.
 
 ---
 

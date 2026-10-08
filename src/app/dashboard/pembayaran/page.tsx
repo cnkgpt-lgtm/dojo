@@ -5,6 +5,7 @@ import { TunaiForm } from "@/components/TunaiForm";
 import { BadgeIuran, BadgeMetode } from "@/components/BadgeIuran";
 import { rupiah, formatTanggal} from "@/lib/format";
 import { labelPeriode } from "@/lib/iuran";
+import { BadgePenyimpanan } from "@/components/BadgePenyimpanan";
 
 const PER_HALAMAN = 15;
 
@@ -187,7 +188,7 @@ async function PembayaranSiswa() {
           </div>
           {p.proof?.url && (
             <a
-              href={p.proof.url}
+              href={`/api/pembayaran/${p.id}/bukti`}
               target="_blank"
               rel="noreferrer"
               className="mt-2 inline-block text-sm font-semibold text-dojo-700 underline"
@@ -212,11 +213,16 @@ export default async function PembayaranPage({
   return (
     <div className="anim-fade-up mx-auto max-w-6xl">
       <h1 className="text-xl font-extrabold tracking-tight sm:text-2xl">Pembayaran</h1>
-      <p className="mt-1 mb-6 text-sm text-slate-500">
+      <p className="mt-1 mb-3 text-sm text-slate-500">
         {u.role === "ADMIN"
           ? "Verifikasi pembayaran transfer, catat pembayaran tunai, dan pantau riwayat."
           : "Riwayat pembayaran iuran Anda."}
       </p>
+      {u.role === "ADMIN" && (
+        <div className="mb-6">
+          <BadgePenyimpanan />
+        </div>
+      )}
       {u.role === "ADMIN" ? <PembayaranAdmin searchParams={sp} /> : <PembayaranSiswa />}
     </div>
   );

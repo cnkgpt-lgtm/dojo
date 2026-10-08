@@ -11,6 +11,7 @@ import {
 } from "@/lib/format";
 import { KoreksiAbsensi } from "@/components/KoreksiAbsensi";
 import { Pagination } from "@/components/Pagination";
+import { BadgePenyimpanan } from "@/components/BadgePenyimpanan";
 
 const PER_HALAMAN = 15;
 const STATUS_LIST: AttendanceStatus[] = ["HADIR", "TERLAMBAT", "DITOLAK", "DIBATALKAN"];
@@ -143,9 +144,12 @@ export default async function MonitorAbsensiPage({
   return (
     <div className="anim-fade-up">
       <h1 className="text-xl font-extrabold tracking-tight sm:text-2xl">Monitor Absensi</h1>
-      <p className="mt-1 mb-6 text-sm text-slate-500">
+      <p className="mt-1 mb-3 text-sm text-slate-500">
         {jumlah("HADIR")} hadir · {jumlah("TERLAMBAT")} terlambat · {jumlah("DIBATALKAN")} dibatalkan
       </p>
+      <div className="mb-6">
+        <BadgePenyimpanan />
+      </div>
 
       <form method="GET" className="mb-4 flex flex-wrap gap-2">
         <input
@@ -214,7 +218,7 @@ export default async function MonitorAbsensiPage({
                   >
                     {a.photo?.url ? (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img src={a.photo.url} alt="" className="h-full w-full object-cover" />
+                      <img src={`/api/absensi/${a.id}/foto`} alt="" className="h-full w-full object-cover" />
                     ) : (
                       a.student.nama.charAt(0).toUpperCase()
                     )}
@@ -266,7 +270,7 @@ export default async function MonitorAbsensiPage({
                         >
                           {a.photo?.url ? (
                             // eslint-disable-next-line @next/next/no-img-element
-                            <img src={a.photo.url} alt="" className="h-full w-full object-cover" />
+                            <img src={`/api/absensi/${a.id}/foto`} alt="" className="h-full w-full object-cover" />
                           ) : (
                             a.student.nama.charAt(0).toUpperCase()
                           )}

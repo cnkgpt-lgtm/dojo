@@ -52,9 +52,9 @@ export function VerifikasiCard({ p }: { p: Pending }) {
     <div className="rounded-2xl bg-white p-4 ring-1 ring-slate-200">
       <div className="sm:flex sm:gap-4">
         {p.proof?.url ? (
-          <a href={p.proof.url} target="_blank" rel="noreferrer" className="block shrink-0">
+          <a href={`/api/pembayaran/${p.id}/bukti`} target="_blank" rel="noreferrer" className="block shrink-0">
             <Image
-              src={p.proof.url}
+              src={`/api/pembayaran/${p.id}/bukti`}
               alt={`Bukti transfer ${p.student.nama}`}
               width={160}
               height={120}

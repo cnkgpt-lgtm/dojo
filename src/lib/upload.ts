@@ -1,10 +1,17 @@
 import { writeFile, mkdir, unlink } from "fs/promises";
 import { join } from "path";
 import { randomUUID } from "crypto";
+import {
+  telegramStorageConfigured,
+  isTelegramFileRef,
+  uploadKeTelegram,
+} from "./telegram-storage";
 
 /**
- * Penyimpanan foto lokal: public/uploads/<tipe>/ (§46 proteksi upload).
- * KETERBATASAN: storage lokal, pindah ke object storage saat deploy produksi.
+ * Penyimpanan foto: Telegram dulu (bila bot dikonfigurasi), fallback lokal
+ * public/uploads/<tipe>/ (§46 proteksi upload).
+ * KETERBATASAN storage lokal: hilang saat redeploy — sambungkan Telegram
+ * agar file tersimpan permanen (lihat badge di halaman verifikasi/monitor).
  */
 
 const MAKS_UKURAN = 2 * 1024 * 1024; // 2MB
@@ -34,18 +41,70 @@ export async function simpanFoto(
   file: File,
   tipe: TipeUpload
 ): Promise<{ ok: true; url: string } | { ok: false; error: string }> {
+  const valid = await bacaDanValidasi(file);
+  if (!valid.ok) return valid;
+  const url = await simpanBufferLokal(valid.buf, valid.jenis, tipe);
+  return { ok: true, url };
+}
+
+export type ViaSimpan = "telegram" | "lokal";
+
+/**
+ * Simpan file dengan strategi Telegram-dulu: coba upload ke Telegram bila
+ * bot dikonfigurasi; bila gagal atau belum dikonfigurasi, fallback ke lokal.
+ * Kembalikan ref apa adanya ("tg:<file_id>" atau "/uploads/...") + via.
+ * Kolom DB menyimpan ref tanpa perlu tahu backend-nya (tanpa ubah skema).
+ */
+export async function simpanFile(
+  file: File,
+  tipe: TipeUpload,
+  namaFile: string,
+  caption?: string
+): Promise<{ ok: true; ref: string; via: ViaSimpan } | { ok: false; error: string }> {
+  const valid = await bacaDanValidasi(file);
+  if (!valid.ok) return valid;
+
+  if (telegramStorageConfigured()) {
+    try {
+      const ref = await uploadKeTelegram(valid.file, namaFile, caption);
+      return { ok: true, ref, via: "telegram" };
+    } catch (e) {
+      // Fallback lokal — jangan gagalkan alur utama (absensi/pembayaran).
+      console.error("Upload Telegram gagal, fallback ke lokal:", e);
+    }
+  }
+  const url = await simpanBufferLokal(valid.buf, valid.jenis, tipe);
+  return { ok: true, ref: url, via: "lokal" };
+}
+
+/** Hapus file dari backend-nya: lokal dihapus, ref Telegram diabaikan (tak bisa dihapus via Bot API). */
+export async function hapusFile(ref: string | null | undefined): Promise<void> {
+  if (!ref || isTelegramFileRef(ref)) return;
+  await hapusFotoLama(ref);
+}
+
+/** Validasi ukuran + magic bytes, kembalikan buffer siap simpan. */
+async function bacaDanValidasi(
+  file: File
+): Promise<
+  | { ok: true; buf: Buffer; jenis: JenisFoto; file: File }
+  | { ok: false; error: string }
+> {
   if (file.size === 0) return { ok: false, error: "File foto kosong." };
   if (file.size > MAKS_UKURAN) return { ok: false, error: "Ukuran foto maksimal 2MB." };
 
   const buf = Buffer.from(await file.arrayBuffer());
   const jenis = deteksiJenis(buf);
   if (!jenis) return { ok: false, error: "Format foto tidak didukung. Gunakan JPG, PNG, atau WebP." };
+  return { ok: true, buf, jenis, file };
+}
 
+async function simpanBufferLokal(buf: Buffer, jenis: JenisFoto, tipe: TipeUpload): Promise<string> {
   const dir = join(process.cwd(), "public", "uploads", tipe);
   await mkdir(dir, { recursive: true });
   const nama = `${randomUUID()}.${jenis}`;
   await writeFile(join(dir, nama), buf);
-  return { ok: true, url: `/uploads/${tipe}/${nama}` };
+  return `/uploads/${tipe}/${nama}`;
 }
 
 /** Hapus file lama saat foto diganti. Gagal diabaikan (best effort). */

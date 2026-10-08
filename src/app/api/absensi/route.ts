@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma, Prisma } from "@/lib/db";
 import { AttendanceStatus } from "@prisma/client";
 import { sesiApi, butuhLogin, tolak, dojoIdsUntukSensei } from "@/lib/api-auth";
-import { simpanFoto, hapusFotoLama } from "@/lib/upload";
+import { simpanFile, hapusFile } from "@/lib/upload";
 import {
   sekarangMakassar,
   statusJendela,
@@ -167,8 +167,14 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Anda berada di luar area latihan." }, { status: 422 });
   }
 
-  // Simpan selfie (validasi magic bytes, maks 2MB — lihat lib/upload).
-  const simpan = await simpanFoto(file, "absensi");
+  // Simpan selfie: Telegram dulu (bila bot dikonfigurasi), fallback lokal
+  // (validasi magic bytes, maks 2MB — lihat lib/upload).
+  const simpan = await simpanFile(
+    file,
+    "absensi",
+    `absensi-${siswa.memberId}-${w.tanggalStr}.jpg`,
+    `Absensi ${siswa.nama} (${siswa.memberId}) - ${jadwal.namaLatihan} ${jadwal.hari} ${jadwal.jamMulai}`
+  );
   if (!simpan.ok) return NextResponse.json({ error: simpan.error }, { status: 400 });
 
   const status = statusKehadiran(jadwal.jamMulai, w.menit);
@@ -181,7 +187,7 @@ export async function POST(req: Request) {
         tanggal: w.tanggal,
         jam: w.jam,
         status,
-        photo: { create: { url: simpan.url } },
+        photo: { create: { url: simpan.ref } },
         location: {
           create: {
             latitude,
@@ -202,7 +208,8 @@ export async function POST(req: Request) {
     );
   } catch (e) {
     // Duplikat: unique(studentId, scheduleId, tanggal) — termasuk race antar request (§49).
-    await hapusFotoLama(simpan.url);
+    // Bersihkan file yatim (lokal dihapus; ref Telegram diabaikan).
+    await hapusFile(simpan.ref);
     if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === "P2002") {
       return NextResponse.json(
         { error: "Anda sudah absen untuk jadwal ini." },

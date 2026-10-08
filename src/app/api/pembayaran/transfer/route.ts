@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma, Prisma } from "@/lib/db";
 import { sesiApi, butuhLogin, tolak, tidakKetemu } from "@/lib/api-auth";
 import { transferSchema } from "@/lib/validasi";
-import { simpanFoto, hapusFotoLama } from "@/lib/upload";
+import { simpanFile, hapusFile } from "@/lib/upload";
 import { sisaTagihan, labelPeriode } from "@/lib/iuran";
 import { kirimNotifikasi } from "@/lib/notifikasi";
 import { catatAudit } from "@/lib/audit";
@@ -46,7 +46,7 @@ export async function POST(req: Request) {
 
   const invoice = await prisma.invoice.findUnique({
     where: { id: invoiceId },
-    include: { student: { select: { id: true, nama: true } } },
+    include: { student: { select: { id: true, nama: true, memberId: true } } },
   });
   if (!invoice) return tidakKetemu("Tagihan tidak ditemukan.");
   if (invoice.studentId !== u.studentId)
@@ -70,8 +70,14 @@ export async function POST(req: Request) {
     );
   }
 
-  // Simpan bukti dulu (validasi magic bytes + 2MB di dalam).
-  const simpan = await simpanFoto(bukti, "bukti");
+  // Simpan bukti: Telegram dulu (bila bot dikonfigurasi), fallback lokal.
+  // Validasi magic bytes + 2MB di dalam simpanFile.
+  const simpan = await simpanFile(
+    bukti,
+    "bukti",
+    `bukti-${invoice.student.memberId}-${invoice.periode}.jpg`,
+    `Bukti ${invoice.student.nama} (${invoice.student.memberId}) - ${labelPeriode(invoice.periode)} ${rupiah(nominal)}`
+  );
   if (!simpan.ok) return NextResponse.json({ error: simpan.error }, { status: 400 });
 
   try {
@@ -96,7 +102,7 @@ export async function POST(req: Request) {
           status: "MENUNGGU_VERIFIKASI",
         },
       });
-      await tx.paymentProof.create({ data: { paymentId: p.id, url: simpan.url } });
+      await tx.paymentProof.create({ data: { paymentId: p.id, url: simpan.ref } });
       await tx.invoice.update({ where: { id: invoiceId }, data: { status: "MENUNGGU_VERIFIKASI" } });
       return p;
     });
@@ -117,8 +123,8 @@ export async function POST(req: Request) {
       { status: 201 }
     );
   } catch (e) {
-    // Bersihkan file yatim bila transaksi gagal.
-    await hapusFotoLama(simpan.url);
+    // Bersihkan file yatim bila transaksi gagal (lokal dihapus; ref Telegram diabaikan).
+    await hapusFile(simpan.ref);
     if (e instanceof Error && e.message === "SUDAH_ADA") {
       return NextResponse.json(
         { error: "Tagihan ini sudah memiliki pembayaran yang diproses." },
