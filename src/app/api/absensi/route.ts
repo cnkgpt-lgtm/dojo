@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma, Prisma } from "@/lib/db";
 import { AttendanceStatus } from "@prisma/client";
 import { sesiApi, butuhLogin, tolak, dojoIdsUntukSensei } from "@/lib/api-auth";
-import { simpanFile, hapusFile } from "@/lib/upload";
+import { simpanFile, hapusFile, slugNama } from "@/lib/upload";
 import {
   sekarangMakassar,
   statusJendela,
@@ -172,8 +172,8 @@ export async function POST(req: Request) {
   const simpan = await simpanFile(
     file,
     "absensi",
-    `absensi-${siswa.memberId}-${w.tanggalStr}.jpg`,
-    `Absensi ${siswa.nama} (${siswa.memberId}) - ${jadwal.namaLatihan} ${jadwal.hari} ${jadwal.jamMulai}`
+    `absensi-${slugNama(siswa.nama)}-${w.tanggalStr}`,
+    `Absensi: ${siswa.nama} (${siswa.memberId}) - SISWA - ${jadwal.namaLatihan}, ${jadwal.hari} ${jadwal.jamMulai}`
   );
   if (!simpan.ok) return NextResponse.json({ error: simpan.error }, { status: 400 });
 

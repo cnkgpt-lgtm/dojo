@@ -50,6 +50,21 @@ export async function simpanFoto(
 export type ViaSimpan = "telegram" | "lokal";
 
 /**
+ * Ubah nama menjadi slug aman untuk nama file:
+ * "Ahmad Wijaya" -> "ahmad-wijaya". Maks 40 karakter.
+ */
+export function slugNama(nama: string): string {
+  const slug = nama
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 40);
+  return slug || "tanpa-nama";
+}
+
+/**
  * Simpan file dengan strategi Telegram-dulu: coba upload ke Telegram bila
  * bot dikonfigurasi; bila gagal atau belum dikonfigurasi, fallback ke lokal.
  * Kembalikan ref apa adanya ("tg:<file_id>" atau "/uploads/...") + via.
@@ -66,7 +81,9 @@ export async function simpanFile(
 
   if (telegramStorageConfigured()) {
     try {
-      const ref = await uploadKeTelegram(valid.file, namaFile, caption);
+      // Ekstensi disesuaikan dengan jenis file terdeteksi (bukan tebakan ".jpg").
+      const namaFinal = namaFile.replace(/\.[a-z0-9]+$/i, "") + "." + valid.jenis;
+      const ref = await uploadKeTelegram(valid.file, namaFinal, caption);
       return { ok: true, ref, via: "telegram" };
     } catch (e) {
       // Fallback lokal — jangan gagalkan alur utama (absensi/pembayaran).

@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma, Prisma } from "@/lib/db";
 import { sesiApi, butuhLogin, tolak, tidakKetemu } from "@/lib/api-auth";
 import { transferSchema } from "@/lib/validasi";
-import { simpanFile, hapusFile } from "@/lib/upload";
+import { simpanFile, hapusFile, slugNama } from "@/lib/upload";
 import { sisaTagihan, labelPeriode } from "@/lib/iuran";
 import { kirimNotifikasi } from "@/lib/notifikasi";
 import { catatAudit } from "@/lib/audit";
@@ -75,8 +75,8 @@ export async function POST(req: Request) {
   const simpan = await simpanFile(
     bukti,
     "bukti",
-    `bukti-${invoice.student.memberId}-${invoice.periode}.jpg`,
-    `Bukti ${invoice.student.nama} (${invoice.student.memberId}) - ${labelPeriode(invoice.periode)} ${rupiah(nominal)}`
+    `bukti-${slugNama(invoice.student.nama)}-${invoice.periode}`,
+    `Bukti transfer: ${invoice.student.nama} (${invoice.student.memberId}) - SISWA - Iuran ${labelPeriode(invoice.periode)} - ${rupiah(nominal)}`
   );
   if (!simpan.ok) return NextResponse.json({ error: simpan.error }, { status: 400 });
 
