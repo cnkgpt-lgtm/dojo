@@ -1,0 +1,62 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  /* Aksen identitas dojo: merah obi karate */
+  --color-dojo-50: #fef2f2;
+  --color-dojo-100: #fee2e2;
+  --color-dojo-600: #dc2626;
+  --color-dojo-700: #b91c1c;
+  --color-dojo-800: #991b1b;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #ffffff;
+  color: #0f172a;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Satu momen masuk per halaman (MOTION 1) */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.anim-fade-up {
+  animation: fadeUp 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Indikator fokus keyboard yang jelas (R-32) */
+:focus-visible {
+  outline: 2px solid var(--color-dojo-700);
+  outline-offset: 2px;
+}
+
+/* Cetak laporan (§32 MVP): sembunyikan navigasi & kontrol, tampilkan isi penuh. */
+@media print {
+  header,
+  aside,
+  nav,
+  .no-print {
+    display: none !important;
+  }
+  main {
+    padding: 0 !important;
+  }
+  body {
+    background: #ffffff;
+  }
+  .print-block {
+    break-inside: avoid;
+  }
+}

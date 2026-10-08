@@ -1,0 +1,532 @@
+// ============================================================================
+// DojoKu — Sistem Manajemen Member Karate & Dojo (multi-dojo)
+// Database: PostgreSQL via Prisma
+// Cakupan: Phase 1 (Foundation) — seluruh entity PRD §57, relasi §58, aturan §59
+// ============================================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// --- Role pengguna (§6) ------------------------------------------------------
+enum Role {
+  ADMIN
+  SENSEI
+  SISWA
+}
+
+// --- Status siswa (§8) -------------------------------------------------------
+enum StudentStatus {
+  AKTIF
+  TIDAK_AKTIF
+  CUTI
+  KELUAR
+}
+
+// --- Jenis kelamin (§8) ------------------------------------------------------
+enum Gender {
+  LAKI_LAKI
+  PEREMPUAN
+}
+
+// --- Hari jadwal latihan (§12) ------------------------------------------------
+enum DayOfWeek {
+  SENIN
+  SELASA
+  RABU
+  KAMIS
+  JUMAT
+  SABTU
+  MINGGU
+}
+
+// --- Status absensi (§16) -----------------------------------------------------
+enum AttendanceStatus {
+  HADIR
+  TERLAMBAT
+  DITOLAK
+  DIBATALKAN
+}
+
+// --- Status validasi GPS (§14) -------------------------------------------------
+enum GpsStatus {
+  VALID
+  DI_LUAR_RADIUS
+  TIDAK_TERSEDIA
+}
+
+// --- Status iuran/tagihan (§20) ------------------------------------------------
+enum InvoiceStatus {
+  BELUM_BAYAR
+  MENUNGGU_VERIFIKASI
+  LUNAS
+  DITOLAK
+  TERLAMBAT
+  DIBATALKAN
+}
+
+// --- Status pembayaran ---------------------------------------------------------
+enum PaymentStatus {
+  MENUNGGU_VERIFIKASI
+  LUNAS
+  DITOLAK
+}
+
+// --- Metode pembayaran (§21, §22) -----------------------------------------------
+enum PaymentMethod {
+  TUNAI
+  TRANSFER
+}
+
+// --- Pengguna sistem (§7) -------------------------------------------------------
+model User {
+  id             String    @id @default(cuid())
+  name           String
+  phone          String    @unique // login bisa pakai nomor HP ...
+  email          String?   @unique // ... atau email
+  passwordHash   String
+  role           Role
+  isActive       Boolean   @default(true)
+  sessionVersion Int       @default(0) // naikkan saat role/status/password berubah => semua sesi lama mati
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  // Scope multi-dojo (§5): null = admin pusat (semua dojo).
+  // Admin dojo diisi scopeDojoId agar hanya mengelola dojonya.
+  scopeDojo   Dojo?   @relation("AdminScope", fields: [scopeDojoId], references: [id], onDelete: SetNull)
+  scopeDojoId String?
+
+  // Akun sensei/siswa terhubung ke profilnya (§57)
+  student   Student? @relation("UserStudent")
+  coach     Coach?   @relation("UserCoach")
+
+  // Jejak operasional
+  recordedPayments Payment[]      @relation("PetugasPayment")
+  recordedRevenues Revenue[]      @relation("PetugasRevenue")
+  recordedExpenses Expense[]      @relation("PetugasExpense")
+  announcements    Announcement[] @relation("AnnouncementAuthor")
+  notifications    Notification[] @relation("UserNotification")
+  auditLogs        AuditLog[]     @relation("AuditActor")
+  beltTests        StudentBeltHistory[] @relation("PengujiSabuk")
+}
+
+// --- Organisasi (§5) -------------------------------------------------------------
+model Organization {
+  id        String   @id @default(cuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  dojos Dojo[]
+}
+
+// --- Dojo / cabang (§5, §10) ------------------------------------------------------
+model Dojo {
+  id            String   @id @default(cuid())
+  organizationId String
+  organization  Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  kode          String   @unique // kode dojo, mis. DJK-MKS-01
+  nama          String
+  alamat        String
+  latitude      Float
+  longitude     Float
+  radiusAbsensi Int      @default(100) // meter, dipakai validasi GPS (§14)
+  kontak        String?
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  scopedAdmins  User[]    @relation("AdminScope")
+  coaches       Coach[]
+  students      Student[]
+  schedules     Schedule[]
+  attendances   Attendance[]
+  feeSettings   FeeSetting[]
+  invoices      Invoice[]
+  revenues      Revenue[]
+  expenses      Expense[]
+  announcements Announcement[] @relation("DojoAnnouncement")
+}
+
+// --- Sensei / pelatih (§11) ----------------------------------------------------------
+model Coach {
+  id              String   @id @default(cuid())
+  userId          String?  @unique
+  user            User?    @relation("UserCoach", fields: [userId], references: [id], onDelete: SetNull)
+  dojoId          String?
+  dojo            Dojo?    @relation(fields: [dojoId], references: [id], onDelete: SetNull)
+  nama            String
+  foto            String?
+  phone           String?
+  email           String?
+  alamat          String?
+  nomorIdentitas  String?  // nomor identitas/member
+  spesialisasi    String?
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  schedules     Schedule[]           @relation("JadwalSensei")
+  assessments   StudentAssessment[]
+  beltTests     StudentBeltHistory[] @relation("PengujiSabukCoach")
+}
+
+// --- Siswa / member (§8, §9) ----------------------------------------------------------
+model Student {
+  id               String        @id @default(cuid())
+  userId           String?       @unique
+  user             User?         @relation("UserStudent", fields: [userId], references: [id], onDelete: SetNull)
+  dojoId           String
+  dojo             Dojo          @relation(fields: [dojoId], references: [id], onDelete: Restrict)
+  memberId         String        @unique // §9: KRT-XXXXXX, unik
+  nama             String
+  foto             String?
+  phone            String?
+  email            String?
+  alamat           String?
+  tempatLahir      String?
+  tanggalLahir     DateTime?
+  jenisKelamin     Gender?
+  namaOrangTua     String?
+  phoneOrangTua    String?
+  tanggalBergabung DateTime      @default(now())
+  status           StudentStatus @default(AKTIF)
+  catatan          String?
+  sabukId          String?       // sabuk saat ini (§8)
+  sabuk            Belt?         @relation("SabukSaatIni", fields: [sabukId], references: [id], onDelete: SetNull)
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  attendances   Attendance[]
+  invoices      Invoice[]
+  payments      Payment[]
+  beltHistory   StudentBeltHistory[]
+  assessments   StudentAssessment[]
+  feeSettings   FeeSetting[]      @relation("TarifPerSiswa")
+}
+
+// --- Jadwal latihan (§12) ---------------------------------------------------------------
+model Schedule {
+  id             String    @id @default(cuid())
+  dojoId         String
+  dojo           Dojo      @relation(fields: [dojoId], references: [id], onDelete: Cascade)
+  hari           DayOfWeek
+  jamMulai       String    // "16:00"
+  jamSelesai     String    // "18:00"
+  coachId        String?
+  coach          Coach?    @relation("JadwalSensei", fields: [coachId], references: [id], onDelete: SetNull)
+  namaLatihan    String
+  toleransiMenit Int       @default(30) // absensi dibuka N menit sebelum latihan (§15)
+  isActive       Boolean   @default(true)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  attendances Attendance[]
+}
+
+// --- Absensi (§13–§17) --------------------------------------------------------------------
+model Attendance {
+  id         String           @id @default(cuid())
+  studentId  String
+  student    Student          @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  dojoId     String
+  dojo       Dojo             @relation(fields: [dojoId], references: [id], onDelete: Restrict)
+  scheduleId String
+  schedule   Schedule         @relation(fields: [scheduleId], references: [id], onDelete: Restrict)
+  tanggal    DateTime         @db.Date // tanggal sesi latihan
+  jam        DateTime         // waktu absensi dilakukan
+  status     AttendanceStatus @default(HADIR)
+  createdAt  DateTime         @default(now())
+
+  photo    AttendancePhoto?
+  location AttendanceLocation?
+
+  // §59 aturan 7: satu siswa, satu absensi per sesi
+  @@unique([studentId, scheduleId, tanggal])
+  @@index([dojoId, tanggal])
+}
+
+model AttendancePhoto {
+  id           String     @id @default(cuid())
+  attendanceId String     @unique
+  attendance   Attendance @relation(fields: [attendanceId], references: [id], onDelete: Cascade)
+  url          String     // path/URL selfie
+  takenAt      DateTime   @default(now())
+}
+
+model AttendanceLocation {
+  id           String     @id @default(cuid())
+  attendanceId String     @unique
+  attendance   Attendance @relation(fields: [attendanceId], references: [id], onDelete: Cascade)
+  latitude     Float
+  longitude    Float
+  jarakMeter   Float      // jarak dari titik dojo saat absensi
+  statusGps    GpsStatus  @default(VALID)
+  takenAt      DateTime   @default(now())
+}
+
+// --- Tarif iuran (§18) ----------------------------------------------------------------------
+model FeeSetting {
+  id        String   @id @default(cuid())
+  dojoId    String?  // null = tarif default organisasi
+  dojo      Dojo?    @relation(fields: [dojoId], references: [id], onDelete: Cascade)
+  nama      String   // mis. "Iuran Bulanan Reguler"
+  nominal   Int      // rupiah, tanpa sen
+  studentId String?  // tarif khusus per siswa (§18)
+  student   Student? @relation("TarifPerSiswa", fields: [studentId], references: [id], onDelete: Cascade)
+  hariJatuhTempo Int @default(10) // tanggal jatuh tempo 1–28 setiap bulan (§18)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  invoices Invoice[]
+}
+
+// --- Tagihan bulanan (§19, §20) ---------------------------------------------------------------
+model Invoice {
+  id           String        @id @default(cuid())
+  studentId    String
+  student      Student       @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  dojoId       String
+  dojo         Dojo          @relation(fields: [dojoId], references: [id], onDelete: Restrict)
+  feeSettingId String?
+  feeSetting   FeeSetting?   @relation(fields: [feeSettingId], references: [id], onDelete: SetNull)
+  periode      String        // "2026-10"
+  nominal      Int
+  jatuhTempo   DateTime      @db.Date
+  status       InvoiceStatus @default(BELUM_BAYAR)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  payments Payment[]
+
+  // cegah tagihan ganda untuk siswa & periode yang sama (§60)
+  @@unique([studentId, periode])
+  @@index([dojoId, status])
+}
+
+// --- Pembayaran (§21, §22) -----------------------------------------------------------------------
+model Payment {
+  id              String        @id @default(cuid())
+  invoiceId       String
+  invoice         Invoice       @relation(fields: [invoiceId], references: [id], onDelete: Restrict)
+  studentId       String
+  student         Student       @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  nominal         Int
+  metode          PaymentMethod
+  tanggal         DateTime      @default(now())
+  status          PaymentStatus @default(MENUNGGU_VERIFIKASI)
+  petugasId       String?       // admin yang mencatat/verifikasi (§21)
+  petugas         User?         @relation("PetugasPayment", fields: [petugasId], references: [id], onDelete: SetNull)
+  alasanPenolakan String?       // wajib diisi saat DITOLAK (§59 aturan 9)
+  catatan         String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  proof PaymentProof?
+
+  // Tautan balik ke pemasukan yang terbentuk dari pembayaran ini (§29, anti-duplikat).
+  revenue Revenue? @relation("PaymentRevenue")
+
+  @@index([invoiceId])
+}
+
+model PaymentProof {
+  id         String   @id @default(cuid())
+  paymentId  String   @unique
+  payment    Payment  @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+  url        String   // path/URL bukti transfer
+  uploadedAt DateTime @default(now())
+}
+
+// --- Keuangan: pemasukan (§27) --------------------------------------------------------------------
+model Revenue {
+  id          String          @id @default(cuid())
+  dojoId      String
+  dojo        Dojo            @relation(fields: [dojoId], references: [id], onDelete: Restrict)
+  tanggal     DateTime        @db.Date
+  kategoriId  String
+  kategori    RevenueCategory @relation(fields: [kategoriId], references: [id], onDelete: Restrict)
+  deskripsi   String
+  nominal     Int
+  metode      PaymentMethod
+  petugasId   String?
+  petugas     User?           @relation("PetugasRevenue", fields: [petugasId], references: [id], onDelete: SetNull)
+  buktiUrl    String?
+  // Satu pembayaran hanya boleh membentuk satu pemasukan (anti-duplikat, §49).
+  paymentId   String?         @unique
+  payment     Payment?        @relation("PaymentRevenue", fields: [paymentId], references: [id], onDelete: SetNull)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  @@index([dojoId, tanggal])
+}
+
+model RevenueCategory {
+  id        String    @id @default(cuid())
+  nama      String    @unique // Iuran Bulanan, Pendaftaran, Ujian, Seragam, Kegiatan, Turnamen, Lainnya
+  isActive  Boolean   @default(true)
+  createdAt DateTime  @default(now())
+
+  revenues Revenue[]
+}
+
+// --- Keuangan: pengeluaran (§28) -------------------------------------------------------------------
+model Expense {
+  id          String          @id @default(cuid())
+  dojoId      String
+  dojo        Dojo            @relation(fields: [dojoId], references: [id], onDelete: Restrict)
+  tanggal     DateTime        @db.Date
+  kategoriId  String
+  kategori    ExpenseCategory @relation(fields: [kategoriId], references: [id], onDelete: Restrict)
+  deskripsi   String
+  nominal     Int
+  petugasId   String?
+  petugas     User?           @relation("PetugasExpense", fields: [petugasId], references: [id], onDelete: SetNull)
+  buktiUrl    String?
+  catatan     String?
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  @@index([dojoId, tanggal])
+}
+
+model ExpenseCategory {
+  id        String    @id @default(cuid())
+  nama      String    @unique // Sewa Tempat, Peralatan, Seragam, Transportasi, Konsumsi, Turnamen, Operasional, Honor, Administrasi, Lainnya
+  isActive  Boolean   @default(true)
+  createdAt DateTime  @default(now())
+
+  expenses Expense[]
+}
+
+// --- Sabuk (§33) ------------------------------------------------------------------------------------
+model Belt {
+  id        String   @id @default(cuid())
+  nama      String   @unique // PUTIH, KUNING, HIJAU, BIRU, COKELAT, HITAM
+  urutan    Int      @unique // urutan tingkatan, bisa dikonfigurasi (§33)
+  warnaHex  String?
+  deskripsi String?  // keterangan tingkatan (Phase 6)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  currentStudents Student[]            @relation("SabukSaatIni")
+  historyFrom     StudentBeltHistory[] @relation("SabukLama")
+  historyTo       StudentBeltHistory[] @relation("SabukBaru")
+}
+
+// --- Riwayat kenaikan sabuk (§34) ---------------------------------------------------------------------
+model StudentBeltHistory {
+  id           String    @id @default(cuid())
+  studentId    String
+  student      Student   @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  sabukLamaId  String?
+  sabukLama    Belt?     @relation("SabukLama", fields: [sabukLamaId], references: [id], onDelete: SetNull)
+  sabukBaruId  String
+  sabukBaru    Belt      @relation("SabukBaru", fields: [sabukBaruId], references: [id], onDelete: Restrict)
+  tanggal      DateTime  @db.Date
+  pengujiId    String?   // sensei/penguji (user)
+  penguji      User?     @relation("PengujiSabuk", fields: [pengujiId], references: [id], onDelete: SetNull)
+  coachId      String?   // sensei/penguji (profil coach)
+  coach        Coach?    @relation("PengujiSabukCoach", fields: [coachId], references: [id], onDelete: SetNull)
+  nilai        String?
+  keterangan   String?
+  sertifikatUrl String?
+  fotoUrl      String?
+  createdAt    DateTime  @default(now())
+
+  @@index([studentId, tanggal])
+}
+
+// --- Penilaian perkembangan siswa (§35) -----------------------------------------------------------------
+model StudentAssessment {
+  id         String   @id @default(cuid())
+  studentId  String
+  student    Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  coachId    String
+  coach      Coach    @relation(fields: [coachId], references: [id], onDelete: Restrict)
+  tanggal    DateTime @db.Date
+  periode    String   // YYYY-MM; satu penilaian per siswa per periode (§35, Phase 6)
+  kihon      Int?
+  kata       Int?
+  kumite     Int?
+  fisik      Int?
+  disiplin   Int?
+  sikap      Int?
+  kehadiran  Int?
+  teknik     Int?
+  catatan    String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([studentId, periode])
+  @@index([studentId, tanggal])
+}
+
+// --- Setting key-value (Phase 6: skala penilaian §35) ---------------------------------------------
+model Setting {
+  key       String   @id // mis. "skalaPenilaian"
+  value     String
+  updatedAt DateTime @updatedAt
+}
+
+// --- Notifikasi (§25, §43) -------------------------------------------------------------------------------
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation("UserNotification", fields: [userId], references: [id], onDelete: Cascade)
+  judul     String
+  isi       String
+  tipe      String?  // JADWAL, IURAN, PEMBAYARAN, PENGUMUMAN, SABUK, PENILAIAN
+  // refId untuk idempotensi pengiriman otomatis (§67): mis. "pengingat:H-7:<invoiceId>".
+  // null = notifikasi manual/operasional (boleh ganda).
+  refId     String?
+
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([userId, isRead])
+  // Postgres: NULL tidak dianggap sama, jadi baris-baris refId NULL tetap boleh ganda.
+  @@unique([userId, tipe, refId])
+}
+
+// --- Pengumuman (§44) --------------------------------------------------------------------------------------
+model Announcement {
+  id          String   @id @default(cuid())
+  dojoId      String?  // null = semua dojo
+  dojo        Dojo?    @relation("DojoAnnouncement", fields: [dojoId], references: [id], onDelete: Cascade)
+  judul       String
+  isi         String
+  targetRole  Role?    // kompatibilitas lama; gunakan `target` untuk yang baru
+  // Target pengumuman (§44): SEMUA | DOJO (wajib dojoId) | SENSEI
+  target        String   @default("SEMUA")
+  tanggalMulai  DateTime?
+  tanggalSelesai DateTime?
+  isActive      Boolean  @default(true)
+  createdById String?
+  createdBy   User?    @relation("AnnouncementAuthor", fields: [createdById], references: [id], onDelete: SetNull)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([isActive, target])
+}
+
+// --- Audit log (§45) -----------------------------------------------------------------------------------------
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  user      User?    @relation("AuditActor", fields: [userId], references: [id], onDelete: SetNull)
+  aksi      String   // mis. UBAH_TARIF, VERIFIKASI_PEMBAYARAN, TAMBAH_SISWA
+  entitas   String?  // nama model yang terdampak
+  entitasId String?
+  detail    String?  // ringkasan perubahan (JSON string)
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
+}
