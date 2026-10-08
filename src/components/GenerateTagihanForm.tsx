@@ -15,6 +15,7 @@ export function GenerateTagihanForm({ dojoList }: { dojoList: { id: string; nama
   const [sibuk, setSibuk] = useState(false);
   const [hasil, setHasil] = useState<string | null>(null);
   const [galat, setGalat] = useState("");
+  const [konfirmasi, setKonfirmasi] = useState(false);
 
   async function generate(e: React.FormEvent) {
     e.preventDefault();
@@ -24,7 +25,11 @@ export function GenerateTagihanForm({ dojoList }: { dojoList: { id: string; nama
       setGalat("Format periode harus YYYY-MM, mis. 2026-11.");
       return;
     }
-    if (!confirm(`Buat tagihan periode ${periode}?`)) return;
+    // Konfirmasi inline dua langkah (bukan dialog confirm() bawaan browser).
+    if (!konfirmasi) {
+      setKonfirmasi(true);
+      return;
+    }
     setSibuk(true);
     const r = await fetch("/api/tagihan/generate", {
       method: "POST",
@@ -33,6 +38,7 @@ export function GenerateTagihanForm({ dojoList }: { dojoList: { id: string; nama
     });
     const j = await r.json().catch(() => ({}));
     setSibuk(false);
+    setKonfirmasi(false);
     if (!r.ok) {
       setGalat(j.error ?? "Gagal membuat tagihan.");
       return;
@@ -75,9 +81,11 @@ export function GenerateTagihanForm({ dojoList }: { dojoList: { id: string; nama
       <button
         type="submit"
         disabled={sibuk}
-        className="mt-3 min-h-[48px] w-full rounded-xl bg-dojo-700 px-6 text-sm font-bold text-white disabled:opacity-50 sm:mt-0 sm:w-auto"
+        className={`mt-3 min-h-[48px] w-full rounded-xl px-6 text-sm font-bold text-white disabled:opacity-50 sm:mt-0 sm:w-auto ${
+          konfirmasi ? "bg-amber-600" : "bg-dojo-700"
+        }`}
       >
-        {sibuk ? "Memproses..." : "Buat Tagihan"}
+        {sibuk ? "Memproses..." : konfirmasi ? "Yakin, Buat Tagihan" : "Buat Tagihan"}
       </button>
       {hasil && (
         <p className="mt-3 w-full rounded-xl bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700 ring-1 ring-emerald-200">

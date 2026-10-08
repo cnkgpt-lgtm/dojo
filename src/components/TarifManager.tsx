@@ -40,6 +40,7 @@ export function TarifManager({
   const [editId, setEditId] = useState<string | null>(null);
   const [sibuk, setSibuk] = useState(false);
   const [galat, setGalat] = useState("");
+  const [konfirmasiId, setKonfirmasiId] = useState<string | null>(null);
 
   async function muatUlang() {
     const r = await fetch("/api/tarif");
@@ -105,11 +106,16 @@ export function TarifManager({
   }
 
   async function hapus(t: Tarif) {
-    if (!confirm(`Hapus tarif "${t.nama}"?`)) return;
+    // Konfirmasi inline dua langkah per baris (bukan dialog confirm() bawaan).
+    if (konfirmasiId !== t.id) {
+      setKonfirmasiId(t.id);
+      return;
+    }
+    setKonfirmasiId(null);
     const r = await fetch(`/api/tarif/${t.id}`, { method: "DELETE" });
     const j = await r.json().catch(() => ({}));
     if (!r.ok) {
-      alert(j.error ?? "Gagal menghapus tarif.");
+      setGalat(j.error ?? "Gagal menghapus tarif.");
       return;
     }
     await muatUlang();
@@ -261,9 +267,13 @@ export function TarifManager({
               </button>
               <button
                 onClick={() => hapus(t)}
-                className="min-h-[44px] rounded-xl bg-red-50 px-4 text-sm font-semibold text-red-700"
+                className={`min-h-[44px] rounded-xl px-4 text-sm font-semibold ${
+                  konfirmasiId === t.id
+                    ? "bg-amber-600 text-white"
+                    : "bg-red-50 text-red-700"
+                }`}
               >
-                Hapus
+                {konfirmasiId === t.id ? "Yakin hapus?" : "Hapus"}
               </button>
             </div>
           </div>

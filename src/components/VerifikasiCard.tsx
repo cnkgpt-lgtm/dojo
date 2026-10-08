@@ -24,14 +24,18 @@ export function VerifikasiCard({ p }: { p: Pending }) {
   const [modeTolak, setModeTolak] = useState(false);
   const [alasan, setAlasan] = useState("");
   const [galat, setGalat] = useState("");
+  const [konfirmasi, setKonfirmasi] = useState(false);
 
   async function kirim(keputusan: "APPROVE" | "REJECT") {
     if (keputusan === "REJECT" && alasan.trim().length < 3) {
       setGalat("Alasan penolakan wajib diisi (minimal 3 karakter).");
       return;
     }
-    if (keputusan === "APPROVE" && !confirm(`Setujui pembayaran ${rupiah(p.nominal)} dari ${p.student.nama}?`))
+    // Konfirmasi inline dua langkah (bukan dialog confirm() bawaan browser).
+    if (keputusan === "APPROVE" && !konfirmasi) {
+      setKonfirmasi(true);
       return;
+    }
     setSibuk(true);
     setGalat("");
     const r = await fetch(`/api/pembayaran/${p.id}/verifikasi`, {
@@ -41,6 +45,7 @@ export function VerifikasiCard({ p }: { p: Pending }) {
     });
     const j = await r.json().catch(() => ({}));
     setSibuk(false);
+    setKonfirmasi(false);
     if (!r.ok) {
       setGalat(j.error ?? "Gagal memverifikasi.");
       return;
@@ -94,12 +99,17 @@ export function VerifikasiCard({ p }: { p: Pending }) {
           <button
             onClick={() => kirim("APPROVE")}
             disabled={sibuk}
-            className="min-h-[48px] flex-1 rounded-xl bg-emerald-700 px-4 text-sm font-bold text-white disabled:opacity-50"
+            className={`min-h-[48px] flex-1 rounded-xl px-4 text-sm font-bold text-white disabled:opacity-50 ${
+              konfirmasi ? "bg-amber-600" : "bg-emerald-700"
+            }`}
           >
-            {sibuk ? "Memproses..." : "Setujui"}
+            {sibuk ? "Memproses..." : konfirmasi ? "Yakin, Setujui" : "Setujui"}
           </button>
           <button
-            onClick={() => setModeTolak(true)}
+            onClick={() => {
+              setModeTolak(true);
+              setKonfirmasi(false);
+            }}
             disabled={sibuk}
             className="min-h-[48px] flex-1 rounded-xl bg-red-50 px-4 text-sm font-bold text-red-700 ring-1 ring-red-200 disabled:opacity-50"
           >

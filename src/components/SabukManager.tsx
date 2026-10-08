@@ -21,6 +21,7 @@ export function SabukManager({ sabukAwal }: { sabukAwal: Sabuk[] }) {
   const [editId, setEditId] = useState<string | null>(null);
   const [pesan, setPesan] = useState<string | null>(null);
   const [sibuk, setSibuk] = useState(false);
+  const [konfirmasiId, setKonfirmasiId] = useState<string | null>(null);
 
   async function kirim(e: React.FormEvent) {
     e.preventDefault();
@@ -56,8 +57,13 @@ export function SabukManager({ sabukAwal }: { sabukAwal: Sabuk[] }) {
     }
   }
 
-  async function hapus(id: string, nama: string) {
-    if (!confirm(`Hapus sabuk ${nama}?`)) return;
+  async function hapus(id: string) {
+    // Konfirmasi inline dua langkah per baris (bukan dialog confirm() bawaan).
+    if (konfirmasiId !== id) {
+      setKonfirmasiId(id);
+      return;
+    }
+    setKonfirmasiId(null);
     setSibuk(true);
     setPesan(null);
     try {
@@ -213,11 +219,15 @@ export function SabukManager({ sabukAwal }: { sabukAwal: Sabuk[] }) {
                       Ubah
                     </button>
                     <button
-                      onClick={() => hapus(s.id, s.nama)}
+                      onClick={() => hapus(s.id)}
                       disabled={sibuk}
-                      className="rounded-lg px-3 py-1.5 text-xs font-bold text-red-700 ring-1 ring-red-200 disabled:opacity-50"
+                      className={`rounded-lg px-3 py-1.5 text-xs font-bold ring-1 disabled:opacity-50 ${
+                        konfirmasiId === s.id
+                          ? "bg-amber-600 text-white ring-amber-600"
+                          : "text-red-700 ring-red-200"
+                      }`}
                     >
-                      Hapus
+                      {konfirmasiId === s.id ? "Yakin?" : "Hapus"}
                     </button>
                   </div>
                 </td>

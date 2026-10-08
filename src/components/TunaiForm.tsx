@@ -21,6 +21,7 @@ export function TunaiForm({ tagihanList }: { tagihanList: TagihanOpt[] }) {
   const [sibuk, setSibuk] = useState(false);
   const [galat, setGalat] = useState("");
   const [sukses, setSukses] = useState("");
+  const [konfirmasi, setKonfirmasi] = useState(false);
 
   const dipilih = tagihanList.find((t) => t.id === invoiceId) ?? null;
 
@@ -32,7 +33,11 @@ export function TunaiForm({ tagihanList }: { tagihanList: TagihanOpt[] }) {
       setGalat("Pilih tagihan terlebih dahulu.");
       return;
     }
-    if (!confirm(`Catat pembayaran tunai ${rupiah(dipilih.nominal)} untuk ${dipilih.student.nama}?`)) return;
+    // Konfirmasi inline dua langkah (bukan dialog confirm() bawaan browser).
+    if (!konfirmasi) {
+      setKonfirmasi(true);
+      return;
+    }
     setSibuk(true);
     const r = await fetch("/api/pembayaran/tunai", {
       method: "POST",
@@ -51,6 +56,7 @@ export function TunaiForm({ tagihanList }: { tagihanList: TagihanOpt[] }) {
       return;
     }
     setSukses(`Pembayaran tunai ${rupiah(dipilih.nominal)} tercatat. Tagihan LUNAS.`);
+    setKonfirmasi(false);
     setInvoiceId("");
     setTanggal("");
     setCatatan("");
@@ -121,9 +127,11 @@ export function TunaiForm({ tagihanList }: { tagihanList: TagihanOpt[] }) {
       <button
         type="submit"
         disabled={sibuk || !dipilih}
-        className="mt-4 min-h-[48px] rounded-xl bg-dojo-700 px-6 text-sm font-bold text-white disabled:opacity-50"
+        className={`mt-4 min-h-[48px] rounded-xl px-6 text-sm font-bold text-white disabled:opacity-50 ${
+          konfirmasi ? "bg-amber-600" : "bg-dojo-700"
+        }`}
       >
-        {sibuk ? "Menyimpan..." : "Catat Tunai"}
+        {sibuk ? "Menyimpan..." : konfirmasi ? "Yakin, Catat Tunai" : "Catat Tunai"}
       </button>
     </form>
   );
