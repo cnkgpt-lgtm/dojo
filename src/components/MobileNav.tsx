@@ -69,6 +69,9 @@ function Ikon({ href }: { href: string }) {
     "/dashboard/pengguna": (
       <path d="M12 5v2m0 0v2m0-2h2m-2 0H10M8 21v-1a4 4 0 014-4h0a4 4 0 014 4v1M5 8a3 3 0 013-3h8a3 3 0 013 3v8a3 3 0 01-3 3H8a3 3 0 01-3-3V8z" />
     ),
+    "/dashboard/pengaturan/lokasi": (
+      <path d="M12 21s7-5.5 7-11a7 7 0 10-14 0c0 5.5 7 11 7 11zm0-8.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5z" />
+    ),
   };
   return (
     <svg viewBox="0 0 24 24" className={cls} aria-hidden="true" {...p}>

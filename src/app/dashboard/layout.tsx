@@ -28,6 +28,7 @@ const MENU_UTAMA: Record<Role, { href: string; label: string }[]> = {
     { href: "/dashboard/sabuk", label: "Sabuk" },
     { href: "/dashboard/penilaian", label: "Penilaian" },
     { href: "/dashboard/pengguna", label: "Pengguna" },
+    { href: "/dashboard/pengaturan/lokasi", label: "Lokasi" },
     { href: "/dashboard/profil", label: "Profil" },
   ],
   SENSEI: [
