@@ -2,12 +2,12 @@
 
 @theme {
   --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  /* Aksen identitas dojo: merah obi karate */
-  --color-dojo-50: #fef2f2;
-  --color-dojo-100: #fee2e2;
-  --color-dojo-600: #dc2626;
-  --color-dojo-700: #b91c1c;
-  --color-dojo-800: #991b1b;
+  /* Aksen identitas dojo: hijau */
+  --color-dojo-50: #f0fdf4;
+  --color-dojo-100: #dcfce7;
+  --color-dojo-600: #16a34a;
+  --color-dojo-700: #15803d;
+  --color-dojo-800: #166534;
 }
 
 html {
@@ -34,6 +34,21 @@ body {
 }
 .anim-fade-up {
   animation: fadeUp 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Lembar bawah mobile: meluncur naik */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.anim-slide-up {
+  animation: slideUp 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 /* Indikator fokus keyboard yang jelas (R-32) */

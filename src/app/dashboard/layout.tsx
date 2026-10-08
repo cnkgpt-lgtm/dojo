@@ -2,6 +2,7 @@ import Link from "next/link";
 import { wajibLogin } from "@/lib/authz";
 import { prisma } from "@/lib/db";
 import { LogoutButton } from "@/components/LogoutButton";
+import { MobileNav } from "@/components/MobileNav";
 import type { Role } from "@prisma/client";
 
 const LABEL_ROLE: Record<Role, string> = {
@@ -26,6 +27,7 @@ const MENU_UTAMA: Record<Role, { href: string; label: string }[]> = {
     { href: "/dashboard/pengumuman", label: "Pengumuman" },
     { href: "/dashboard/sabuk", label: "Sabuk" },
     { href: "/dashboard/penilaian", label: "Penilaian" },
+    { href: "/dashboard/pengguna", label: "Pengguna" },
     { href: "/dashboard/profil", label: "Profil" },
   ],
   SENSEI: [
@@ -57,11 +59,24 @@ const MENU_SEGERA: Record<Role, string[]> = {
   SISWA: ["Jadwal", "Kehadiran"],
 };
 
+// Tab utama bilah bawah mobile (maks 4 + "Lainnya"); sisanya masuk lembar bawah.
+const TAB_UTAMA: Record<Role, string[]> = {
+  ADMIN: ["/dashboard", "/dashboard/siswa", "/dashboard/pembayaran", "/dashboard/keuangan"],
+  SENSEI: ["/dashboard", "/dashboard/absensi/monitor", "/dashboard/penilaian", "/dashboard/siswa"],
+  SISWA: ["/dashboard", "/dashboard/absensi", "/dashboard/iuran", "/dashboard/pembayaran"],
+};
+
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const u = await wajibLogin();
   const belumDibaca = await prisma.notification.count({
     where: { userId: u.id, isRead: false },
   });
+  const semuaMenu = MENU_UTAMA[u.role];
+  const hrefUtama = TAB_UTAMA[u.role];
+  const menuUtama = hrefUtama
+    .map((h) => semuaMenu.find((m) => m.href === h))
+    .filter((m): m is { href: string; label: string } => !!m);
+  const menuLainnya = semuaMenu.filter((m) => !hrefUtama.includes(m.href));
 
   return (
     <div className="min-h-screen bg-white">
@@ -142,29 +157,8 @@ export default async function DashboardLayout({ children }: { children: React.Re
         </main>
       </div>
 
-      {/* Navigasi bawah mobile */}
-      <nav
-        aria-label="Navigasi utama"
-        className="fixed inset-x-0 bottom-0 z-10 border-t border-slate-200 bg-white lg:hidden"
-      >
-        <div className="mx-auto flex max-w-6xl">
-          {MENU_UTAMA[u.role].map((m) => (
-            <Link
-              key={m.href}
-              href={m.href}
-              className="flex min-h-[64px] flex-1 flex-col items-center justify-center gap-0.5 text-dojo-700"
-            >
-              <span
-                aria-hidden="true"
-                className="flex h-6 w-6 items-center justify-center rounded-md bg-dojo-700 text-[11px] font-extrabold text-white"
-              >
-                {m.label.charAt(0)}
-              </span>
-              <span className="text-xs font-semibold">{m.label}</span>
-            </Link>
-          ))}
-        </div>
-      </nav>
+      {/* Navigasi bawah mobile: bilah mengambang 4 tab + "Lainnya" */}
+      <MobileNav utama={menuUtama} lainnya={menuLainnya} segera={MENU_SEGERA[u.role]} />
     </div>
   );
 }
