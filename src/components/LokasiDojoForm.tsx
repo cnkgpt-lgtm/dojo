@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 
@@ -92,6 +92,34 @@ export function LokasiDojoForm({ dojo }: { dojo: Dojo }) {
   const lngNum = Number(lng);
   const petaValid = Number.isFinite(latNum) && Number.isFinite(lngNum);
 
+  // Kelurahan & kecamatan otomatis dari koordinat (reverse geocode OpenStreetMap).
+  const [wilayah, setWilayah] = useState<string | null>(null);
+  useEffect(() => {
+    if (!petaValid) {
+      setWilayah(null);
+      return;
+    }
+    const t = setTimeout(async () => {
+      try {
+        const r = await fetch(
+          `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latNum}&lon=${lngNum}&zoom=18&addressdetails=1`,
+          { headers: { Accept: "application/json" } }
+        );
+        const j = await r.json();
+        const a = j.address ?? {};
+        const lurah = a.village || a.suburb || a.neighbourhood || a.hamlet || null;
+        const camat = a.county || a.city_district || a.district || null;
+        const bagian: string[] = [];
+        if (lurah) bagian.push(`Kel. ${lurah}`);
+        if (camat && camat !== lurah) bagian.push(`Kec. ${camat}`);
+        setWilayah(bagian.length > 0 ? bagian.join(", ") : null);
+      } catch {
+        setWilayah(null);
+      }
+    }, 800);
+    return () => clearTimeout(t);
+  }, [latNum, lngNum, petaValid]);
+
   function pilihDariPeta(la: number, lo: number) {
     setLat(la.toFixed(6));
     setLng(lo.toFixed(6));
@@ -101,9 +129,13 @@ export function LokasiDojoForm({ dojo }: { dojo: Dojo }) {
   return (
     <form onSubmit={simpan} className="rounded-2xl bg-white p-4 ring-1 ring-slate-200 sm:p-5">
       <div className="mb-3 flex items-start justify-between gap-3">
-        <div>
-          <h2 className="text-base font-bold">{dojo.nama}</h2>
-          <p className="mt-0.5 text-xs text-slate-500">{dojo.alamat}</p>
+        <div className="min-w-0">
+          {wilayah ? (
+            <p className="truncate text-base font-bold">{wilayah}</p>
+          ) : (
+            <p className="text-base font-bold text-slate-300">Memuat wilayah…</p>
+          )}
+          <p className="mt-0.5 text-xs text-slate-500">Titik absensi dojo</p>
         </div>
         <button
           type="button"
