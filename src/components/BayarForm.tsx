@@ -20,6 +20,7 @@ export function BayarForm({ tagihan }: { tagihan: Tagihan }) {
   const [bukti, setBukti] = useState<File | null>(null);
   const [sibuk, setSibuk] = useState(false);
   const [galat, setGalat] = useState("");
+  const [konfirmasi, setKonfirmasi] = useState(false);
 
   async function kirim(e: React.FormEvent) {
     e.preventDefault();
@@ -32,8 +33,12 @@ export function BayarForm({ tagihan }: { tagihan: Tagihan }) {
       setGalat("Bukti transfer wajib diupload.");
       return;
     }
-    if (!confirm(`Kirim pembayaran ${rupiah(tagihan.nominal)} untuk iuran ${labelPeriode(tagihan.periode)}?`))
+    // Konfirmasi inline dua langkah (bukan dialog confirm() bawaan browser
+    // yang tidak andal di webview/otomasi): klik pertama = konfirmasi.
+    if (!konfirmasi) {
+      setKonfirmasi(true);
       return;
+    }
     setSibuk(true);
     const form = new FormData();
     form.append("invoiceId", tagihan.id);
@@ -45,9 +50,11 @@ export function BayarForm({ tagihan }: { tagihan: Tagihan }) {
     setSibuk(false);
     if (!r.ok) {
       setGalat(j.error ?? "Gagal mengirim pembayaran.");
+      setKonfirmasi(false);
       return;
     }
     setBuka(false);
+    setKonfirmasi(false);
     router.refresh();
   }
 
@@ -100,21 +107,29 @@ export function BayarForm({ tagihan }: { tagihan: Tagihan }) {
             <button
               type="submit"
               disabled={sibuk}
-              className="min-h-[48px] flex-1 rounded-xl bg-dojo-700 px-6 text-sm font-bold text-white disabled:opacity-50 sm:flex-none"
+              className={`min-h-[48px] flex-1 rounded-xl px-6 text-sm font-bold text-white disabled:opacity-50 sm:flex-none ${
+                konfirmasi ? "bg-amber-600" : "bg-dojo-700"
+              }`}
             >
-              {sibuk ? "Mengirim..." : "KIRIM PEMBAYARAN"}
+              {sibuk ? "Mengirim..." : konfirmasi ? "YA, KIRIM SEKARANG" : "KIRIM PEMBAYARAN"}
             </button>
             <button
               type="button"
               onClick={() => {
                 setBuka(false);
                 setGalat("");
+                setKonfirmasi(false);
               }}
               className="min-h-[48px] rounded-xl bg-slate-200 px-5 text-sm font-semibold text-slate-700"
             >
               Batal
             </button>
           </div>
+          {konfirmasi && !sibuk && (
+            <p className="mt-2 text-sm font-medium text-amber-700">
+              Periksa kembali nominal, tanggal, dan bukti — tekan sekali lagi untuk mengirim.
+            </p>
+          )}
         </form>
       )}
     </div>
