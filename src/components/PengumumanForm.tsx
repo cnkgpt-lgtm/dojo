@@ -15,8 +15,7 @@ export type PengumumanAwal = {
   isActive?: boolean;
 };
 
-const inputCls =
-  "mt-1 block w-full rounded-xl bg-white px-4 py-3 text-sm ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:ring-dojo-700";
+const inputCls = "brutal-input mt-1";
 const labelCls = "block text-sm font-semibold";
 
 function keInputTanggal(v: string | null | undefined): string {
@@ -90,7 +89,7 @@ export function PengumumanForm({
   }
 
   return (
-    <form onSubmit={simpan} className="space-y-5 rounded-2xl bg-slate-50 p-5 ring-1 ring-slate-200 sm:p-6">
+    <form onSubmit={simpan} className="brutal-card space-y-5 p-5 sm:p-6">
       <div>
         <label htmlFor="judul" className={labelCls}>
           Judul
@@ -205,7 +204,7 @@ export function PengumumanForm({
       </label>
 
       {galat && (
-        <p role="alert" className="rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+        <p role="alert" className="brutal-card bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
           {galat}
         </p>
       )}
@@ -213,7 +212,7 @@ export function PengumumanForm({
       <button
         type="submit"
         disabled={menyimpan}
-        className="min-h-[48px] w-full rounded-xl bg-dojo-700 px-6 text-base font-bold text-white disabled:opacity-60 sm:w-auto"
+        className="brutal-btn brutal-btn-primary w-full text-base sm:w-auto"
       >
         {menyimpan ? "Menyimpan…" : mode === "tambah" ? "Buat Pengumuman" : "Simpan Perubahan"}
       </button>

@@ -53,11 +53,7 @@ export function PenggunaAksi({
             disabled={sibuk}
             onClick={() => (konfirmasi ? kirim({ isActive: !isActive }) : setKonfirmasi(true))}
             onBlur={() => setKonfirmasi(false)}
-            className={`min-h-[40px] rounded-lg px-3 text-xs font-bold ring-1 disabled:opacity-50 ${
-              konfirmasi
-                ? "bg-amber-600 text-white ring-amber-600"
-                : "text-slate-600 ring-slate-200"
-            }`}
+            className={`brutal-btn ${konfirmasi ? "brutal-btn-warn" : "brutal-btn-light"}`}
           >
             {konfirmasi ? "Yakin?" : isActive ? "Nonaktifkan" : "Aktifkan"}
           </button>
@@ -68,7 +64,7 @@ export function PenggunaAksi({
             setModeSandi(!modeSandi);
             setGalat("");
           }}
-          className="min-h-[40px] rounded-lg px-3 text-xs font-bold text-dojo-700 ring-1 ring-dojo-100 disabled:opacity-50"
+          className="brutal-btn brutal-btn-light"
         >
           Reset sandi
         </button>
@@ -91,12 +87,12 @@ export function PenggunaAksi({
             onChange={(e) => setSandiBaru(e.target.value)}
             placeholder="Sandi baru"
             aria-label={`Kata sandi baru untuk ${nama}`}
-            className="min-h-[40px] w-32 rounded-lg border border-slate-300 px-3 text-xs focus:border-dojo-600 focus:outline-none"
+            className="brutal-input w-32"
           />
           <button
             type="submit"
             disabled={sibuk}
-            className="min-h-[40px] rounded-lg bg-dojo-700 px-3 text-xs font-bold text-white disabled:opacity-50"
+            className="brutal-btn brutal-btn-primary"
           >
             OK
           </button>

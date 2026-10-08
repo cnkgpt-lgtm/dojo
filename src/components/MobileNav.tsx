@@ -105,7 +105,7 @@ export function MobileNav({
     <>
       <nav
         aria-label="Navigasi utama"
-        className="fixed inset-x-3 bottom-3 z-20 rounded-3xl bg-white shadow-xl shadow-slate-900/10 ring-1 ring-slate-900/10 lg:hidden"
+        className="fixed inset-x-3 bottom-3 z-20 rounded-2xl border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] lg:hidden"
         style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
       >
         <div className="flex px-2 py-2">
@@ -116,8 +116,10 @@ export function MobileNav({
                 key={m.href}
                 href={m.href}
                 aria-current={ya ? "page" : undefined}
-                className={`flex min-h-[60px] flex-1 flex-col items-center justify-center gap-1 rounded-2xl text-[11px] font-semibold transition-colors ${
-                  ya ? "bg-dojo-100 text-dojo-800" : "text-slate-500 active:bg-slate-100"
+                className={`flex min-h-[60px] flex-1 flex-col items-center justify-center gap-1 rounded-xl border-2 text-[11px] font-extrabold transition-all ${
+                  ya
+                    ? "border-black bg-dojo-600 text-white shadow-[2px_2px_0px_0px_#000]"
+                    : "border-transparent text-slate-500 active:bg-slate-100"
                 }`}
               >
                 <Ikon href={m.href} />
@@ -128,7 +130,7 @@ export function MobileNav({
           <button
             onClick={() => setLembar(true)}
             aria-label="Menu lainnya"
-            className="flex min-h-[60px] flex-1 flex-col items-center justify-center gap-1 rounded-2xl text-[11px] font-semibold text-slate-500 active:bg-slate-100"
+            className="flex min-h-[60px] flex-1 flex-col items-center justify-center gap-1 rounded-xl border-2 border-transparent text-[11px] font-extrabold text-slate-500 active:bg-slate-100"
           >
             <svg viewBox="0 0 24 24" fill="currentColor" className="h-6 w-6" aria-hidden="true">
               <circle cx="5" cy="12" r="1.8" />
@@ -143,9 +145,9 @@ export function MobileNav({
       {lembar && (
         <div className="fixed inset-0 z-30 lg:hidden" role="dialog" aria-modal="true" aria-label="Menu lainnya">
           <div className="absolute inset-0 bg-slate-900/40" onClick={() => setLembar(false)} />
-          <div className="anim-slide-up absolute inset-x-0 bottom-0 max-h-[82vh] overflow-y-auto rounded-t-3xl bg-white p-5 pb-8 shadow-2xl">
+          <div className="anim-slide-up absolute inset-x-0 bottom-0 max-h-[82vh] overflow-y-auto rounded-t-2xl border-t-2 border-x-2 border-black bg-white p-5 pb-8 shadow-[0_-4px_0px_0px_#000]">
             <div className="mx-auto mb-4 h-1.5 w-12 rounded-full bg-slate-200" />
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-2 gap-3">
               {lainnya.map((m) => {
                 const ya = aktif(pathname, m.href);
                 return (
@@ -153,29 +155,24 @@ export function MobileNav({
                     key={m.href}
                     href={m.href}
                     onClick={() => setLembar(false)}
-                    className={`flex items-center gap-3 rounded-2xl px-4 py-3.5 ring-1 transition-colors ${
-                      ya
-                        ? "bg-dojo-100 text-dojo-800 ring-dojo-200"
-                        : "bg-white text-slate-700 ring-slate-200 active:bg-slate-50"
+                    className={`flex items-center gap-3 rounded-xl border-2 border-black px-4 py-3.5 shadow-[2px_2px_0px_0px_#000] transition-all active:translate-x-[2px] active:translate-y-[2px] active:shadow-none ${
+                      ya ? "bg-dojo-600 text-white" : "bg-white text-black"
                     }`}
                   >
                     <Ikon href={m.href} />
-                    <span className="text-sm font-semibold">{m.label}</span>
+                    <span className="text-sm font-extrabold">{m.label}</span>
                   </Link>
                 );
               })}
             </div>
             {segera.length > 0 && (
               <div className="mt-5">
-                <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-400">
+                <p className="mb-2 text-xs font-black uppercase tracking-widest text-slate-400">
                   Segera hadir
                 </p>
                 <div className="flex flex-wrap gap-2">
                   {segera.map((s) => (
-                    <span
-                      key={s}
-                      className="rounded-full bg-slate-100 px-3 py-1.5 text-xs font-medium text-slate-500"
-                    >
+                    <span key={s} className="brutal-badge bg-slate-100 text-slate-500">
                       {s}
                     </span>
                   ))}

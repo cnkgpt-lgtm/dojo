@@ -15,8 +15,7 @@ type Dojo = {
   radiusAbsensi: number;
 };
 
-const inputCls =
-  "w-full rounded-xl border border-slate-300 px-4 py-3 text-sm focus:border-dojo-600 focus:outline-none focus:ring-2 focus:ring-dojo-100";
+const inputCls = "brutal-input";
 
 /**
  * Form titik + radius absensi per dojo. Siswa hanya bisa absen bila
@@ -127,7 +126,7 @@ export function LokasiDojoForm({ dojo }: { dojo: Dojo }) {
   }
 
   return (
-    <form onSubmit={simpan} className="rounded-2xl bg-white p-4 ring-1 ring-slate-200 sm:p-5">
+    <form onSubmit={simpan} className="brutal-card p-4 sm:p-5">
       <div className="mb-3 flex items-start justify-between gap-3">
         <div className="min-w-0">
           {wilayah ? (
@@ -141,7 +140,7 @@ export function LokasiDojoForm({ dojo }: { dojo: Dojo }) {
           type="button"
           onClick={lokasiSaya}
           disabled={gps}
-          className="min-h-[44px] shrink-0 rounded-xl bg-slate-100 px-4 text-xs font-bold text-slate-700 disabled:opacity-50"
+          className="brutal-btn brutal-btn-light shrink-0 px-4 text-xs"
         >
           {gps ? "Membaca GPS..." : "📍 Lokasi saya"}
         </button>
@@ -156,18 +155,18 @@ export function LokasiDojoForm({ dojo }: { dojo: Dojo }) {
           </p>
         </div>
       ) : (
-        <p className="mb-3 rounded-xl bg-amber-50 px-4 py-3 text-sm font-medium text-amber-700 ring-1 ring-amber-200">
+        <p className="brutal-card mb-3 bg-amber-50 px-4 py-3 text-sm font-medium text-amber-700">
           Koordinat belum valid — perbaiki Latitude/Longitude di bawah agar peta tampil.
         </p>
       )}
 
       {galat && (
-        <p className="mb-3 rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-700 ring-1 ring-red-200">
+        <p className="brutal-card mb-3 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
           {galat}
         </p>
       )}
       {sukses && (
-        <p className="mb-3 rounded-xl bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700 ring-1 ring-emerald-200">
+        <p className="brutal-card mb-3 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700">
           {sukses}
         </p>
       )}
@@ -200,9 +199,7 @@ export function LokasiDojoForm({ dojo }: { dojo: Dojo }) {
       <div className="mt-4">
         <div className="mb-1 flex items-center justify-between">
           <span className="text-sm font-semibold">Radius absensi</span>
-          <span className="rounded-full bg-dojo-100 px-3 py-1 text-sm font-extrabold text-dojo-800">
-            {radius} m
-          </span>
+          <span className="brutal-badge bg-dojo-100 text-dojo-800">{radius} m</span>
         </div>
         <input
           type="range"
@@ -227,7 +224,7 @@ export function LokasiDojoForm({ dojo }: { dojo: Dojo }) {
       <button
         type="submit"
         disabled={sibuk}
-        className="mt-4 min-h-[48px] w-full rounded-xl bg-dojo-700 px-6 text-sm font-bold text-white disabled:opacity-50 sm:w-auto"
+        className="brutal-btn brutal-btn-primary mt-4 w-full sm:w-auto"
       >
         {sibuk ? "Menyimpan..." : "Simpan Lokasi"}
       </button>

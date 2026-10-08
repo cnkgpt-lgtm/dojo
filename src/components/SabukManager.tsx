@@ -94,14 +94,14 @@ export function SabukManager({ sabukAwal }: { sabukAwal: Sabuk[] }) {
   return (
     <div className="space-y-6">
       {pesan && (
-        <p className="rounded-xl bg-slate-100 px-4 py-3 text-sm font-medium text-slate-700">{pesan}</p>
+        <p className="brutal-card px-4 py-3 text-sm font-medium text-slate-700">{pesan}</p>
       )}
 
       <form
         onSubmit={kirim}
-        className="rounded-2xl bg-white p-5 ring-1 ring-slate-200"
+        className="brutal-card p-5"
       >
-        <h2 className="font-bold">{editId ? "Ubah Sabuk" : "Tambah Sabuk"}</h2>
+        <h2 className="brutal-title text-lg">{editId ? "UBAH SABUK" : "TAMBAH SABUK"}</h2>
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
           <label className="block">
             <span className="text-sm font-medium">Nama</span>
@@ -110,7 +110,7 @@ export function SabukManager({ sabukAwal }: { sabukAwal: Sabuk[] }) {
               onChange={(e) => setForm({ ...form, nama: e.target.value })}
               placeholder="PUTIH"
               required
-              className="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2.5 uppercase"
+              className="brutal-input mt-1 uppercase"
             />
           </label>
           <label className="block">
@@ -122,7 +122,7 @@ export function SabukManager({ sabukAwal }: { sabukAwal: Sabuk[] }) {
               onChange={(e) => setForm({ ...form, urutan: e.target.value })}
               placeholder="1"
               required
-              className="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2.5"
+              className="brutal-input mt-1"
             />
           </label>
           <label className="block">
@@ -160,7 +160,7 @@ export function SabukManager({ sabukAwal }: { sabukAwal: Sabuk[] }) {
               value={form.deskripsi}
               onChange={(e) => setForm({ ...form, deskripsi: e.target.value })}
               placeholder="Tingkatan dasar"
-              className="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2.5"
+              className="brutal-input mt-1"
             />
           </label>
         </div>
@@ -168,7 +168,7 @@ export function SabukManager({ sabukAwal }: { sabukAwal: Sabuk[] }) {
           <button
             type="submit"
             disabled={sibuk}
-            className="rounded-xl bg-dojo-700 px-5 py-2.5 font-bold text-white disabled:opacity-50"
+            className="brutal-btn brutal-btn-primary"
           >
             {sibuk ? "Menyimpan…" : editId ? "Simpan Perubahan" : "Tambah Sabuk"}
           </button>
@@ -179,7 +179,7 @@ export function SabukManager({ sabukAwal }: { sabukAwal: Sabuk[] }) {
                 setEditId(null);
                 setForm({ nama: "", urutan: "", warnaHex: "#111827", deskripsi: "" });
               }}
-              className="rounded-xl px-5 py-2.5 font-semibold text-slate-600 ring-1 ring-slate-300"
+              className="brutal-btn brutal-btn-light"
             >
               Batal
             </button>
@@ -187,7 +187,7 @@ export function SabukManager({ sabukAwal }: { sabukAwal: Sabuk[] }) {
         </div>
       </form>
 
-      <div className="overflow-hidden rounded-2xl bg-white ring-1 ring-slate-200">
+      <div className="brutal-card overflow-hidden">
         <table className="w-full text-sm">
           <thead>
             <tr className="bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500">
@@ -214,17 +214,15 @@ export function SabukManager({ sabukAwal }: { sabukAwal: Sabuk[] }) {
                   <div className="flex justify-end gap-2">
                     <button
                       onClick={() => mulaiUbah(s)}
-                      className="rounded-lg px-3 py-1.5 text-xs font-bold text-dojo-700 ring-1 ring-dojo-700/30"
+                      className="brutal-btn brutal-btn-light"
                     >
                       Ubah
                     </button>
                     <button
                       onClick={() => hapus(s.id)}
                       disabled={sibuk}
-                      className={`rounded-lg px-3 py-1.5 text-xs font-bold ring-1 disabled:opacity-50 ${
-                        konfirmasiId === s.id
-                          ? "bg-amber-600 text-white ring-amber-600"
-                          : "text-red-700 ring-red-200"
+                      className={`brutal-btn ${
+                        konfirmasiId === s.id ? "brutal-btn-warn" : "brutal-btn-danger"
                       }`}
                     >
                       {konfirmasiId === s.id ? "Yakin?" : "Hapus"}

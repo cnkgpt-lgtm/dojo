@@ -64,7 +64,7 @@ export function NotifikasiList({ awal, belumDibaca }: { awal: Notif[]; belumDiba
         {sisa > 0 && (
           <button
             onClick={tandaiSemua}
-            className="min-h-[44px] rounded-xl bg-slate-100 px-4 text-sm font-semibold text-slate-700"
+            className="brutal-btn brutal-btn-light"
           >
             Tandai semua dibaca
           </button>
@@ -72,7 +72,7 @@ export function NotifikasiList({ awal, belumDibaca }: { awal: Notif[]; belumDiba
       </div>
       <div className="space-y-2">
         {daftar.length === 0 && (
-          <p className="rounded-2xl bg-slate-50 p-6 text-center text-sm text-slate-500 ring-1 ring-slate-200">
+          <p className="brutal-card p-6 text-center text-sm text-slate-500">
             Belum ada notifikasi.
           </p>
         )}
@@ -80,8 +80,8 @@ export function NotifikasiList({ awal, belumDibaca }: { awal: Notif[]; belumDiba
           <button
             key={n.id}
             onClick={() => !n.isRead && tandai(n.id)}
-            className={`w-full rounded-2xl p-4 text-left ring-1 ${
-              n.isRead ? "bg-white ring-slate-200" : "bg-dojo-50 ring-dojo-200"
+            className={`brutal-card w-full p-4 text-left ${
+              n.isRead ? "" : "bg-dojo-50"
             }`}
           >
             <div className="flex items-start justify-between gap-3">

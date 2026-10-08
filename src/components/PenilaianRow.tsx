@@ -36,16 +36,14 @@ export function PenilaianRow({ id }: { id: string }) {
       <div className="flex gap-2">
         <Link
           href={`/dashboard/penilaian/${id}/ubah`}
-          className="rounded-lg px-3 py-1.5 text-xs font-bold text-dojo-700 ring-1 ring-dojo-700/30"
+          className="brutal-btn brutal-btn-light"
         >
           Ubah
         </Link>
         <button
           onClick={hapus}
           disabled={sibuk}
-          className={`rounded-lg px-3 py-1.5 text-xs font-bold ring-1 disabled:opacity-50 ${
-            konfirmasi ? "bg-amber-600 text-white ring-amber-600" : "text-red-700 ring-red-200"
-          }`}
+          className={`brutal-btn ${konfirmasi ? "brutal-btn-warn" : "brutal-btn-danger"}`}
         >
           {sibuk ? "Menghapus…" : konfirmasi ? "Yakin hapus?" : "Hapus"}
         </button>

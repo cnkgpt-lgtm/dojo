@@ -92,9 +92,9 @@ export function PenilaianForm({
   }
 
   return (
-    <form onSubmit={kirim} className="rounded-2xl bg-white p-5 ring-1 ring-slate-200">
+    <form onSubmit={kirim} className="brutal-card p-5">
       {pesan && (
-        <p className="mb-4 rounded-xl bg-slate-100 px-4 py-3 text-sm font-medium text-slate-700">
+        <p className="brutal-card mb-4 px-4 py-3 text-sm font-medium text-slate-700">
           {pesan}
         </p>
       )}
@@ -106,7 +106,7 @@ export function PenilaianForm({
             onChange={(e) => setStudentId(e.target.value)}
             required
             disabled={!!editAwal}
-            className="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2.5 disabled:opacity-60"
+            className="brutal-input mt-1"
           >
             <option value="">— Pilih siswa —</option>
             {siswaList.map((s) => (
@@ -124,7 +124,7 @@ export function PenilaianForm({
             onChange={(e) => setPeriode(e.target.value)}
             required
             disabled={!!editAwal}
-            className="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2.5 disabled:opacity-60"
+            className="brutal-input mt-1"
           />
         </label>
       </div>
@@ -137,7 +137,7 @@ export function PenilaianForm({
       </p>
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         {ASPEK.map((a) => (
-          <label key={a.key} className="block rounded-xl bg-slate-50 p-3 ring-1 ring-slate-200">
+          <label key={a.key} className="brutal-card block p-3">
             <span className="text-sm font-medium">{a.label}</span>
             <input
               type="number"
@@ -146,7 +146,7 @@ export function PenilaianForm({
               value={nilai[a.key]}
               onChange={(e) => setNilai({ ...nilai, [a.key]: e.target.value })}
               placeholder="1–5"
-              className="mt-1 w-full rounded-lg border border-slate-300 px-2 py-2 text-center text-lg font-bold"
+              className="brutal-input mt-1 text-center text-lg font-bold"
             />
           </label>
         ))}
@@ -159,14 +159,14 @@ export function PenilaianForm({
           onChange={(e) => setCatatan(e.target.value)}
           rows={3}
           placeholder="Catatan perkembangan siswa…"
-          className="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2.5"
+          className="brutal-input mt-1"
         />
       </label>
 
       <button
         type="submit"
         disabled={sibuk || !studentId || !periode}
-        className="mt-4 rounded-xl bg-dojo-700 px-6 py-3 font-bold text-white disabled:opacity-50"
+        className="brutal-btn brutal-btn-primary mt-4"
       >
         {sibuk ? "Menyimpan…" : editAwal ? "Simpan Perubahan" : "Simpan Penilaian"}
       </button>

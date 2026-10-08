@@ -5,8 +5,7 @@ import { useRouter } from "next/navigation";
 
 type Dojo = { id: string; nama: string };
 
-const inputCls =
-  "w-full rounded-xl border border-slate-300 px-4 py-3 text-sm focus:border-dojo-600 focus:outline-none focus:ring-2 focus:ring-dojo-100";
+const inputCls = "brutal-input";
 
 /** Form tambah pengguna: nama + HP + sandi + pilih role (Admin/Sensei/Siswa). */
 export function PenggunaForm({ dojoList }: { dojoList: Dojo[] }) {
@@ -65,17 +64,17 @@ export function PenggunaForm({ dojoList }: { dojoList: Dojo[] }) {
   }
 
   return (
-    <div className="rounded-2xl bg-slate-50 p-4 ring-1 ring-slate-200 sm:p-5">
+    <div className="brutal-card p-4 sm:p-5">
       {!buka ? (
         <button
           onClick={() => setBuka(true)}
-          className="min-h-[48px] w-full rounded-xl bg-dojo-700 px-6 text-sm font-bold text-white sm:w-auto"
+          className="brutal-btn brutal-btn-primary w-full sm:w-auto"
         >
           + Tambah Pengguna
         </button>
       ) : (
         <form onSubmit={kirim}>
-          <p className="mb-3 text-sm font-bold">Pengguna baru</p>
+          <p className="brutal-title mb-3 text-lg uppercase">Pengguna Baru</p>
           {galat && (
             <p className="mb-3 rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-700 ring-1 ring-red-200">
               {galat}
@@ -142,14 +141,14 @@ export function PenggunaForm({ dojoList }: { dojoList: Dojo[] }) {
             <button
               type="submit"
               disabled={sibuk}
-              className="min-h-[48px] flex-1 rounded-xl bg-dojo-700 px-6 text-sm font-bold text-white disabled:opacity-50 sm:flex-none"
+              className="brutal-btn brutal-btn-primary flex-1 sm:flex-none"
             >
               {sibuk ? "Menyimpan..." : "Simpan Pengguna"}
             </button>
             <button
               type="button"
               onClick={() => { setBuka(false); setGalat(""); setSukses(""); }}
-              className="min-h-[48px] rounded-xl bg-slate-200 px-5 text-sm font-semibold text-slate-700"
+              className="brutal-btn brutal-btn-light"
             >
               Batal
             </button>

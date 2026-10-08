@@ -15,8 +15,8 @@ export function LogoutButton({ compact = false }: { compact?: boolean }) {
       }}
       className={
         compact
-          ? "rounded-lg px-3 py-2 text-sm font-semibold text-dojo-700 hover:bg-dojo-50 disabled:opacity-60"
-          : "w-full rounded-xl border border-slate-300 px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-60"
+          ? "brutal-btn brutal-btn-light !min-h-[40px] !px-3 !py-1.5 !text-xs"
+          : "brutal-btn brutal-btn-light w-full"
       }
     >
       {loading ? "Keluar..." : "Keluar"}

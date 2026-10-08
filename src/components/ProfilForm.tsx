@@ -4,8 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { FotoUpload } from "./FotoUpload";
 
-const inputCls =
-  "mt-1 block w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 placeholder:text-slate-400";
+const inputCls = "brutal-input mt-1 block";
 const labelCls = "block text-sm font-semibold text-slate-700";
 
 export type ProfilAwal = {
@@ -121,7 +120,7 @@ export function ProfilForm({ awal, isAdmin }: { awal: ProfilAwal; isAdmin: boole
       <button
         type="submit"
         disabled={menyimpan}
-        className="inline-flex min-h-[44px] items-center justify-center rounded-xl bg-dojo-700 px-6 text-sm font-semibold text-white disabled:opacity-50"
+        className="brutal-btn brutal-btn-primary"
       >
         {menyimpan ? "Menyimpan..." : "Simpan Profil"}
       </button>
