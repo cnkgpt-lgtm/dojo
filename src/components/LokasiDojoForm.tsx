@@ -1,7 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
+
+const PetaLokasi = dynamic(() => import("@/components/PetaLokasi"), { ssr: false });
 
 type Dojo = {
   id: string;
@@ -85,6 +88,16 @@ export function LokasiDojoForm({ dojo }: { dojo: Dojo }) {
     }
   }
 
+  const latNum = Number(lat);
+  const lngNum = Number(lng);
+  const petaValid = Number.isFinite(latNum) && Number.isFinite(lngNum);
+
+  function pilihDariPeta(la: number, lo: number) {
+    setLat(la.toFixed(6));
+    setLng(lo.toFixed(6));
+    setGalat("");
+  }
+
   return (
     <form onSubmit={simpan} className="rounded-2xl bg-white p-4 ring-1 ring-slate-200 sm:p-5">
       <div className="mb-3 flex items-start justify-between gap-3">
@@ -101,6 +114,20 @@ export function LokasiDojoForm({ dojo }: { dojo: Dojo }) {
           {gps ? "Membaca GPS..." : "📍 Lokasi saya"}
         </button>
       </div>
+
+      {petaValid ? (
+        <div className="mb-1">
+          <PetaLokasi lat={latNum} lng={lngNum} radius={radius} onPilih={pilihDariPeta} />
+          <p className="mt-2 text-xs text-slate-500">
+            Ketuk peta atau seret pin 📍 untuk memindahkan titik. Lingkaran hijau = area absensi (
+            {radius} m).
+          </p>
+        </div>
+      ) : (
+        <p className="mb-3 rounded-xl bg-amber-50 px-4 py-3 text-sm font-medium text-amber-700 ring-1 ring-amber-200">
+          Koordinat belum valid — perbaiki Latitude/Longitude di bawah agar peta tampil.
+        </p>
+      )}
 
       {galat && (
         <p className="mb-3 rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-700 ring-1 ring-red-200">
