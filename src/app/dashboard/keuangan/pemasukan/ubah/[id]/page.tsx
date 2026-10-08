@@ -33,7 +33,7 @@ export default async function UbahPemasukanPage({ params }: { params: Promise<{ 
       <Link href="/dashboard/keuangan/pemasukan" className="mb-4 inline-flex min-h-[44px] items-center text-sm font-semibold text-slate-600">
         Kembali ke daftar pemasukan
       </Link>
-      <h1 className="text-xl font-extrabold tracking-tight sm:text-2xl">Ubah Pemasukan</h1>
+      <h1 className="brutal-title text-2xl">UBAH PEMASUKAN</h1>
       <p className="mt-1 mb-6 text-sm text-slate-500">{data.deskripsi}</p>
       <TransaksiForm
         jenis="pemasukan"

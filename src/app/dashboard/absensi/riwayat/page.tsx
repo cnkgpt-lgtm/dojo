@@ -37,7 +37,7 @@ export default async function RiwayatAbsensiPage({
 
   return (
     <div className="anim-fade-up mx-auto max-w-3xl">
-      <h1 className="text-xl font-extrabold tracking-tight sm:text-2xl">Riwayat Kehadiran</h1>
+      <h1 className="brutal-title text-2xl">RIWAYAT KEHADIRAN</h1>
       <p className="mt-1 mb-6 text-sm text-slate-500">
         Kehadiran Anda: {jumlahHadir} hadir, {jumlahTerlambat} terlambat.
       </p>
@@ -48,24 +48,21 @@ export default async function RiwayatAbsensiPage({
           name="bulan"
           defaultValue={bulan}
           aria-label="Filter bulan"
-          className="rounded-xl bg-white px-3 py-2.5 text-sm ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:ring-dojo-700"
+          className="brutal-input sm:w-auto"
         />
-        <button
-          type="submit"
-          className="min-h-[44px] rounded-xl bg-dojo-700 px-4 text-sm font-bold text-white"
-        >
+        <button type="submit" className="brutal-btn brutal-btn-primary">
           Tampilkan
         </button>
       </form>
 
       {data.length === 0 ? (
-        <p className="rounded-2xl bg-slate-50 p-6 text-sm text-slate-500 ring-1 ring-slate-200">
+        <p className="brutal-card p-6 text-sm text-slate-500">
           Belum ada data kehadiran pada bulan ini.
         </p>
       ) : (
         <ul className="space-y-3">
           {data.map((a) => (
-            <li key={a.id} className="rounded-2xl bg-slate-50 p-4 ring-1 ring-slate-200">
+            <li key={a.id} className="brutal-card p-4">
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">
                   <p className="font-bold">{a.schedule.namaLatihan}</p>
@@ -78,9 +75,7 @@ export default async function RiwayatAbsensiPage({
                     {a.location ? ` · ${a.location.jarakMeter} m dari dojo` : ""}
                   </p>
                 </div>
-                <span
-                  className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ${WARNA_STATUS_ABSENSI[a.status]}`}
-                >
+                <span className={`brutal-badge ${WARNA_STATUS_ABSENSI[a.status]}`}>
                   {LABEL_STATUS_ABSENSI[a.status]}
                 </span>
               </div>

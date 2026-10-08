@@ -53,9 +53,9 @@ async function IuranHubAdmin() {
         <Link
           key={k.href}
           href={k.href}
-          className="rounded-2xl bg-white p-5 ring-1 ring-slate-200 transition-shadow hover:shadow-md"
+          className="brutal-card p-5"
         >
-          <p className="font-bold">{k.judul}</p>
+          <p className="font-black uppercase tracking-wide">{k.judul}</p>
           <p className="mt-1 text-sm text-slate-500">{k.deskripsi}</p>
           <p className="mt-3 text-xs font-semibold uppercase tracking-wide text-dojo-700">{k.meta}</p>
         </Link>
@@ -84,30 +84,30 @@ async function IuranSiswa({ studentId }: { studentId: string }) {
       </p>
 
       {totalTunggakan > 0 && (
-        <div className="mb-6 rounded-2xl bg-orange-50 p-5 ring-1 ring-orange-200">
-          <p className="text-xs font-semibold uppercase tracking-wide text-orange-600">Total tunggakan</p>
-          <p className="mt-1 text-2xl font-extrabold text-orange-700">{rupiah(totalTunggakan)}</p>
+        <div className="brutal-card mb-6 bg-orange-50 p-5">
+          <p className="text-xs font-black uppercase tracking-wide text-orange-600">Total tunggakan</p>
+          <p className="brutal-angka mt-1 text-2xl text-orange-700">{rupiah(totalTunggakan)}</p>
           <p className="mt-1 text-xs text-orange-600">{terbuka.length} tagihan belum dibayar</p>
         </div>
       )}
 
       <section>
-        <h2 className="mb-3 text-base font-bold">Tagihan</h2>
+        <h2 className="brutal-title mb-3 text-lg">TAGIHAN</h2>
         <div className="space-y-3">
           {terbuka.length === 0 && (
-            <p className="rounded-2xl bg-emerald-50 p-6 text-center text-sm font-medium text-emerald-700 ring-1 ring-emerald-200">
+            <p className="brutal-card bg-emerald-50 p-6 text-center text-sm font-medium text-emerald-700">
               Tidak ada tagihan yang perlu dibayar.
             </p>
           )}
           {terbuka.map((t) => (
-            <div key={t.id} className="rounded-2xl bg-white p-4 ring-1 ring-slate-200">
+            <div key={t.id} className="brutal-card p-4">
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <p className="font-bold">Iuran {labelPeriode(t.periode)}</p>
                   <p className="mt-0.5 text-sm text-slate-500">Jatuh tempo {formatTanggal(t.jatuhTempo)}</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-base font-extrabold">{rupiah(t.nominal)}</p>
+                  <p className="brutal-angka text-base">{rupiah(t.nominal)}</p>
                   <div className="mt-1">
                     <BadgeIuran status={t.tampil} />
                   </div>
@@ -123,25 +123,25 @@ async function IuranSiswa({ studentId }: { studentId: string }) {
 
       <section className="mt-8">
         <div className="mb-3 flex items-center justify-between">
-          <h2 className="text-base font-bold">Riwayat</h2>
+          <h2 className="brutal-title text-lg">RIWAYAT</h2>
           <Link href="/dashboard/pembayaran" className="text-sm font-semibold text-dojo-700 underline">
             Lihat semua pembayaran
           </Link>
         </div>
         <div className="space-y-2">
           {riwayat.length === 0 && (
-            <p className="rounded-2xl bg-slate-50 p-6 text-center text-sm text-slate-500 ring-1 ring-slate-200">
+            <p className="brutal-card p-6 text-center text-sm text-slate-500">
               Belum ada riwayat.
             </p>
           )}
           {riwayat.slice(0, 5).map((t) => (
             <div
               key={t.id}
-              className="flex items-center justify-between rounded-2xl bg-white px-4 py-3 ring-1 ring-slate-200"
+              className="brutal-card flex items-center justify-between px-4 py-3"
             >
               <div>
                 <p className="text-sm font-bold">Iuran {labelPeriode(t.periode)}</p>
-                <p className="text-xs text-slate-500">{rupiah(t.nominal)}</p>
+                <p className="brutal-angka text-xs text-slate-500">{rupiah(t.nominal)}</p>
               </div>
               <BadgeIuran status={t.tampil} />
             </div>
@@ -157,7 +157,7 @@ export default async function IuranPage() {
 
   return (
     <div className="anim-fade-up mx-auto max-w-4xl">
-      <h1 className="text-xl font-extrabold tracking-tight sm:text-2xl">Iuran</h1>
+      <h1 className="brutal-title text-2xl">IURAN</h1>
       {u.role === "ADMIN" && (
         <p className="mt-1 mb-6 text-sm text-slate-500">
           Kelola tarif, tagihan bulanan, tunggakan, dan verifikasi pembayaran.
@@ -168,7 +168,7 @@ export default async function IuranPage() {
       ) : u.studentId ? (
         <IuranSiswa studentId={u.studentId} />
       ) : (
-        <p className="rounded-2xl bg-slate-50 p-6 text-center text-sm text-slate-500 ring-1 ring-slate-200">
+        <p className="brutal-card p-6 text-center text-sm text-slate-500">
           Akun ini tidak terhubung ke data siswa.
         </p>
       )}

@@ -43,7 +43,7 @@ export default async function AbsensiPage() {
   return (
     <div className="anim-fade-up mx-auto max-w-2xl">
       <div className="mb-6">
-        <h1 className="text-xl font-extrabold tracking-tight sm:text-2xl">Absensi Latihan</h1>
+        <h1 className="brutal-title text-2xl">ABSENSI LATIHAN</h1>
         <p className="mt-1 text-sm text-slate-500">
           {NAMA_HARI[w.hari]}, {w.tanggalStr} · {siswa.dojo.nama}
         </p>

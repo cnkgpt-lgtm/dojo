@@ -30,7 +30,7 @@ export default async function TambahJadwalPage() {
       >
         Kembali ke daftar jadwal
       </Link>
-      <h1 className="text-xl font-extrabold tracking-tight sm:text-2xl">Tambah Jadwal Latihan</h1>
+      <h1 className="brutal-title text-2xl">TAMBAH JADWAL LATIHAN</h1>
       <p className="mt-1 mb-6 text-sm text-slate-500">
         Tentukan hari, jam, dan sensei pengajar untuk setiap sesi latihan.
       </p>

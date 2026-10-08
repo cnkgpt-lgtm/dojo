@@ -30,7 +30,7 @@ export default async function TarifPage() {
 
   return (
     <div className="anim-fade-up mx-auto max-w-4xl">
-      <h1 className="text-xl font-extrabold tracking-tight sm:text-2xl">Tarif Iuran</h1>
+      <h1 className="brutal-title text-2xl">TARIF IURAN</h1>
       <p className="mt-1 mb-6 text-sm text-slate-500">
         Tarif fleksibel: khusus siswa, per dojo, atau default organisasi. Prioritas: siswa &gt; dojo &gt; default.
       </p>

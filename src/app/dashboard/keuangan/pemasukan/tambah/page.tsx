@@ -23,7 +23,7 @@ export default async function TambahPemasukanPage() {
       <Link href="/dashboard/keuangan/pemasukan" className="mb-4 inline-flex min-h-[44px] items-center text-sm font-semibold text-slate-600">
         Kembali ke daftar pemasukan
       </Link>
-      <h1 className="text-xl font-extrabold tracking-tight sm:text-2xl">Catat Pemasukan</h1>
+      <h1 className="brutal-title text-2xl">CATAT PEMASUKAN</h1>
       <p className="mt-1 mb-6 text-sm text-slate-500">
         Pemasukan iuran dari pembayaran siswa tercatat otomatis — form ini untuk pemasukan lain (pendaftaran, ujian, kegiatan, dst).
       </p>

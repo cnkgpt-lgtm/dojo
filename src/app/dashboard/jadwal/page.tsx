@@ -42,8 +42,7 @@ function FilterBar({
   tampilFilterDojo: boolean;
   isAdmin: boolean;
 }) {
-  const inputCls =
-    "rounded-xl bg-white px-3 py-2.5 text-sm ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:ring-dojo-700";
+  const inputCls = "brutal-input sm:w-auto";
   return (
     <form method="GET" className="flex flex-wrap gap-2">
       {tampilFilterDojo && (
@@ -71,10 +70,7 @@ function FilterBar({
           <option value="nonaktif">Nonaktif</option>
         </select>
       )}
-      <button
-        type="submit"
-        className="min-h-[44px] rounded-xl bg-dojo-700 px-4 text-sm font-bold text-white"
-      >
+      <button type="submit" className="brutal-btn brutal-btn-primary">
         Tampilkan
       </button>
     </form>
@@ -113,7 +109,7 @@ export default async function JadwalListPage({
     <div className="anim-fade-up">
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-xl font-extrabold tracking-tight sm:text-2xl">Jadwal Latihan</h1>
+          <h1 className="brutal-title text-2xl">JADWAL LATIHAN</h1>
           <p className="mt-1 text-sm text-slate-500">
             {isAdmin
               ? "Kelola jadwal latihan setiap dojo."
@@ -121,10 +117,7 @@ export default async function JadwalListPage({
           </p>
         </div>
         {isAdmin && (
-          <Link
-            href="/dashboard/jadwal/tambah"
-            className="inline-flex min-h-[44px] items-center rounded-xl bg-dojo-700 px-5 text-sm font-bold text-white"
-          >
+          <Link href="/dashboard/jadwal/tambah" className="brutal-btn brutal-btn-primary">
             Tambah Jadwal
           </Link>
         )}
@@ -135,7 +128,7 @@ export default async function JadwalListPage({
       </div>
 
       {data.length === 0 ? (
-        <p className="rounded-2xl bg-slate-50 p-6 text-sm text-slate-500 ring-1 ring-slate-200">
+        <p className="brutal-card p-6 text-sm text-slate-500">
           Belum ada jadwal latihan.
           {isAdmin && " Tambahkan jadwal pertama melalui tombol di atas."}
         </p>
@@ -144,7 +137,7 @@ export default async function JadwalListPage({
           {/* Mobile: kartu */}
           <ul className="space-y-3 lg:hidden">
             {data.map((j) => (
-              <li key={j.id} className="rounded-2xl bg-slate-50 p-4 ring-1 ring-slate-200">
+              <li key={j.id} className="brutal-card p-4">
                 <div className="flex items-start justify-between gap-2">
                   <div className="min-w-0">
                     <p className="font-bold">{j.namaLatihan}</p>
@@ -162,7 +155,7 @@ export default async function JadwalListPage({
                   <div className="mt-3 flex gap-2">
                     <Link
                       href={`/dashboard/jadwal/${j.id}/ubah`}
-                      className="inline-flex min-h-[44px] flex-1 items-center justify-center rounded-xl text-sm font-semibold text-dojo-700 ring-1 ring-slate-200"
+                      className="brutal-btn brutal-btn-light flex-1"
                     >
                       Ubah
                     </Link>
@@ -178,7 +171,7 @@ export default async function JadwalListPage({
           </ul>
 
           {/* Desktop: tabel */}
-          <div className="hidden overflow-x-auto rounded-2xl ring-1 ring-slate-200 lg:block">
+          <div className="hidden overflow-x-auto brutal-card lg:block">
             <table className="w-full text-left text-sm">
               <thead>
                 <tr className="bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
@@ -209,7 +202,7 @@ export default async function JadwalListPage({
                         <div className="flex gap-2">
                           <Link
                             href={`/dashboard/jadwal/${j.id}/ubah`}
-                            className="inline-flex min-h-[44px] items-center rounded-xl px-3 text-sm font-semibold text-dojo-700 ring-1 ring-slate-200"
+                            className="brutal-btn brutal-btn-light"
                           >
                             Ubah
                           </Link>

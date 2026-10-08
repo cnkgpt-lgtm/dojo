@@ -7,8 +7,7 @@ import { HapusButton } from "@/components/HapusButton";
 import { Pagination } from "@/components/Pagination";
 
 const PER_HALAMAN = 20;
-const inputCls =
-  "block w-full rounded-xl bg-white px-3 py-2.5 text-sm ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:ring-dojo-700";
+const inputCls = "brutal-input";
 
 export default async function PemasukanPage({
   searchParams,
@@ -73,21 +72,21 @@ export default async function PemasukanPage({
     <div className="anim-fade-up space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-xl font-extrabold tracking-tight sm:text-2xl">Pemasukan</h1>
+          <h1 className="brutal-title text-2xl">PEMASUKAN</h1>
           <p className="mt-1 text-sm text-slate-500">
-            Total periode ini: <span className="font-extrabold text-emerald-700">{rupiah(totalNominal._sum.nominal ?? 0)}</span>
+            Total periode ini: <span className="brutal-angka font-extrabold text-emerald-700">{rupiah(totalNominal._sum.nominal ?? 0)}</span>
           </p>
         </div>
         <Link
           href="/dashboard/keuangan/pemasukan/tambah"
-          className="inline-flex min-h-[48px] items-center rounded-xl bg-dojo-700 px-5 text-sm font-bold text-white"
+          className="brutal-btn brutal-btn-primary"
         >
           + Catat Pemasukan
         </Link>
       </div>
 
       {/* Filter */}
-      <form method="get" className="grid grid-cols-2 gap-3 rounded-2xl bg-slate-50 p-4 ring-1 ring-slate-200 sm:grid-cols-3 lg:grid-cols-6">
+      <form method="get" className="brutal-card grid grid-cols-2 gap-3 bg-slate-50 p-4 sm:grid-cols-3 lg:grid-cols-6">
         <label className="block text-xs font-semibold">Dari
           <input type="date" name="dari" defaultValue={dari} className={inputCls} />
         </label>
@@ -123,10 +122,10 @@ export default async function PemasukanPage({
           <input type="search" name="q" defaultValue={q} placeholder="Deskripsi" className={inputCls} />
         </label>
         <div className="col-span-2 flex items-end gap-2 sm:col-span-3 lg:col-span-6">
-          <button type="submit" className="inline-flex min-h-[44px] items-center rounded-xl bg-slate-900 px-5 text-sm font-bold text-white">
+          <button type="submit" className="brutal-btn brutal-btn-dark">
             Tampilkan
           </button>
-          <Link href="/dashboard/keuangan/pemasukan" className="inline-flex min-h-[44px] items-center rounded-xl px-4 text-sm font-semibold text-slate-600 ring-1 ring-slate-200">
+          <Link href="/dashboard/keuangan/pemasukan" className="brutal-btn brutal-btn-light">
             Atur ulang
           </Link>
         </div>
@@ -134,14 +133,14 @@ export default async function PemasukanPage({
 
       {/* Daftar — kartu di mobile, tabel di desktop */}
       {data.length === 0 ? (
-        <p className="rounded-2xl bg-slate-50 p-6 text-center text-sm text-slate-500 ring-1 ring-slate-200">
+        <p className="brutal-card p-6 text-center text-sm text-slate-500">
           Belum ada pemasukan pada filter ini.
         </p>
       ) : (
         <>
           <ul className="space-y-2 lg:hidden">
             {data.map((t) => (
-              <li key={t.id} className="rounded-2xl bg-slate-50 p-4 ring-1 ring-slate-200">
+              <li key={t.id} className="brutal-card bg-slate-50 p-4">
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0">
                     <p className="truncate text-sm font-semibold">{t.deskripsi}</p>
@@ -150,11 +149,11 @@ export default async function PemasukanPage({
                     </p>
                     <p className="text-xs text-slate-500">{t.dojo.nama}{t.paymentId ? " · Otomatis (Iuran)" : ""}</p>
                   </div>
-                  <p className="shrink-0 text-sm font-extrabold text-emerald-700">+{rupiah(t.nominal)}</p>
+                  <p className="brutal-angka shrink-0 text-sm text-emerald-700">+{rupiah(t.nominal)}</p>
                 </div>
                 {!t.paymentId && (
                   <div className="mt-3 flex gap-2">
-                    <Link href={`/dashboard/keuangan/pemasukan/ubah/${t.id}`} className="inline-flex min-h-[40px] items-center rounded-xl px-4 text-sm font-semibold text-dojo-700 ring-1 ring-slate-200">
+                    <Link href={`/dashboard/keuangan/pemasukan/ubah/${t.id}`} className="brutal-btn brutal-btn-light">
                       Ubah
                     </Link>
                     <HapusButton nama="pemasukan ini" endpoint={`/api/pemasukan/${t.id}`} kembaliKe="/dashboard/keuangan/pemasukan" />
@@ -163,27 +162,27 @@ export default async function PemasukanPage({
               </li>
             ))}
           </ul>
-          <div className="hidden overflow-x-auto rounded-2xl ring-1 ring-slate-200 lg:block">
+          <div className="brutal-card hidden overflow-x-auto lg:block">
             <table className="w-full min-w-[760px] text-sm">
               <thead>
-                <tr className="bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500">
-                  <th className="px-4 py-3 font-semibold">Tanggal</th>
-                  <th className="px-4 py-3 font-semibold">Deskripsi</th>
-                  <th className="px-4 py-3 font-semibold">Kategori</th>
-                  <th className="px-4 py-3 font-semibold">Metode</th>
-                  <th className="px-4 py-3 font-semibold">Dojo</th>
-                  <th className="px-4 py-3 text-right font-semibold">Nominal</th>
-                  <th className="px-4 py-3 text-right font-semibold">Aksi</th>
+                <tr className="text-left text-xs uppercase tracking-wide text-slate-500">
+                  <th className="px-4 py-3 font-black">Tanggal</th>
+                  <th className="px-4 py-3 font-black">Deskripsi</th>
+                  <th className="px-4 py-3 font-black">Kategori</th>
+                  <th className="px-4 py-3 font-black">Metode</th>
+                  <th className="px-4 py-3 font-black">Dojo</th>
+                  <th className="px-4 py-3 text-right font-black">Nominal</th>
+                  <th className="px-4 py-3 text-right font-black">Aksi</th>
                 </tr>
               </thead>
               <tbody>
                 {data.map((t) => (
-                  <tr key={t.id} className="border-t border-slate-100">
+                  <tr key={t.id} className="border-t-2 border-black/10">
                     <td className="whitespace-nowrap px-4 py-3">{formatTanggal(t.tanggal)}</td>
                     <td className="px-4 py-3">
                       <span className="font-semibold">{t.deskripsi}</span>
                       {t.paymentId && (
-                        <span className="ml-2 rounded-full bg-sky-50 px-2 py-0.5 text-[11px] font-semibold text-sky-700 ring-1 ring-sky-200">
+                        <span className="brutal-badge ml-2 bg-sky-50 text-sky-700">
                           Otomatis (Iuran)
                         </span>
                       )}
@@ -191,7 +190,7 @@ export default async function PemasukanPage({
                     <td className="px-4 py-3">{t.kategori.nama}</td>
                     <td className="px-4 py-3">{LABEL_METODE_BAYAR[t.metode]}</td>
                     <td className="px-4 py-3">{t.dojo.nama}</td>
-                    <td className="px-4 py-3 text-right font-extrabold text-emerald-700">+{rupiah(t.nominal)}</td>
+                    <td className="brutal-angka px-4 py-3 text-right text-emerald-700">+{rupiah(t.nominal)}</td>
                     <td className="px-4 py-3 text-right">
                       {t.paymentId ? (
                         <span className="text-xs text-slate-400">Terkunci</span>

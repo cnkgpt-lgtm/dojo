@@ -51,7 +51,7 @@ export default async function UbahJadwalPage({
       >
         Kembali ke daftar jadwal
       </Link>
-      <h1 className="text-xl font-extrabold tracking-tight sm:text-2xl">Ubah Jadwal Latihan</h1>
+      <h1 className="brutal-title text-2xl">UBAH JADWAL LATIHAN</h1>
       <p className="mt-1 mb-6 text-sm text-slate-500">{jadwal.namaLatihan}</p>
       <JadwalForm
         mode="ubah"

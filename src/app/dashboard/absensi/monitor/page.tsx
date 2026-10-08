@@ -138,12 +138,11 @@ export default async function MonitorAbsensiPage({
     }),
   ]);
 
-  const inputCls =
-    "rounded-xl bg-white px-3 py-2.5 text-sm ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:ring-dojo-700";
+  const inputCls = "brutal-input sm:w-auto";
 
   return (
     <div className="anim-fade-up">
-      <h1 className="text-xl font-extrabold tracking-tight sm:text-2xl">Monitor Absensi</h1>
+      <h1 className="brutal-title text-2xl">MONITOR ABSENSI</h1>
       <p className="mt-1 mb-3 text-sm text-slate-500">
         {jumlah("HADIR")} hadir · {jumlah("TERLAMBAT")} terlambat · {jumlah("DIBATALKAN")} dibatalkan
       </p>
@@ -193,16 +192,13 @@ export default async function MonitorAbsensiPage({
           aria-label="Cari siswa"
           className={inputCls}
         />
-        <button
-          type="submit"
-          className="min-h-[44px] rounded-xl bg-dojo-700 px-4 text-sm font-bold text-white"
-        >
+        <button type="submit" className="brutal-btn brutal-btn-primary">
           Tampilkan
         </button>
       </form>
 
       {data.length === 0 ? (
-        <p className="rounded-2xl bg-slate-50 p-6 text-sm text-slate-500 ring-1 ring-slate-200">
+        <p className="brutal-card p-6 text-sm text-slate-500">
           Belum ada data absensi untuk filter ini.
         </p>
       ) : (
@@ -210,7 +206,7 @@ export default async function MonitorAbsensiPage({
           {/* Mobile: kartu */}
           <ul className="space-y-3 lg:hidden">
             {data.map((a) => (
-              <li key={a.id} className="rounded-2xl bg-slate-50 p-4 ring-1 ring-slate-200">
+              <li key={a.id} className="brutal-card p-4">
                 <div className="flex items-center gap-3">
                   <div
                     aria-hidden="true"
@@ -233,9 +229,7 @@ export default async function MonitorAbsensiPage({
                       {a.location ? ` · ${a.location.jarakMeter} m` : ""}
                     </p>
                   </div>
-                  <span
-                    className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ${WARNA_STATUS_ABSENSI[a.status]}`}
-                  >
+                  <span className={`brutal-badge ${WARNA_STATUS_ABSENSI[a.status]}`}>
                     {LABEL_STATUS_ABSENSI[a.status]}
                   </span>
                 </div>
@@ -247,7 +241,7 @@ export default async function MonitorAbsensiPage({
           </ul>
 
           {/* Desktop: tabel */}
-          <div className="hidden overflow-x-auto rounded-2xl ring-1 ring-slate-200 lg:block">
+          <div className="hidden overflow-x-auto brutal-card lg:block">
             <table className="w-full text-left text-sm">
               <thead>
                 <tr className="bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
@@ -292,9 +286,7 @@ export default async function MonitorAbsensiPage({
                       {a.location ? `${a.location.jarakMeter} m` : "-"}
                     </td>
                     <td className="px-4 py-3">
-                      <span
-                        className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ${WARNA_STATUS_ABSENSI[a.status]}`}
-                      >
+                      <span className={`brutal-badge ${WARNA_STATUS_ABSENSI[a.status]}`}>
                         {LABEL_STATUS_ABSENSI[a.status]}
                       </span>
                     </td>
