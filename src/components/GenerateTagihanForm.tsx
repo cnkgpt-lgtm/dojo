@@ -50,7 +50,7 @@ export function GenerateTagihanForm({ dojoList }: { dojoList: { id: string; nama
   return (
     <form
       onSubmit={generate}
-      className="rounded-2xl bg-slate-50 p-5 ring-1 ring-slate-200 sm:flex sm:items-end sm:gap-3"
+      className="brutal-card bg-slate-50 p-5 sm:flex sm:items-end sm:gap-3"
     >
       <label className="block flex-1">
         <span className="mb-1 block text-sm font-semibold">Periode</span>
@@ -58,7 +58,7 @@ export function GenerateTagihanForm({ dojoList }: { dojoList: { id: string; nama
           value={periode}
           onChange={(e) => setPeriode(e.target.value)}
           placeholder="2026-11"
-          className="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm focus:border-dojo-600 focus:outline-none focus:ring-2 focus:ring-dojo-100"
+          className="brutal-input"
         />
       </label>
       {dojoList.length > 1 && (
@@ -67,7 +67,7 @@ export function GenerateTagihanForm({ dojoList }: { dojoList: { id: string; nama
           <select
             value={dojoId}
             onChange={(e) => setDojoId(e.target.value)}
-            className="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm focus:border-dojo-600 focus:outline-none focus:ring-2 focus:ring-dojo-100"
+            className="brutal-input"
           >
             <option value="">Semua dojo</option>
             {dojoList.map((d) => (
@@ -81,19 +81,17 @@ export function GenerateTagihanForm({ dojoList }: { dojoList: { id: string; nama
       <button
         type="submit"
         disabled={sibuk}
-        className={`mt-3 min-h-[48px] w-full rounded-xl px-6 text-sm font-bold text-white disabled:opacity-50 sm:mt-0 sm:w-auto ${
-          konfirmasi ? "bg-amber-600" : "bg-dojo-700"
-        }`}
+        className={`brutal-btn mt-3 w-full sm:mt-0 sm:w-auto ${konfirmasi ? "brutal-btn-warn" : "brutal-btn-primary"}`}
       >
         {sibuk ? "Memproses..." : konfirmasi ? "Yakin, Buat Tagihan" : "Buat Tagihan"}
       </button>
       {hasil && (
-        <p className="mt-3 w-full rounded-xl bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700 ring-1 ring-emerald-200">
+        <p className="brutal-card mt-3 w-full bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700">
           {hasil}
         </p>
       )}
       {galat && (
-        <p className="mt-3 w-full rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-700 ring-1 ring-red-200">
+        <p className="brutal-card mt-3 w-full bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
           {galat}
         </p>
       )}

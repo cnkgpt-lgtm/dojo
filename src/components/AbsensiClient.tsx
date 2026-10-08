@@ -193,7 +193,7 @@ export function AbsensiClient({
       {/* Identitas siswa */}
       <section
         aria-label="Identitas siswa"
-        className="flex items-center gap-4 rounded-2xl bg-slate-50 p-4 ring-1 ring-slate-200"
+        className="flex items-center gap-4 brutal-card p-4"
       >
         <div
           aria-hidden="true"
@@ -216,20 +216,20 @@ export function AbsensiClient({
       <section
         aria-label="Status lokasi"
         aria-live="polite"
-        className="rounded-2xl bg-slate-50 p-4 ring-1 ring-slate-200"
+        className="brutal-card p-4"
       >
         <div className="flex items-center justify-between gap-2">
           <p className="text-sm font-semibold">Lokasi Anda</p>
           {jarak === null ? (
-            <span className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-500 ring-1 ring-slate-200">
+            <span className="brutal-badge bg-slate-100 text-slate-600">
               Mencari lokasi...
             </span>
           ) : dalamRadius ? (
-            <span className="rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700 ring-1 ring-emerald-200">
+            <span className="brutal-badge bg-emerald-100 text-emerald-800">
               Dalam area · {jarak} m
             </span>
           ) : (
-            <span className="rounded-full bg-red-50 px-2.5 py-1 text-xs font-semibold text-red-700 ring-1 ring-red-200">
+            <span className="brutal-badge bg-red-100 text-red-800">
               Di luar area · {jarak} m
             </span>
           )}
@@ -246,9 +246,9 @@ export function AbsensiClient({
 
       {/* Pilih jadwal */}
       <section aria-label="Pilih jadwal latihan">
-        <h2 className="mb-2 text-base font-bold">Pilih jadwal hari ini</h2>
+        <h2 className="brutal-title text-lg mb-2">PILIH JADWAL HARI INI</h2>
         {schedules.length === 0 ? (
-          <p className="rounded-2xl bg-slate-50 p-5 text-sm text-slate-500 ring-1 ring-slate-200">
+          <p className="brutal-card p-5 text-sm text-slate-500">
             Tidak ada jadwal latihan hari ini.
           </p>
         ) : (
@@ -265,10 +265,8 @@ export function AbsensiClient({
                       setHasil(null);
                     }}
                     aria-pressed={aktif}
-                    className={`block w-full rounded-2xl p-4 text-left ring-1 transition ${
-                      aktif
-                        ? "bg-dojo-50 ring-2 ring-dojo-700"
-                        : "bg-slate-50 ring-slate-200"
+                    className={`block w-full brutal-card p-4 text-left ${
+                      aktif ? "bg-dojo-50" : ""
                     }`}
                   >
                     <div className="flex items-start justify-between gap-2">
@@ -279,9 +277,7 @@ export function AbsensiClient({
                           {s.coachNama ? ` · Sensei ${s.coachNama}` : ""}
                         </p>
                       </div>
-                      <span
-                        className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ${WARNA_JENDELA[s.jendela]}`}
-                      >
+                      <span className={`brutal-badge ${WARNA_JENDELA[s.jendela]}`}>
                         {sudah ? "Sudah absen" : LABEL_JENDELA[s.jendela]}
                       </span>
                     </div>
@@ -295,9 +291,9 @@ export function AbsensiClient({
 
       {/* Kamera / selfie */}
       <section aria-label="Foto selfie">
-        <h2 className="mb-2 text-base font-bold">Foto selfie</h2>
+        <h2 className="brutal-title text-lg mb-2">FOTO SELFIE</h2>
         {fotoUrl ? (
-          <div className="overflow-hidden rounded-2xl ring-1 ring-slate-200">
+          <div className="overflow-hidden brutal-card">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={fotoUrl} alt="Pratinjau selfie absensi" className="aspect-square w-full object-cover" />
             <button
@@ -306,40 +302,40 @@ export function AbsensiClient({
                 setFotoBlob(null);
                 setFotoUrl("");
               }}
-              className="flex min-h-[44px] w-full items-center justify-center bg-slate-50 text-sm font-semibold text-slate-600"
+              className="brutal-btn brutal-btn-light w-full"
             >
               Ambil ulang foto
             </button>
           </div>
         ) : kameraAktif ? (
-          <div className="overflow-hidden rounded-2xl bg-black ring-1 ring-slate-200">
+          <div className="overflow-hidden brutal-card bg-black">
             <video ref={videoRef} playsInline muted className="aspect-square w-full -scale-x-100 object-cover" />
             <div className="flex gap-2 bg-white p-3">
               <button
                 type="button"
                 onClick={ambilFoto}
-                className="inline-flex min-h-[48px] flex-1 items-center justify-center rounded-xl bg-dojo-700 text-sm font-bold text-white"
+                className="brutal-btn brutal-btn-primary flex-1"
               >
                 Jepret Foto
               </button>
               <button
                 type="button"
                 onClick={hentikanKamera}
-                className="inline-flex min-h-[48px] items-center rounded-xl px-4 text-sm font-semibold text-slate-600 ring-1 ring-slate-200"
+                className="brutal-btn brutal-btn-light"
               >
                 Batal
               </button>
             </div>
           </div>
         ) : (
-          <div className="rounded-2xl bg-slate-50 p-5 text-center ring-1 ring-slate-200">
+          <div className="brutal-card p-5 text-center">
             <p className="text-sm text-slate-500">
               Ambil selfie wajah Anda sebagai bukti kehadiran.
             </p>
             <button
               type="button"
               onClick={aktifkanKamera}
-              className="mt-3 inline-flex min-h-[48px] items-center rounded-xl bg-dojo-700 px-6 text-sm font-bold text-white"
+              className="brutal-btn brutal-btn-primary mt-3"
             >
               Aktifkan Kamera
             </button>
@@ -351,7 +347,7 @@ export function AbsensiClient({
             <div className="mt-3">
               <label
                 htmlFor="foto-file"
-                className="inline-flex min-h-[44px] cursor-pointer items-center rounded-xl px-4 text-sm font-semibold text-dojo-700 ring-1 ring-slate-200"
+                className="brutal-btn brutal-btn-light cursor-pointer"
               >
                 Atau unggah foto
               </label>
@@ -373,7 +369,7 @@ export function AbsensiClient({
         type="button"
         onClick={kirimAbsensi}
         disabled={!bisaAbsen}
-        className="min-h-[56px] w-full rounded-2xl bg-dojo-700 text-base font-extrabold text-white disabled:opacity-40"
+        className="brutal-btn brutal-btn-primary w-full min-h-[56px] text-base"
       >
         {mengirim ? "Mengirim..." : sudahAbsen ? "Sudah Absen" : "AMBIL SELFIE & ABSEN"}
       </button>
@@ -394,10 +390,8 @@ export function AbsensiClient({
       {hasil && (
         <div
           role={hasil.ok ? "status" : "alert"}
-          className={`rounded-2xl p-5 text-center ring-1 ${
-            hasil.ok
-              ? "bg-emerald-50 text-emerald-800 ring-emerald-200"
-              : "bg-red-50 text-red-700 ring-red-200"
+          className={`brutal-card p-5 text-center ${
+            hasil.ok ? "bg-emerald-50 text-emerald-800" : "bg-red-50 text-red-700"
           }`}
         >
           <p className="font-bold">{hasil.pesan}</p>

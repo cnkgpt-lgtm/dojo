@@ -5,7 +5,7 @@ export function BadgeIuran({ status }: { status: string }) {
   const warna = WARNA_STATUS_IURAN[status] ?? "bg-slate-100 text-slate-600 ring-slate-200";
   const label = LABEL_STATUS_IURAN[status] ?? status;
   return (
-    <span className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ${warna}`}>
+    <span className={`brutal-badge ${warna}`}>
       {label}
     </span>
   );
@@ -13,7 +13,7 @@ export function BadgeIuran({ status }: { status: string }) {
 
 export function BadgeMetode({ metode }: { metode: string }) {
   return (
-    <span className="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-600 ring-1 ring-slate-200">
+    <span className="brutal-badge bg-slate-100 text-slate-600">
       {LABEL_METODE_BAYAR[metode] ?? metode}
     </span>
   );

@@ -20,8 +20,7 @@ export type JadwalAwal = {
   isActive?: boolean;
 };
 
-const inputCls =
-  "mt-1 block w-full rounded-xl bg-white px-4 py-3 text-sm ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:ring-dojo-700";
+const inputCls = "mt-1 brutal-input";
 const labelCls = "block text-sm font-semibold";
 
 export function JadwalForm({
@@ -90,7 +89,7 @@ export function JadwalForm({
   }
 
   return (
-    <form onSubmit={simpan} className="space-y-5 rounded-2xl bg-slate-50 p-5 ring-1 ring-slate-200 sm:p-6">
+    <form onSubmit={simpan} className="space-y-5 brutal-card p-5 sm:p-6">
       <div>
         <label htmlFor="namaLatihan" className={labelCls}>
           Nama latihan
@@ -212,7 +211,7 @@ export function JadwalForm({
           type="checkbox"
           checked={form.isActive}
           onChange={(e) => ubah("isActive", e.target.checked)}
-          className="h-5 w-5 accent-red-700"
+          className="h-5 w-5 accent-dojo-700"
         />
         Jadwal aktif
       </label>
@@ -226,7 +225,7 @@ export function JadwalForm({
       <button
         type="submit"
         disabled={menyimpan}
-        className="inline-flex min-h-[48px] w-full items-center justify-center rounded-xl bg-dojo-700 px-6 text-sm font-bold text-white disabled:opacity-50 sm:w-auto"
+        className="brutal-btn brutal-btn-primary w-full sm:w-auto"
       >
         {menyimpan ? "Menyimpan..." : mode === "tambah" ? "Simpan Jadwal" : "Simpan Perubahan"}
       </button>

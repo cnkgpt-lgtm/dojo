@@ -66,10 +66,10 @@ export function KenaikanForm({ siswaList, sabukList }: { siswaList: Siswa[]; sab
   return (
     <form
       onSubmit={kirim}
-      className="rounded-2xl bg-white p-5 ring-1 ring-slate-200"
+      className="brutal-card p-5"
     >
       {pesan && (
-        <p className="mb-4 rounded-xl bg-slate-100 px-4 py-3 text-sm font-medium text-slate-700">
+        <p className="brutal-card mb-4 px-4 py-3 text-sm font-medium text-slate-700">
           {pesan}
         </p>
       )}
@@ -83,7 +83,7 @@ export function KenaikanForm({ siswaList, sabukList }: { siswaList: Siswa[]; sab
               setBeltBaruId("");
             }}
             required
-            className="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2.5"
+            className="brutal-input mt-1"
           >
             <option value="">— Pilih siswa —</option>
             {siswaList.map((s) => (
@@ -100,7 +100,7 @@ export function KenaikanForm({ siswaList, sabukList }: { siswaList: Siswa[]; sab
             onChange={(e) => setBeltBaruId(e.target.value)}
             required
             disabled={!siswa}
-            className="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2.5 disabled:opacity-50"
+            className="brutal-input mt-1"
           >
             <option value="">— Pilih sabuk —</option>
             {pilihan.map((b) => (
@@ -122,7 +122,7 @@ export function KenaikanForm({ siswaList, sabukList }: { siswaList: Siswa[]; sab
             value={tanggal}
             onChange={(e) => setTanggal(e.target.value)}
             required
-            className="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2.5"
+            className="brutal-input mt-1"
           />
         </label>
         <label className="block">
@@ -132,7 +132,7 @@ export function KenaikanForm({ siswaList, sabukList }: { siswaList: Siswa[]; sab
             onChange={(e) => setNilai(e.target.value)}
             placeholder="mis. 85 atau Lulus"
             maxLength={50}
-            className="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2.5"
+            className="brutal-input mt-1"
           />
         </label>
         <label className="block">
@@ -141,7 +141,7 @@ export function KenaikanForm({ siswaList, sabukList }: { siswaList: Siswa[]; sab
             type="file"
             accept="image/jpeg,image/png,image/webp"
             onChange={(e) => setFoto(e.target.files?.[0] ?? null)}
-            className="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2.5 text-sm"
+            className="brutal-input mt-1 text-sm"
           />
         </label>
         <label className="block sm:col-span-2">
@@ -151,14 +151,14 @@ export function KenaikanForm({ siswaList, sabukList }: { siswaList: Siswa[]; sab
             onChange={(e) => setKeterangan(e.target.value)}
             rows={3}
             placeholder="Wajib diisi bila naik lebih dari satu tingkat"
-            className="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2.5"
+            className="brutal-input mt-1"
           />
         </label>
       </div>
       <button
         type="submit"
         disabled={sibuk || !studentId || !beltBaruId}
-        className="mt-4 rounded-xl bg-dojo-700 px-6 py-3 font-bold text-white disabled:opacity-50"
+        className="brutal-btn brutal-btn-primary mt-4"
       >
         {sibuk ? "Menyimpan…" : "Catat Kenaikan Sabuk"}
       </button>

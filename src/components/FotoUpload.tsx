@@ -55,7 +55,7 @@ export function FotoUpload({
     <div className="flex items-center gap-4">
       <div
         aria-hidden="true"
-        className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-slate-100 ring-1 ring-slate-200"
+        className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden brutal-card bg-slate-100"
       >
         {pratinjau ? (
           // eslint-disable-next-line @next/next/no-img-element
@@ -77,7 +77,7 @@ export function FotoUpload({
           type="button"
           onClick={() => inputRef.current?.click()}
           disabled={mengunggah}
-          className="inline-flex min-h-[44px] items-center rounded-xl bg-slate-900 px-4 text-sm font-semibold text-white disabled:opacity-50"
+          className="brutal-btn brutal-btn-dark"
         >
           {mengunggah ? "Mengunggah..." : pratinjau ? "Ganti Foto" : "Pilih Foto"}
         </button>

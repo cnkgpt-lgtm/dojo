@@ -58,22 +58,21 @@ export function BayarForm({ tagihan }: { tagihan: Tagihan }) {
     router.refresh();
   }
 
-  const inputCls =
-    "w-full rounded-xl border border-slate-300 px-4 py-3 text-sm focus:border-dojo-600 focus:outline-none focus:ring-2 focus:ring-dojo-100";
+  const inputCls = "brutal-input";
 
   return (
     <div className="mt-3">
       {!buka ? (
         <button
           onClick={() => setBuka(true)}
-          className="min-h-[48px] w-full rounded-xl bg-dojo-700 px-6 text-sm font-bold text-white sm:w-auto"
+          className="brutal-btn brutal-btn-primary w-full sm:w-auto"
         >
           BAYAR
         </button>
       ) : (
-        <form onSubmit={kirim} className="rounded-2xl bg-slate-50 p-4 ring-1 ring-slate-200">
+        <form onSubmit={kirim} className="brutal-card bg-slate-50 p-4">
           {galat && (
-            <p className="mb-3 rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-700 ring-1 ring-red-200">
+            <p className="brutal-card mb-3 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
               {galat}
             </p>
           )}
@@ -107,9 +106,7 @@ export function BayarForm({ tagihan }: { tagihan: Tagihan }) {
             <button
               type="submit"
               disabled={sibuk}
-              className={`min-h-[48px] flex-1 rounded-xl px-6 text-sm font-bold text-white disabled:opacity-50 sm:flex-none ${
-                konfirmasi ? "bg-amber-600" : "bg-dojo-700"
-              }`}
+              className={`brutal-btn flex-1 sm:flex-none ${konfirmasi ? "brutal-btn-warn" : "brutal-btn-primary"}`}
             >
               {sibuk ? "Mengirim..." : konfirmasi ? "YA, KIRIM SEKARANG" : "KIRIM PEMBAYARAN"}
             </button>
@@ -120,7 +117,7 @@ export function BayarForm({ tagihan }: { tagihan: Tagihan }) {
                 setGalat("");
                 setKonfirmasi(false);
               }}
-              className="min-h-[48px] rounded-xl bg-slate-200 px-5 text-sm font-semibold text-slate-700"
+              className="brutal-btn brutal-btn-light"
             >
               Batal
             </button>

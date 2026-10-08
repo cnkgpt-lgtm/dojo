@@ -49,7 +49,7 @@ export function KoreksiAbsensi({
       <button
         type="button"
         onClick={() => setTerbuka(true)}
-        className="inline-flex min-h-[44px] items-center rounded-xl px-3 text-sm font-semibold text-dojo-700 ring-1 ring-slate-200"
+        className="brutal-btn brutal-btn-light"
       >
         Koreksi
       </button>
@@ -59,14 +59,14 @@ export function KoreksiAbsensi({
   return (
     <form
       onSubmit={simpan}
-      className="mt-2 space-y-2 rounded-xl bg-white p-3 ring-1 ring-slate-200"
+      className="mt-2 space-y-2 brutal-card p-3"
     >
       <div className="flex gap-2">
         <select
           value={status}
           onChange={(e) => setStatus(e.target.value)}
           aria-label="Status koreksi"
-          className="min-h-[44px] flex-1 rounded-xl bg-white px-3 text-sm ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:ring-dojo-700"
+          className="brutal-input flex-1"
         >
           {STATUS_KOREKSI.map((s) => (
             <option key={s} value={s}>
@@ -80,7 +80,7 @@ export function KoreksiAbsensi({
         onChange={(e) => setCatatan(e.target.value)}
         placeholder="Alasan koreksi (opsional)"
         maxLength={500}
-        className="block w-full rounded-xl bg-white px-3 py-2.5 text-sm ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:ring-dojo-700"
+        className="brutal-input"
       />
       {galat && (
         <p className="text-xs text-red-600" role="alert">
@@ -91,14 +91,14 @@ export function KoreksiAbsensi({
         <button
           type="submit"
           disabled={menyimpan}
-          className="inline-flex min-h-[44px] flex-1 items-center justify-center rounded-xl bg-dojo-700 text-sm font-bold text-white disabled:opacity-50"
+          className="brutal-btn brutal-btn-primary flex-1"
         >
           {menyimpan ? "Menyimpan..." : "Simpan Koreksi"}
         </button>
         <button
           type="button"
           onClick={() => setTerbuka(false)}
-          className="inline-flex min-h-[44px] items-center rounded-xl px-4 text-sm font-semibold text-slate-600 ring-1 ring-slate-200"
+          className="brutal-btn brutal-btn-light"
         >
           Batal
         </button>

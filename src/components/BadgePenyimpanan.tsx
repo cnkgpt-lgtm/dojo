@@ -29,7 +29,7 @@ export function BadgePenyimpanan({ className = "" }: { className?: string }) {
   if (status.telegram) {
     return (
       <span
-        className={`inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-700 ring-1 ring-emerald-200 ${className}`}
+        className={`brutal-badge inline-flex items-center gap-1.5 bg-emerald-100 text-emerald-800 ${className}`}
         title="File bukti & selfie tersimpan permanen di Telegram"
       >
         <span aria-hidden="true" className="h-2 w-2 rounded-full bg-emerald-500" />
@@ -40,7 +40,7 @@ export function BadgePenyimpanan({ className = "" }: { className?: string }) {
 
   return (
     <span className={`inline-flex flex-col gap-1 ${className}`}>
-      <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-amber-50 px-3 py-1 text-xs font-bold text-amber-800 ring-1 ring-amber-200">
+      <span className="brutal-badge inline-flex w-fit items-center gap-1.5 bg-amber-100 text-amber-900">
         <span aria-hidden="true" className="h-2 w-2 rounded-full bg-amber-500" />
         Penyimpanan: Sementara
       </span>

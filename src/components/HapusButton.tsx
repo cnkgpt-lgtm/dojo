@@ -44,11 +44,7 @@ export function HapusButton({
         type="button"
         onClick={hapus}
         disabled={menghapus}
-        className={`inline-flex min-h-[44px] items-center rounded-xl px-4 text-sm font-semibold ring-1 disabled:opacity-50 ${
-          konfirmasi
-            ? "bg-amber-600 text-white ring-amber-600"
-            : "text-red-700 ring-red-200"
-        }`}
+        className={`brutal-btn ${konfirmasi ? "brutal-btn-warn" : "brutal-btn-danger"}`}
       >
         {menghapus ? "Menghapus..." : konfirmasi ? "Yakin hapus?" : "Hapus"}
       </button>
