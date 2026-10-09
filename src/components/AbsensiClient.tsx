@@ -47,7 +47,7 @@ export function AbsensiClient({
   schedules: JadwalAktif[];
 }) {
   const [jadwalId, setJadwalId] = useState(schedules.find((s) => s.jendela === "BUKA")?.id ?? "");
-  const [posisi, setPosisi] = useState<{ lat: number; lon: number } | null>(null);
+  const [posisi, setPosisi] = useState<{ lat: number; lon: number; acc: number | null } | null>(null);
   const [gpsGalat, setGpsGalat] = useState("");
   const [kameraAktif, setKameraAktif] = useState(false);
   const [kameraGagal, setKameraGagal] = useState(false);
@@ -68,7 +68,11 @@ export function AbsensiClient({
     }
     const id = navigator.geolocation.watchPosition(
       (pos) => {
-        setPosisi({ lat: pos.coords.latitude, lon: pos.coords.longitude });
+        setPosisi({
+          lat: pos.coords.latitude,
+          lon: pos.coords.longitude,
+          acc: Number.isFinite(pos.coords.accuracy) ? pos.coords.accuracy : null,
+        });
         setGpsGalat("");
       },
       () => setGpsGalat("Lokasi tidak dapat ditemukan. Silakan aktifkan GPS."),
@@ -173,6 +177,7 @@ export function AbsensiClient({
       form.append("scheduleId", jadwalTerpilih.id);
       form.append("latitude", String(posisi.lat));
       form.append("longitude", String(posisi.lon));
+      if (posisi.acc != null) form.append("accuracy", String(Math.round(posisi.acc)));
       form.append("foto", fotoBlob, "selfie.jpg");
       const res = await fetch("/api/absensi", { method: "POST", body: form });
       const json = await res.json().catch(() => ({}));

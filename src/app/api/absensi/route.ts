@@ -8,6 +8,8 @@ import {
   statusJendela,
   statusKehadiran,
   haversineMeter,
+  evaluasiRisikoGps,
+  koordinatDariIp,
 } from "@/lib/absensi";
 
 const PER_HALAMAN_MAKS = 50;
@@ -117,7 +119,10 @@ export async function POST(req: Request) {
   const scheduleId = String(form?.get("scheduleId") ?? "").trim();
   const latitude = Number(form?.get("latitude"));
   const longitude = Number(form?.get("longitude"));
+  const accuracyRaw = Number(form?.get("accuracy"));
+  const accuracy = Number.isFinite(accuracyRaw) && accuracyRaw >= 0 ? accuracyRaw : null;
   const file = form?.get("foto");
+  const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || null;
 
   if (!scheduleId)
     return NextResponse.json({ error: "Jadwal latihan wajib dipilih." }, { status: 400 });
@@ -178,6 +183,34 @@ export async function POST(req: Request) {
   if (!simpan.ok) return NextResponse.json({ error: simpan.error }, { status: 400 });
 
   const status = statusKehadiran(jadwal.jamMulai, w.menit);
+
+  // Pertahanan anti fake-GPS: nilai sinyal risiko (akurasi, geolokasi IP,
+  // perpindahan mustahil). Hasilnya FLAG, bukan blokir — kecuali sinyalnya
+  // pasti, false positive (mis. GPS dalam ruangan) merugikan siswa jujur.
+  const [ipGeo, absensiTerakhir] = await Promise.all([
+    koordinatDariIp(ip),
+    prisma.attendance.findFirst({
+      where: { studentId: siswa.id },
+      orderBy: { jam: "desc" },
+      include: { location: { select: { latitude: true, longitude: true } } },
+    }),
+  ]);
+  const risiko = evaluasiRisikoGps({
+    accuracy,
+    ipLat: ipGeo?.lat ?? null,
+    ipLon: ipGeo?.lon ?? null,
+    terakhir: absensiTerakhir?.location
+      ? {
+          jam: absensiTerakhir.jam,
+          latitude: absensiTerakhir.location.latitude,
+          longitude: absensiTerakhir.location.longitude,
+        }
+      : null,
+    sekarang: new Date(),
+    lat: latitude,
+    lon: longitude,
+  });
+
   try {
     const dibuat = await prisma.attendance.create({
       data: {
@@ -193,7 +226,10 @@ export async function POST(req: Request) {
             latitude,
             longitude,
             jarakMeter: Math.round(jarak),
-            statusGps: "VALID",
+            statusGps: risiko.length > 0 ? "MENCURIGAKAN" : "VALID",
+            akurasiMeter: accuracy,
+            ipAddress: ip,
+            catatanRisiko: risiko.length > 0 ? risiko.join("; ") : null,
           },
         },
       },

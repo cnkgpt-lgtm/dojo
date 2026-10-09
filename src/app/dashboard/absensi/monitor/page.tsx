@@ -101,7 +101,7 @@ export default async function MonitorAbsensiPage({
         schedule: { select: { id: true, namaLatihan: true, hari: true, jamMulai: true } },
         dojo: { select: { id: true, nama: true } },
         photo: { select: { url: true } },
-        location: { select: { jarakMeter: true, statusGps: true } },
+        location: { select: { jarakMeter: true, statusGps: true, catatanRisiko: true } },
       },
     }),
     prisma.attendance.groupBy({
@@ -228,6 +228,16 @@ export default async function MonitorAbsensiPage({
                       {NAMA_HARI[a.schedule.hari]}, {formatTanggal(a.tanggal)}
                       {a.location ? ` · ${a.location.jarakMeter} m` : ""}
                     </p>
+                    {a.location?.statusGps === "MENCURIGAKAN" && (
+                      <p className="mt-1">
+                        <span
+                          className="brutal-badge bg-amber-300 text-black"
+                          title={a.location.catatanRisiko ?? "Sinyal lokasi mencurigakan"}
+                        >
+                          ⚠ Perlu verifikasi
+                        </span>
+                      </p>
+                    )}
                   </div>
                   <span className={`brutal-badge ${WARNA_STATUS_ABSENSI[a.status]}`}>
                     {LABEL_STATUS_ABSENSI[a.status]}
@@ -284,6 +294,14 @@ export default async function MonitorAbsensiPage({
                     <td className="px-4 py-3">{formatTanggal(a.tanggal)}</td>
                     <td className="px-4 py-3">
                       {a.location ? `${a.location.jarakMeter} m` : "-"}
+                      {a.location?.statusGps === "MENCURIGAKAN" && (
+                        <span
+                          className="brutal-badge ml-2 bg-amber-300 text-black"
+                          title={a.location.catatanRisiko ?? "Sinyal lokasi mencurigakan"}
+                        >
+                          ⚠ Perlu verifikasi
+                        </span>
+                      )}
                     </td>
                     <td className="px-4 py-3">
                       <span className={`brutal-badge ${WARNA_STATUS_ABSENSI[a.status]}`}>

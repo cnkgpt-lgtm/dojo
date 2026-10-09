@@ -59,6 +59,7 @@ enum GpsStatus {
   VALID
   DI_LUAR_RADIUS
   TIDAK_TERSEDIA
+  MENCURIGAKAN // lolos radius tapi ada sinyal risiko (akurasi/IP/pergerakan)
 }
 
 // --- Status iuran/tagihan (§20) ------------------------------------------------
@@ -268,6 +269,9 @@ model AttendanceLocation {
   longitude    Float
   jarakMeter   Float      // jarak dari titik dojo saat absensi
   statusGps    GpsStatus  @default(VALID)
+  akurasiMeter Float?     // coords.accuracy dari browser (meter)
+  ipAddress    String?    // IP saat absensi (jejak audit)
+  catatanRisiko String?   // alasan penandaan MENCURIGAKAN
   takenAt      DateTime   @default(now())
 }
 
