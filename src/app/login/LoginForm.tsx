@@ -40,7 +40,7 @@ export function LoginForm() {
     <form onSubmit={handleSubmit} className="space-y-4" noValidate={false}>
       <div>
         <label htmlFor="identitas" className="mb-1.5 block text-sm font-extrabold text-black">
-          Nomor HP / Email
+          Username / Nomor HP / Email
         </label>
         <input
           id="identitas"
@@ -50,7 +50,7 @@ export function LoginForm() {
           required
           value={identitas}
           onChange={(e) => setIdentitas(e.target.value)}
-          placeholder="08xxxxxxxxxx atau nama@email.com"
+          placeholder="username, 08xxxxxxxxxx, atau nama@email.com"
           className="brutal-input !text-base placeholder:text-slate-400"
         />
       </div>

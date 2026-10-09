@@ -91,6 +91,7 @@ model User {
   name           String
   phone          String    @unique // login bisa pakai nomor HP ...
   email          String?   @unique // ... atau email
+  username       String?   @unique // ... atau username (mis. demo: admin/sensei/siswa)
   passwordHash   String
   role           Role
   isActive       Boolean   @default(true)

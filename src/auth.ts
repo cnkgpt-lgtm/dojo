@@ -5,7 +5,7 @@ import { z } from "zod";
 import { prisma } from "@/lib/db";
 
 const kredensialSchema = z.object({
-  identitas: z.string().min(1, "Nomor HP atau email wajib diisi"),
+  identitas: z.string().min(1, "Username, nomor HP, atau email wajib diisi"),
   password: z.string().min(1, "Kata sandi wajib diisi"),
 });
 
@@ -15,9 +15,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   pages: { signIn: "/login" },
   providers: [
     Credentials({
-      name: "HP / Email & Kata Sandi",
+      name: "Username / HP / Email & Kata Sandi",
       credentials: {
-        identitas: { label: "Nomor HP / Email", type: "text" },
+        identitas: { label: "Username / Nomor HP / Email", type: "text" },
         password: { label: "Kata Sandi", type: "password" },
       },
       authorize: async (credentials) => {
@@ -25,10 +25,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         if (!parsed.success) return null;
         const identitas = parsed.data.identitas.trim();
 
-        // Login dengan nomor HP ATAU email (§7)
+        // Login dengan username ATAU nomor HP ATAU email (§7)
         const user = await prisma.user.findFirst({
           where: {
             OR: [
+              { username: identitas.toLowerCase() },
               { phone: identitas },
               { email: identitas.toLowerCase() },
             ],
